@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin/*
 
-Sitemap: https://domain-portfolio-kamu.vercel.app/sitemap.xml
+Sitemap: https://asgarnet.vercel.app/sitemap.xml
