@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 interface AboutProps {
   title?: string;
@@ -19,14 +19,14 @@ const tagColors = [
 // Container drives the stagger so tags pop in one-by-one instead of
 // each tag re-deriving its own delay — reads as one deliberate motion
 // instead of "everything fades up the same amount, generically".
-const skillContainer = {
+const skillContainer: Variants = {
   hidden: {},
   show: {
     transition: { staggerChildren: 0.06 },
   },
 };
 
-const skillItem = {
+const skillItem: Variants = {
   hidden: { opacity: 0, y: 12, scale: 0.85, rotate: -4 },
   show: {
     opacity: 1,
@@ -73,12 +73,14 @@ export default function About({ title, subtitle, data }: AboutProps) {
             initial={{ opacity: 0, x: -14 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 24,
-              delay: 0.05,
-            }}
+            transition={
+              {
+                type: "spring",
+                stiffness: 260,
+                damping: 24,
+                delay: 0.05,
+              } as const
+            }
             className="tracking-tight break-words"
             style={{
               fontFamily: "var(--font-heading, monospace)",

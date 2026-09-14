@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { api } from "../lib/api";
@@ -130,7 +130,8 @@ export default function Projects() {
                       loading="lazy"
                       className="w-full h-full object-cover"
                       style={{
-                        imageRendering: "var(--img-rendering, pixelated)",
+                        imageRendering:
+                          "var(--img-rendering, pixelated)" as CSSProperties["imageRendering"],
                       }}
                     />
                   </div>

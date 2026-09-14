@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Terminal, User } from "lucide-react";
+import type { CSSProperties, ReactNode } from "react";
 
 interface HeroProps {
   title?: string;
@@ -25,7 +26,7 @@ function PixelButton({
 }: {
   href: string;
   variant: "primary" | "secondary";
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const isPrimary = variant === "primary";
   return (
@@ -191,7 +192,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
                     border:
                       "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
                     imageRendering:
-                      "var(--img-rendering, auto)" as React.CSSProperties["imageRendering"],
+                      "var(--img-rendering, auto)" as CSSProperties["imageRendering"],
                   }}
                 />
               ) : (
