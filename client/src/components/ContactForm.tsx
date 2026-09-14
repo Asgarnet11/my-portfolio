@@ -5,6 +5,8 @@ import { api } from "../lib/api";
 
 const PIXEL_FONT = "'Press Start 2P', monospace";
 const INK = "#4A3B52";
+// Warna kontras tinggi untuk teks sekunder (lulus uji WCAG AA)
+const MUTED_TEXT = "#504159";
 
 const fieldStyle: React.CSSProperties = {
   width: "100%",
@@ -20,7 +22,7 @@ const labelStyle: React.CSSProperties = {
   display: "block",
   fontFamily: PIXEL_FONT,
   fontSize: "9px",
-  color: "#8A7A93",
+  color: MUTED_TEXT,
   marginBottom: "8px",
 };
 
@@ -83,7 +85,7 @@ export default function ContactForm() {
           </h2>
           <p
             className="text-sm leading-relaxed font-normal"
-            style={{ color: "#8A7A93" }}
+            style={{ color: MUTED_TEXT }}
           >
             Punya ide proyek, tawaran kolaborasi, atau sekadar ingin menyapa?
             Kirimkan pesan melalui form ini.
@@ -106,7 +108,7 @@ export default function ContactForm() {
               <div
                 className="flex items-center gap-2 text-sm"
                 style={{
-                  color: "#3B8A5C",
+                  color: "#2C6B47",
                   fontFamily: PIXEL_FONT,
                   fontSize: "11px",
                 }}
@@ -114,7 +116,7 @@ export default function ContactForm() {
                 <CheckCircle2 className="w-5 h-5" />
                 Pesan terkirim dengan aman!
               </div>
-              <p className="text-xs" style={{ color: "#8A7A93" }}>
+              <p className="text-xs" style={{ color: MUTED_TEXT }}>
                 Terima kasih sudah menghubungi. Saya akan merespons sesegera
                 mungkin.
               </p>
@@ -124,7 +126,7 @@ export default function ContactForm() {
                 style={{
                   fontFamily: PIXEL_FONT,
                   fontSize: "9px",
-                  color: "#3B8A5C",
+                  color: "#2C6B47",
                   textDecoration: "underline",
                   textUnderlineOffset: "4px",
                   background: "none",
@@ -141,7 +143,7 @@ export default function ContactForm() {
                 <div
                   className="p-3 text-xs"
                   style={{
-                    color: "#B24B5E",
+                    color: "#8E2B3D",
                     background: "#FBE4E8",
                     border: `3px solid ${INK}`,
                   }}
@@ -151,8 +153,12 @@ export default function ContactForm() {
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label style={labelStyle}>Nama</label>
+                  <label htmlFor="contact-name" style={labelStyle}>
+                    Nama
+                  </label>
                   <input
+                    id="contact-name"
+                    name="name"
                     type="text"
                     required
                     value={name}
@@ -161,8 +167,12 @@ export default function ContactForm() {
                   />
                 </div>
                 <div>
-                  <label style={labelStyle}>Email</label>
+                  <label htmlFor="contact-email" style={labelStyle}>
+                    Email
+                  </label>
                   <input
+                    id="contact-email"
+                    name="email"
                     type="email"
                     required
                     value={email}
@@ -173,8 +183,12 @@ export default function ContactForm() {
               </div>
 
               <div>
-                <label style={labelStyle}>Subjek (Opsional)</label>
+                <label htmlFor="contact-subject" style={labelStyle}>
+                  Subjek (Opsional)
+                </label>
                 <input
+                  id="contact-subject"
+                  name="subject"
                   type="text"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
@@ -183,8 +197,12 @@ export default function ContactForm() {
               </div>
 
               <div>
-                <label style={labelStyle}>Pesan</label>
+                <label htmlFor="contact-message" style={labelStyle}>
+                  Pesan
+                </label>
                 <textarea
+                  id="contact-message"
+                  name="message"
                   required
                   rows={4}
                   value={message}

@@ -16,7 +16,8 @@ interface HeroProps {
 
 const PIXEL_FONT = "'Press Start 2P', monospace";
 const INK = "#4A3B52";
-const MUTED = "#8A7A93";
+// Warna kontras tinggi untuk teks sekunder (lulus uji WCAG AA)
+const MUTED = "#504159";
 
 export default function Hero({ title, subtitle, data }: HeroProps) {
   return (
@@ -44,7 +45,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
             >
               <span
                 className="w-2 h-2 animate-pulse"
-                style={{ background: "#3B8A5C" }}
+                style={{ background: "#2C6B47" }}
               />
               {data.statusBadge}
             </motion.div>
@@ -129,7 +130,11 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
               {data?.avatarUrl ? (
                 <img
                   src={data.avatarUrl}
-                  alt="Profile"
+                  alt="Profile Avatar Muh Asgar Fatwahyudi"
+                  width={300}
+                  height={380}
+                  loading="eager"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                   style={{
                     border: `3px solid ${INK}`,
@@ -165,7 +170,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
                       className="text-[11px] leading-tight"
                       style={{ color: MUTED }}
                     >
-                      Atur `avatarUrl` di JSON Site Customizer
+                      Atur avatar di Site Customizer
                     </p>
                   </div>
                 </div>
@@ -183,7 +188,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
                 }}
               >
                 <span>DEV // KND</span>
-                <span style={{ color: "#3B8A5C" }}>ACTIVE</span>
+                <span style={{ color: "#2C6B47" }}>ACTIVE</span>
               </div>
             </div>
           </div>
