@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { Router, Request, Response } from "express";
 import multer from "multer";
 import { supabase } from "../config/supabase";
@@ -6,7 +7,7 @@ import { requireAuth } from "../middlewares/auth.middleware";
 const router = Router();
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // Maksimal 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 router.post(
@@ -20,12 +21,10 @@ router.post(
         return res.status(400).json({ error: "File gambar wajib diunggah." });
       }
 
-      // Format nama file unik
       const ext = file.originalname.split(".").pop();
       const fileName = `projects/${Date.now()}-${Math.round(Math.random() * 1e9)}.${ext}`;
 
-      // Upload buffer ke Supabase Storage
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from("portfolio-assets")
         .upload(fileName, file.buffer, {
           contentType: file.mimetype,
