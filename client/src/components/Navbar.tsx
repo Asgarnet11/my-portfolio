@@ -7,6 +7,11 @@ const LINKS = [
   { label: "Say Hi", href: "#contact-form", icon: "✉" },
 ];
 
+const INK = "#4A3B52";
+// Warna ungu kontras tinggi (>4.5:1 terhadap #FFF6E9)
+const ACCENT_PURPLE = "#74489D";
+const iconColors = ["#E85D75", "#2D7F54", "#74489D", "#D97706"];
+
 export default function PixelNavbar() {
   const [mounted, setMounted] = useState(false);
   const [active, setActive] = useState<string | null>(null);
@@ -24,11 +29,6 @@ export default function PixelNavbar() {
 
   return (
     <div style={{ fontFamily: "'Press Start 2P', monospace" }}>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      />
-
       <header
         style={{
           position: "sticky",
@@ -43,7 +43,7 @@ export default function PixelNavbar() {
         <div
           style={{
             background: "#FFF6E9",
-            borderBottom: "4px solid #4A3B52",
+            borderBottom: `4px solid ${INK}`,
             boxShadow: "0 4px 0 0 rgba(74,59,82,0.15)",
           }}
         >
@@ -58,23 +58,27 @@ export default function PixelNavbar() {
               gap: 12,
             }}
           >
-            {/* Logo: little pixel house + cursor blink */}
+            {/* Logo: pixel house + cursor blink */}
             <a
               href="#"
+              aria-label="Asgar Fatwahyudi Portfolio Home"
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: 6,
                 textDecoration: "none",
-                color: "#4A3B52",
+                color: INK,
                 fontSize: 12,
                 whiteSpace: "nowrap",
               }}
             >
               <PixelHouse />
               <span>
-                Asgar<span style={{ color: "#B896D4" }}>Fatwahyudi</span>
-                <span style={{ opacity: blink ? 1 : 0, color: "#4A3B52" }}>
+                Asgar<span style={{ color: ACCENT_PURPLE }}>Fatwahyudi</span>
+                <span
+                  aria-hidden="true"
+                  style={{ opacity: blink ? 1 : 0, color: INK }}
+                >
                   _
                 </span>
               </span>
@@ -82,6 +86,7 @@ export default function PixelNavbar() {
 
             {/* Nav links */}
             <nav
+              aria-label="Primary Navigation"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -105,20 +110,21 @@ export default function PixelNavbar() {
                       gap: 6,
                       fontSize: 9,
                       textDecoration: "none",
-                      color: "#4A3B52",
+                      color: INK,
                       background: isActive ? "#FFD873" : "transparent",
                       border: "3px solid",
-                      borderColor: isActive ? "#4A3B52" : "transparent",
+                      borderColor: isActive ? INK : "transparent",
                       padding: "8px 10px",
                       transform: isActive
                         ? "translate(-2px,-2px)"
                         : "translate(0,0)",
-                      boxShadow: isActive ? "3px 3px 0 0 #4A3B52" : "none",
+                      boxShadow: isActive ? `3px 3px 0 0 ${INK}` : "none",
                       transition:
                         "transform 0.1s steps(2,end), box-shadow 0.1s steps(2,end), background 0.1s steps(2,end), border-color 0.1s steps(2,end)",
                     }}
                   >
                     <span
+                      aria-hidden="true"
                       style={{
                         fontSize: 10,
                         color: iconColors[i % iconColors.length],
@@ -138,15 +144,13 @@ export default function PixelNavbar() {
   );
 }
 
-const iconColors = ["#FF9EB8", "#7FCB9E", "#B896D4", "#FFB84C"];
-
 function PixelHouse() {
-  // tiny 8x8-ish pixel house built from divs, sits in a fixed box
   return (
     <svg
       width="20"
       height="18"
       viewBox="0 0 20 18"
+      aria-hidden="true"
       style={{ imageRendering: "pixelated" }}
     >
       <rect x="8" y="0" width="4" height="4" fill="#4A3B52" />
