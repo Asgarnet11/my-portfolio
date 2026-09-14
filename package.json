@@ -7,11 +7,9 @@
     "server"
   ],
   "scripts": {
-    "build": "npm run build --workspace=client",
-    "postinstall": "prisma generate --schema=server/prisma/schema.prisma || true"
+    "build": "npm run build --workspace=client"
   },
   "dependencies": {
-    "@prisma/client": "^6.0.0",
     "@supabase/supabase-js": "^2.48.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -26,7 +24,6 @@
     "@types/express": "^5.0.0",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.13.0",
-    "prisma": "^6.0.0",
     "typescript": "^5.7.3"
   }
 }
