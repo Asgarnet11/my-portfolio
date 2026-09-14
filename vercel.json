@@ -1,16 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/api/v1/:path*",
+      "source": "/api/v1/(.*)",
       "destination": "/api/index.ts"
     },
     {
-      "source": "/assets/:path*",
-      "destination": "/client/dist/assets/:path*"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/client/dist/index.html"
+      "destination": "/client/$1"
     }
   ]
 }
