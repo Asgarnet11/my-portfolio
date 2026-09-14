@@ -2,17 +2,13 @@
 
 > Full-Stack Developer & Software Engineer specializing in robust backend architectures, RESTful APIs, and responsive frontend systems.
 
-## Core Technical Skills
-- Frontend: React, Vite, TypeScript, Tailwind CSS, Svelte, Vue.js
-- Backend: Node.js, Express.js, Go, Laravel, Python
-- Database & Storage: PostgreSQL, MySQL, Supabase
-- Tools: Docker, Git, VS Code, Vercel
+## Projects
 
-## Key Projects
-- ServerDeck: Web-based server file management application.
-- A&A Digital Solutions: Backend services with Go and PostgreSQL.
-- Bus Ticketing System: Automated booking platform.
+- [ServerDeck](https://github.com/Asgarnet11/serverdeck): Web-based server file management application.
+- [A&A Digital Solutions](https://github.com/Asgarnet11): Backend services built with Go and PostgreSQL.
+- [Bus Ticketing System](https://github.com/Asgarnet11): Automated booking platform.
 
-## Contact & Links
-- Website: https://asgarnet.vercel.app
-- GitHub: https://github.com/Asgarnet11
+## Contact
+
+- [Portfolio website](https://asgarnet.vercel.app): personal site and CV.
+- [GitHub](https://github.com/Asgarnet11): source code and repositories.
