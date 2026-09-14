@@ -46,6 +46,10 @@ export default function About({ title, subtitle, data }: AboutProps) {
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10">
         <div className="md:col-span-4 space-y-3 min-w-0">
+          {/* Same class of bug as the Hero primary button: this badge
+              fills with --bg-secondary, so its text must use --on-accent,
+              not --color-ink — in the terminal theme both --color-ink and
+              --bg-secondary are neon green, which makes the label vanish. */}
           <motion.span
             initial={{ opacity: 0, y: -8, scale: 0.9 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -54,7 +58,7 @@ export default function About({ title, subtitle, data }: AboutProps) {
             className="inline-block text-[9px] sm:text-[10px] px-2 py-1"
             style={{
               fontFamily: "var(--font-heading, monospace)",
-              color: "var(--color-ink, #4A3B52)",
+              color: "var(--on-accent, #4A3B52)",
               background: "var(--bg-secondary, #FFD873)",
               border:
                 "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
