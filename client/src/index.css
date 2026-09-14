@@ -1,9 +1,178 @@
 @import "tailwindcss";
 
-html,
+/* -------------------------------------------------------------
+   TEMA 1: RETRO PIXEL (Default)
+   ------------------------------------------------------------- */
+:root,
+[data-theme="pixel"] {
+  --font-heading: "Press Start 2P", monospace;
+  --font-body: "Press Start 2P", monospace;
+
+  /* Backgrounds */
+  --bg-primary: #fff6e9;
+  --bg-secondary: #ffd873;
+  --bg-accent: #d6c9f5;
+  --card-frame-bg: #ffc7d6;
+
+  /* Typography Colors */
+  --color-ink: #4a3b52;
+  --color-muted: #504159;
+  --accent-color: #74489d;
+
+  /* Text color guaranteed to be readable ON TOP of --bg-secondary
+     (e.g. the primary CTA button fill). Don't assume --color-ink
+     always contrasts with --bg-secondary — in some themes they can
+     land close together, so this is set explicitly per theme. */
+  --on-accent: #4a3b52;
+
+  /* Borders & Shadows */
+  --border-width: 3px;
+  --border-width-lg: 4px;
+  --border-radius: 0px;
+  --node-radius: 0px;
+  --box-shadow: 3px 3px 0 0 #4a3b52;
+  --box-shadow-lg: 4px 4px 0 0 #4a3b52;
+  --box-shadow-hover: 5px 5px 0 0 #4a3b52;
+
+  /* Badges & Status */
+  --badge-bg: #e3f5e9;
+  --badge-dot: #2c6b47;
+  --error-bg: #fbe4e8;
+  --error-text: #8e2b3d;
+
+  /* Cards Accent Palette */
+  --card-accent-1: #ffc7d6;
+  --card-accent-2: #b8e6c9;
+  --card-accent-3: #d6c9f5;
+  --card-accent-4: #ffd873;
+
+  /* Rendering */
+  --img-rendering: pixelated;
+}
+
+/* -------------------------------------------------------------
+   TEMA 2: MODERN CLEAN
+   ------------------------------------------------------------- */
+[data-theme="modern"] {
+  --font-heading:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #2563eb;
+  --bg-accent: #eff6ff;
+  --card-frame-bg: #f1f5f9;
+
+  /* Typography Colors */
+  --color-ink: #0f172a;
+  --color-muted: #475569;
+  --accent-color: #2563eb;
+
+  /* --bg-secondary here is a saturated blue — dark ink text on it
+     fails contrast, so text on top of it needs to be light. */
+  --on-accent: #ffffff;
+
+  /* Borders & Shadows */
+  --border-width: 1px;
+  --border-width-lg: 1px;
+  --border-radius: 12px;
+  --node-radius: 9999px;
+  --box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --box-shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --box-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+  /* Badges & Status */
+  --badge-bg: #dcfce7;
+  --badge-dot: #16a34a;
+  --error-bg: #fee2e2;
+  --error-text: #b91c1c;
+
+  /* Cards Accent Palette */
+  --card-accent-1: #e2e8f0;
+  --card-accent-2: #dbeafe;
+  --card-accent-3: #f3e8ff;
+  --card-accent-4: #fef3c7;
+
+  /* Rendering */
+  --img-rendering: auto;
+}
+
+/* -------------------------------------------------------------
+   TEMA 3: DARK TERMINAL
+   ------------------------------------------------------------- */
+[data-theme="terminal"] {
+  --font-heading: "Courier New", Courier, monospace;
+  --font-body: "Courier New", Courier, monospace;
+
+  /* Backgrounds */
+  --bg-primary: #0a0e14;
+  --bg-secondary: #00ff66;
+  --bg-accent: #13231b;
+  --card-frame-bg: #111923;
+
+  /* Typography Colors */
+  --color-ink: #00ff66;
+  --color-muted: #629677;
+  --accent-color: #00e5ff;
+
+  /* --color-ink and --bg-secondary are BOTH neon green here — that's
+     the bug from the screenshot. Text on the accent button must use
+     the dark background color instead, not --color-ink. */
+  --on-accent: #0a0e14;
+
+  /* Borders & Shadows */
+  --border-width: 1px;
+  --border-width-lg: 2px;
+  --border-radius: 2px;
+  --node-radius: 2px;
+  --box-shadow: 0 0 8px rgba(0, 255, 102, 0.25);
+  --box-shadow-lg: 0 0 16px rgba(0, 255, 102, 0.35);
+  --box-shadow-hover: 0 0 24px rgba(0, 255, 102, 0.5);
+
+  /* Badges & Status */
+  --badge-bg: #092615;
+  --badge-dot: #00ff66;
+  --error-bg: #2d1217;
+  --error-text: #ff4b68;
+
+  /* Cards Accent Palette */
+  --card-accent-1: #11261a;
+  --card-accent-2: #0e2b26;
+  --card-accent-3: #1a1b35;
+  --card-accent-4: #2b2710;
+
+  /* Rendering */
+  --img-rendering: auto;
+}
+
+/* Transisi halus saat pergantian tema. button & a ditambahkan karena
+   banyak elemen interaktif (nav link, theme switcher, CTA) bukan
+   direct child dari tag di bawah, dan box-shadow ikut dimasukkan
+   supaya efek "chunky shadow" pixel juga ikut transisi halus. */
 body,
-#root {
-  background-color: #fff6e9;
-  min-height: 100%;
-  color-scheme: light;
+main,
+section,
+nav,
+header,
+footer,
+button,
+a {
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease;
+}
+
+/* Sembunyikan scrollbar pada nav yang overflow-x-auto (Navbar.tsx)
+   tanpa menghilangkan fungsinya. */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
 }

@@ -16,11 +16,6 @@ interface Section {
   is_active: boolean;
 }
 
-const PIXEL_FONT = "'Press Start 2P', monospace";
-const INK = "#4A3B52";
-const MUTED = "#8A7A93";
-const CREAM = "#FFF6E9";
-
 export default function Home() {
   const [sections, setSections] = useState<Record<string, Section>>({});
   const [loading, setLoading] = useState(true);
@@ -47,11 +42,11 @@ export default function Home() {
   if (loading) {
     return (
       <div
-        className="min-h-screen flex items-center justify-center text-xs"
+        className="min-h-screen flex items-center justify-center text-center px-6 text-xs"
         style={{
-          background: CREAM,
-          color: MUTED,
-          fontFamily: PIXEL_FONT,
+          background: "var(--bg-primary, #FFF6E9)",
+          color: "var(--color-muted, #504159)",
+          fontFamily: "var(--font-body, monospace)",
           fontSize: "10px",
         }}
       >
@@ -65,9 +60,15 @@ export default function Home() {
   const socialsSec = sections["socials"];
 
   return (
-    <div className="min-h-screen" style={{ background: CREAM, color: INK }}>
+    <div
+      className="min-h-screen overflow-x-hidden"
+      style={{
+        background: "var(--bg-primary, #FFF6E9)",
+        color: "var(--color-ink, #4A3B52)",
+      }}
+    >
       <Navbar />
-      <main className="max-w-5xl mx-auto px-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {heroSec?.is_active && (
           <Hero
             title={heroSec.title}
@@ -93,22 +94,31 @@ export default function Home() {
         {/* Footer / Connect Section */}
         <footer
           id="contact"
-          className="py-16 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs mt-20"
+          className="py-10 sm:py-16 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 text-xs mt-12 sm:mt-20"
           style={{
-            borderTop: `3px solid ${INK}`,
-            color: MUTED,
-            fontFamily: PIXEL_FONT,
+            borderTop:
+              "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+            color: "var(--color-muted, #504159)",
+            fontFamily: "var(--font-body, monospace)",
             fontSize: "9px",
           }}
         >
-          <div>© {new Date().getFullYear()} — Built with A2dev.</div>
-          <div className="flex gap-4" style={{ color: INK }}>
+          <div className="leading-relaxed">
+            © {new Date().getFullYear()} — Built with A2dev.
+          </div>
+          <div
+            className="flex flex-wrap gap-x-4 gap-y-2"
+            style={{ color: "var(--color-ink, #4A3B52)" }}
+          >
             {socialsSec?.data?.github && (
               <a
                 href={socialsSec.data.github}
                 target="_blank"
                 rel="noreferrer"
-                style={{ color: INK, textDecoration: "none" }}
+                style={{
+                  color: "var(--color-ink, #4A3B52)",
+                  textDecoration: "none",
+                }}
                 className="hover:opacity-70 transition-opacity"
               >
                 GitHub
@@ -119,7 +129,10 @@ export default function Home() {
                 href={socialsSec.data.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                style={{ color: INK, textDecoration: "none" }}
+                style={{
+                  color: "var(--color-ink, #4A3B52)",
+                  textDecoration: "none",
+                }}
                 className="hover:opacity-70 transition-opacity"
               >
                 LinkedIn
@@ -128,7 +141,10 @@ export default function Home() {
             {socialsSec?.data?.email && (
               <a
                 href={`mailto:${socialsSec.data.email}`}
-                style={{ color: INK, textDecoration: "none" }}
+                style={{
+                  color: "var(--color-ink, #4A3B52)",
+                  textDecoration: "none",
+                }}
                 className="hover:opacity-70 transition-opacity"
               >
                 Email

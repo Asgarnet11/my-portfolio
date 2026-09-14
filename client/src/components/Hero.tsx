@@ -14,20 +14,66 @@ interface HeroProps {
   };
 }
 
-const PIXEL_FONT = "'Press Start 2P', monospace";
-const INK = "#4A3B52";
-// Warna kontras tinggi untuk teks sekunder (lulus uji WCAG AA)
-const MUTED = "#504159";
+// Primary = filled with --bg-secondary, so its text MUST use --on-accent
+// (not --color-ink) since --color-ink isn't guaranteed to contrast with
+// --bg-secondary in every theme (see theme.css note on the terminal theme).
+// Secondary = outlined on --bg-accent, so --color-ink is safe there.
+function PixelButton({
+  href,
+  variant,
+  children,
+}: {
+  href: string;
+  variant: "primary" | "secondary";
+  children: React.ReactNode;
+}) {
+  const isPrimary = variant === "primary";
+  return (
+    <motion.a
+      href={href}
+      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm"
+      style={{
+        fontFamily: "var(--font-heading, monospace)",
+        fontSize: "10px",
+        color: isPrimary
+          ? "var(--on-accent, #4A3B52)"
+          : "var(--color-ink, #4A3B52)",
+        background: isPrimary
+          ? "var(--bg-secondary, #FFD873)"
+          : "var(--bg-accent, #D6C9F5)",
+        border: "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+        borderRadius: "var(--border-radius, 0px)",
+      }}
+      initial={{
+        boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
+        x: 0,
+        y: 0,
+      }}
+      whileHover={{
+        x: -1,
+        y: -1,
+        boxShadow: "var(--box-shadow-hover, 4px 4px 0 0 #4A3B52)",
+      }}
+      whileTap={{ x: 3, y: 3, boxShadow: "none" }}
+      transition={{ duration: 0.08 }}
+    >
+      {children}
+    </motion.a>
+  );
+}
 
 export default function Hero({ title, subtitle, data }: HeroProps) {
   return (
     <section
-      className="min-h-[85vh] flex flex-col justify-center pt-24 pb-16 border-b-4"
-      style={{ borderColor: INK, background: "#FFF6E9" }}
+      className="min-h-[85vh] flex flex-col justify-center pt-20 sm:pt-24 pb-12 sm:pb-16 border-b-4"
+      style={{
+        borderColor: "var(--color-ink, #4A3B52)",
+        background: "var(--bg-primary, #FFF6E9)",
+      }}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
         {/* Kolom Kiri: Teks & CTA */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className="lg:col-span-7 space-y-5 sm:space-y-6 min-w-0">
           {data?.statusBadge && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -35,17 +81,22 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
               transition={{ duration: 0.3, ease: "easeOut" }}
               className="inline-flex items-center gap-2 px-3 py-1.5 text-xs"
               style={{
-                fontFamily: PIXEL_FONT,
+                fontFamily: "var(--font-heading, monospace)",
                 fontSize: "9px",
-                color: INK,
-                background: "#E3F5E9",
-                border: `3px solid ${INK}`,
-                boxShadow: `3px 3px 0 0 ${INK}`,
+                color: "var(--color-ink, #4A3B52)",
+                background: "var(--badge-bg, #E3F5E9)",
+                border:
+                  "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+                borderRadius: "var(--border-radius, 0px)",
+                boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
               }}
             >
               <span
-                className="w-2 h-2 animate-pulse"
-                style={{ background: "#2C6B47" }}
+                className="w-2 h-2 animate-pulse shrink-0"
+                style={{
+                  background: "var(--badge-dot, #2C6B47)",
+                  borderRadius: "var(--node-radius, 0px)",
+                }}
               />
               {data.statusBadge}
             </motion.div>
@@ -55,8 +106,13 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
-            className="text-3xl sm:text-5xl tracking-tight leading-[1.4]"
-            style={{ fontFamily: PIXEL_FONT, color: INK }}
+            className="tracking-tight break-words"
+            style={{
+              fontFamily: "var(--font-heading, monospace)",
+              color: "var(--color-ink, #4A3B52)",
+              fontSize: "clamp(22px, 6vw, 44px)",
+              lineHeight: 1.4,
+            }}
           >
             {title || "Hi, I am Asgar"}
           </motion.h1>
@@ -65,8 +121,11 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-            className="text-lg font-normal leading-relaxed max-w-xl"
-            style={{ color: MUTED }}
+            className="text-base sm:text-lg font-normal leading-relaxed max-w-xl"
+            style={{
+              fontFamily: "var(--font-body, monospace)",
+              color: "var(--color-muted, #504159)",
+            }}
           >
             {subtitle ||
               "Building clean backends and responsive user interfaces."}
@@ -76,38 +135,22 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
-            className="pt-2 flex flex-wrap gap-4 items-center"
+            className="pt-2 flex flex-wrap gap-3 sm:gap-4 items-center"
           >
-            <a
+            <PixelButton
               href={data?.ctaPrimaryLink || "#projects"}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm"
-              style={{
-                fontFamily: PIXEL_FONT,
-                fontSize: "10px",
-                color: INK,
-                background: "#FFD873",
-                border: `3px solid ${INK}`,
-                boxShadow: `3px 3px 0 0 ${INK}`,
-              }}
+              variant="primary"
             >
               {data?.ctaPrimaryText || "View Projects"}
               <ArrowUpRight className="w-4 h-4" />
-            </a>
-            <a
+            </PixelButton>
+            <PixelButton
               href={data?.ctaSecondaryLink || "#contact-form"}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm"
-              style={{
-                fontFamily: PIXEL_FONT,
-                fontSize: "10px",
-                color: INK,
-                background: "#D6C9F5",
-                border: `3px solid ${INK}`,
-                boxShadow: `3px 3px 0 0 ${INK}`,
-              }}
+              variant="secondary"
             >
-              <Terminal className="w-4 h-4" style={{ color: INK }} />
+              <Terminal className="w-4 h-4" />
               {data?.ctaSecondaryText || "Contact Me"}
-            </a>
+            </PixelButton>
           </motion.div>
         </div>
 
@@ -118,59 +161,77 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
           transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
           className="lg:col-span-5 flex justify-center lg:justify-end"
         >
-          <div className="relative">
+          {/* idle bobbing wrapper - separate from entrance animation */}
+          <motion.div
+            className="relative w-56 sm:w-64 md:w-72"
+            animate={{ y: [0, -8, 0] }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+              times: [0, 0.5, 1],
+            }}
+          >
             <div
-              className="relative w-64 h-80 sm:w-72 sm:h-96 overflow-hidden flex items-center justify-center p-2"
+              className="relative w-full aspect-[4/5] overflow-hidden flex items-center justify-center p-2"
               style={{
-                background: "#FFC7D6",
-                border: `4px solid ${INK}`,
-                boxShadow: `6px 6px 0 0 ${INK}`,
+                background: "var(--card-frame-bg, #FFC7D6)",
+                border:
+                  "var(--border-width-lg, 4px) solid var(--color-ink, #4A3B52)",
+                borderRadius: "var(--border-radius, 0px)",
+                boxShadow: "var(--box-shadow-lg, 6px 6px 0 0 #4A3B52)",
               }}
             >
               {data?.avatarUrl ? (
                 <img
                   src={data.avatarUrl}
-                  alt="Profile Avatar Muh Asgar Fatwahyudi"
-                  width={300}
-                  height={380}
-                  loading="eager"
-                  fetchPriority="high"
+                  alt="Profile"
                   className="w-full h-full object-cover"
                   style={{
-                    border: `3px solid ${INK}`,
-                    imageRendering: "pixelated",
+                    border:
+                      "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+                    imageRendering:
+                      "var(--img-rendering, auto)" as React.CSSProperties["imageRendering"],
                   }}
                 />
               ) : (
                 <div
-                  className="w-full h-full flex flex-col items-center justify-center p-6 text-center space-y-3"
-                  style={{ background: "#FFF6E9", border: `3px dashed ${INK}` }}
+                  className="w-full h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center space-y-3"
+                  style={{
+                    background: "var(--bg-primary, #FFF6E9)",
+                    border:
+                      "var(--border-width, 3px) dashed var(--color-ink, #4A3B52)",
+                  }}
                 >
                   <div
                     className="p-3"
                     style={{
-                      background: "#D6C9F5",
-                      border: `3px solid ${INK}`,
+                      background: "var(--bg-accent, #D6C9F5)",
+                      border:
+                        "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
                     }}
                   >
-                    <User className="w-8 h-8" style={{ color: INK }} />
+                    <User
+                      className="w-7 h-7 sm:w-8 sm:h-8"
+                      style={{ color: "var(--color-ink, #4A3B52)" }}
+                    />
                   </div>
                   <div className="space-y-1">
                     <div
                       className="text-xs"
                       style={{
-                        fontFamily: PIXEL_FONT,
+                        fontFamily: "var(--font-heading, monospace)",
                         fontSize: "9px",
-                        color: INK,
+                        color: "var(--color-ink, #4A3B52)",
                       }}
                     >
                       Photo Slot
                     </div>
                     <p
-                      className="text-[11px] leading-tight"
-                      style={{ color: MUTED }}
+                      className="text-[10px] sm:text-[11px] leading-tight"
+                      style={{ color: "var(--color-muted, #504159)" }}
                     >
-                      Atur avatar di Site Customizer
+                      Atur `avatarUrl` di JSON Site Customizer
                     </p>
                   </div>
                 </div>
@@ -178,20 +239,26 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
 
               {/* Tag teknis di sudut frame */}
               <div
-                className="absolute bottom-4 left-4 right-4 py-1.5 px-2.5 flex justify-between"
+                className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 py-1.5 px-2.5 flex justify-between"
                 style={{
-                  fontFamily: PIXEL_FONT,
+                  fontFamily: "var(--font-heading, monospace)",
                   fontSize: "8px",
-                  background: "#FFF6E9",
-                  border: `2px solid ${INK}`,
-                  color: INK,
+                  background: "var(--bg-primary, #FFF6E9)",
+                  border: "2px solid var(--color-ink, #4A3B52)",
+                  color: "var(--color-ink, #4A3B52)",
                 }}
               >
                 <span>DEV // KND</span>
-                <span style={{ color: "#2C6B47" }}>ACTIVE</span>
+                <motion.span
+                  style={{ color: "var(--badge-dot, #2C6B47)" }}
+                  animate={{ opacity: [1, 0.3, 1] }}
+                  transition={{ duration: 1.2, repeat: Infinity }}
+                >
+                  ACTIVE
+                </motion.span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

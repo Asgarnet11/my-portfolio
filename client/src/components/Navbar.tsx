@@ -1,18 +1,76 @@
 import { useState, useEffect } from "react";
+import { useTheme } from "../context/ThemeContext";
+
+const THEMES = [
+  { id: "pixel", label: "PIXEL" },
+  { id: "modern", label: "MODERN" },
+  { id: "terminal", label: "TERMINAL" },
+] as const;
+
+// Small pixel-style SVG icons, built from rects so they read as "pixel art"
+// at any size, and colored via currentColor so every theme tints them for free.
+function IconStar({ size = 10 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 9 9" aria-hidden="true">
+      <path
+        d="M4 0h1v3h3v1H5v1h1v1H5v1H4V6H3V5h1V4H3V3h1V0z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function IconTriangle({ size = 10 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 9 9" aria-hidden="true">
+      <rect x="4" y="0" width="1" height="1" fill="currentColor" />
+      <rect x="3" y="1" width="3" height="1" fill="currentColor" />
+      <rect x="2" y="2" width="5" height="1" fill="currentColor" />
+      <rect x="1" y="3" width="7" height="1" fill="currentColor" />
+      <rect x="0" y="4" width="9" height="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function IconDiamond({ size = 10 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 9 9" aria-hidden="true">
+      <rect x="4" y="0" width="1" height="1" fill="currentColor" />
+      <rect x="3" y="1" width="3" height="1" fill="currentColor" />
+      <rect x="2" y="2" width="5" height="1" fill="currentColor" />
+      <rect x="1" y="3" width="7" height="1" fill="currentColor" />
+      <rect x="2" y="4" width="5" height="1" fill="currentColor" />
+      <rect x="3" y="5" width="3" height="1" fill="currentColor" />
+      <rect x="4" y="6" width="1" height="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function IconMail({ size = 10 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 9 7" aria-hidden="true">
+      <rect
+        x="0"
+        y="0"
+        width="9"
+        height="7"
+        fill="none"
+        stroke="currentColor"
+      />
+      <path d="M0 0l4.5 4L9 0" fill="none" stroke="currentColor" />
+    </svg>
+  );
+}
 
 const LINKS = [
-  { label: "About", href: "#about", icon: "★" },
-  { label: "Work", href: "#experience", icon: "▲" },
-  { label: "Projects", href: "#projects", icon: "♦" },
-  { label: "Say Hi", href: "#contact-form", icon: "✉" },
+  { label: "About", href: "#about", Icon: IconStar },
+  { label: "Work", href: "#experience", Icon: IconTriangle },
+  { label: "Projects", href: "#projects", Icon: IconDiamond },
+  { label: "Say Hi", href: "#contact-form", Icon: IconMail },
 ];
 
-const INK = "#4A3B52";
-// Warna ungu kontras tinggi (>4.5:1 terhadap #FFF6E9)
-const ACCENT_PURPLE = "#74489D";
-const iconColors = ["#E85D75", "#2D7F54", "#74489D", "#D97706"];
-
 export default function PixelNavbar() {
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const [blink, setBlink] = useState(true);
@@ -28,7 +86,7 @@ export default function PixelNavbar() {
   }, []);
 
   return (
-    <div style={{ fontFamily: "'Press Start 2P', monospace" }}>
+    <div style={{ fontFamily: "var(--font-heading, monospace)" }}>
       <header
         style={{
           position: "sticky",
@@ -42,101 +100,139 @@ export default function PixelNavbar() {
       >
         <div
           style={{
-            background: "#FFF6E9",
-            borderBottom: `4px solid ${INK}`,
-            boxShadow: "0 4px 0 0 rgba(74,59,82,0.15)",
+            background: "var(--bg-primary, #FFF6E9)",
+            borderBottom:
+              "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+            boxShadow: "0 4px 0 0 rgba(74,59,82,0.1)",
           }}
         >
           <div
-            style={{
-              maxWidth: 760,
-              margin: "0 auto",
-              padding: "14px 18px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 12,
-            }}
+            className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-5 py-3"
+            style={{ maxWidth: 820, margin: "0 auto" }}
           >
             {/* Logo: pixel house + cursor blink */}
             <a
               href="#"
               aria-label="Asgar Fatwahyudi Portfolio Home"
+              className="flex items-center gap-1.5 sm:gap-2 shrink-0"
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
                 textDecoration: "none",
-                color: INK,
-                fontSize: 12,
+                color: "var(--color-ink, #4A3B52)",
                 whiteSpace: "nowrap",
               }}
             >
               <PixelHouse />
-              <span>
-                Asgar<span style={{ color: ACCENT_PURPLE }}>Fatwahyudi</span>
+              <span className="text-[10px] sm:text-xs">
+                Asgar
+                <span
+                  className="hidden sm:inline"
+                  style={{ color: "var(--accent-color, #74489D)" }}
+                >
+                  Fatwahyudi
+                </span>
                 <span
                   aria-hidden="true"
-                  style={{ opacity: blink ? 1 : 0, color: INK }}
+                  style={{
+                    opacity: blink ? 1 : 0,
+                    color: "var(--color-ink, #4A3B52)",
+                  }}
                 >
                   _
                 </span>
               </span>
             </a>
 
-            {/* Nav links */}
-            <nav
-              aria-label="Primary Navigation"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                flexWrap: "wrap",
-                justifyContent: "flex-end",
-              }}
-            >
-              {LINKS.map((link, i) => {
-                const isActive = active === link.label;
-                return (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    onMouseEnter={() => setActive(link.label)}
-                    onMouseLeave={() => setActive(null)}
-                    style={{
-                      position: "relative",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      fontSize: 9,
-                      textDecoration: "none",
-                      color: INK,
-                      background: isActive ? "#FFD873" : "transparent",
-                      border: "3px solid",
-                      borderColor: isActive ? INK : "transparent",
-                      padding: "8px 10px",
-                      transform: isActive
-                        ? "translate(-2px,-2px)"
-                        : "translate(0,0)",
-                      boxShadow: isActive ? `3px 3px 0 0 ${INK}` : "none",
-                      transition:
-                        "transform 0.1s steps(2,end), box-shadow 0.1s steps(2,end), background 0.1s steps(2,end), border-color 0.1s steps(2,end)",
-                    }}
-                  >
-                    <span
-                      aria-hidden="true"
+            {/* Nav links & Theme Switcher */}
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <nav
+                aria-label="Primary Navigation"
+                className="flex items-center gap-0.5 sm:gap-1 overflow-x-auto no-scrollbar"
+              >
+                {LINKS.map(({ label, href, Icon }) => {
+                  const isActive = active === label;
+                  return (
+                    <a
+                      key={label}
+                      href={href}
+                      onMouseEnter={() => setActive(label)}
+                      onMouseLeave={() => setActive(null)}
+                      aria-label={label}
+                      className="flex items-center gap-1 sm:gap-1.5 shrink-0"
                       style={{
-                        fontSize: 10,
-                        color: iconColors[i % iconColors.length],
+                        position: "relative",
+                        fontSize: 9,
+                        textDecoration: "none",
+                        color: "var(--color-ink, #4A3B52)",
+                        background: isActive
+                          ? "var(--bg-secondary, #FFD873)"
+                          : "transparent",
+                        border: "var(--border-width, 2px) solid",
+                        borderColor: isActive
+                          ? "var(--color-ink, #4A3B52)"
+                          : "transparent",
+                        borderRadius: "var(--border-radius, 0px)",
+                        padding: "6px 6px",
+                        transform: isActive
+                          ? "translate(-1px,-1px)"
+                          : "translate(0,0)",
+                        boxShadow: isActive
+                          ? "var(--box-shadow, 2px 2px 0 0 #4A3B52)"
+                          : "none",
+                        transition: "all 0.15s ease",
                       }}
                     >
-                      {link.icon}
-                    </span>
-                    {link.label}
-                  </a>
-                );
-              })}
-            </nav>
+                      <Icon />
+                      {/* label hides on the smallest screens; icon + aria-label keep it usable */}
+                      <span className="hidden xs:inline sm:inline">
+                        {label}
+                      </span>
+                    </a>
+                  );
+                })}
+              </nav>
+
+              {/* Theme Switcher Toggle */}
+              <div
+                className="flex items-center shrink-0"
+                style={{
+                  border:
+                    "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
+                  borderRadius: "var(--border-radius, 0px)",
+                  background: "var(--bg-primary, #FFF6E9)",
+                  padding: "2px",
+                  boxShadow: "var(--box-shadow, 2px 2px 0 0 #4A3B52)",
+                }}
+              >
+                {THEMES.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => setTheme(t.id)}
+                    aria-label={`Ganti ke tema ${t.label}`}
+                    className="px-1 sm:px-1.5 py-1"
+                    style={{
+                      fontFamily: "var(--font-heading, monospace)",
+                      fontSize: "7px",
+                      background:
+                        theme === t.id
+                          ? "var(--color-ink, #4A3B52)"
+                          : "transparent",
+                      color:
+                        theme === t.id
+                          ? "var(--bg-primary, #FFF6E9)"
+                          : "var(--color-ink, #4A3B52)",
+                      border: "none",
+                      borderRadius: "calc(var(--border-radius, 0px) - 1px)",
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    {/* full label on sm+, first letter only on the smallest screens */}
+                    <span className="hidden sm:inline">{t.label}</span>
+                    <span className="sm:hidden">{t.label[0]}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -147,27 +243,46 @@ export default function PixelNavbar() {
 function PixelHouse() {
   return (
     <svg
-      width="20"
-      height="18"
+      width="18"
+      height="16"
       viewBox="0 0 20 18"
       aria-hidden="true"
+      className="shrink-0"
       style={{ imageRendering: "pixelated" }}
     >
-      <rect x="8" y="0" width="4" height="4" fill="#4A3B52" />
-      <rect x="4" y="4" width="4" height="4" fill="#4A3B52" />
-      <rect x="12" y="4" width="4" height="4" fill="#4A3B52" />
+      <rect x="8" y="0" width="4" height="4" fill="var(--color-ink, #4A3B52)" />
+      <rect x="4" y="4" width="4" height="4" fill="var(--color-ink, #4A3B52)" />
+      <rect
+        x="12"
+        y="4"
+        width="4"
+        height="4"
+        fill="var(--color-ink, #4A3B52)"
+      />
       <rect
         x="4"
         y="8"
         width="12"
         height="10"
-        fill="#FFC7D6"
-        stroke="#4A3B52"
+        fill="var(--card-frame-bg, #FFC7D6)"
+        stroke="var(--color-ink, #4A3B52)"
         strokeWidth="0"
       />
-      <rect x="4" y="4" width="12" height="4" fill="#FF9EB8" />
-      <rect x="8" y="12" width="4" height="6" fill="#B8E6C9" />
-      <rect x="2" y="16" width="16" height="2" fill="#4A3B52" />
+      <rect
+        x="4"
+        y="4"
+        width="12"
+        height="4"
+        fill="var(--bg-secondary, #FF9EB8)"
+      />
+      <rect x="8" y="12" width="4" height="6" fill="var(--badge-bg, #B8E6C9)" />
+      <rect
+        x="2"
+        y="16"
+        width="16"
+        height="2"
+        fill="var(--color-ink, #4A3B52)"
+      />
     </svg>
   );
 }

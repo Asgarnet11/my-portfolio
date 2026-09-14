@@ -3,26 +3,23 @@ import { motion } from "framer-motion";
 import { Send, CheckCircle2 } from "lucide-react";
 import { api } from "../lib/api";
 
-const PIXEL_FONT = "'Press Start 2P', monospace";
-const INK = "#4A3B52";
-// Warna kontras tinggi untuk teks sekunder (lulus uji WCAG AA)
-const MUTED_TEXT = "#504159";
-
 const fieldStyle: React.CSSProperties = {
   width: "100%",
   padding: "10px 12px",
   fontSize: "13px",
-  background: "#FFF6E9",
-  border: `3px solid ${INK}`,
+  background: "var(--bg-primary, #FFF6E9)",
+  border: "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+  borderRadius: "var(--border-radius, 0px)",
   outline: "none",
-  color: INK,
+  color: "var(--color-ink, #4A3B52)",
+  fontFamily: "var(--font-body, monospace)",
 };
 
 const labelStyle: React.CSSProperties = {
   display: "block",
-  fontFamily: PIXEL_FONT,
+  fontFamily: "var(--font-heading, monospace)",
   fontSize: "9px",
-  color: MUTED_TEXT,
+  color: "var(--color-muted, #504159)",
   marginBottom: "8px",
 };
 
@@ -56,28 +53,33 @@ export default function ContactForm() {
   return (
     <section
       id="contact-form"
-      className="py-20 border-b-4"
-      style={{ borderColor: INK }}
+      className="py-14 sm:py-20 border-b-4 transition-colors duration-300"
+      style={{ borderColor: "var(--color-ink, #4A3B52)" }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
-        <div className="md:col-span-5 space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10">
+        <div className="md:col-span-5 space-y-3 min-w-0">
+          {/* bg-accent is a light/dark neutral in every theme, safe with
+              --color-ink text on top — unlike --bg-secondary below. */}
           <span
-            className="inline-block text-[10px] px-2 py-1"
+            className="inline-block text-[9px] sm:text-[10px] px-2 py-1"
             style={{
-              fontFamily: PIXEL_FONT,
-              color: INK,
-              background: "#D6C9F5",
-              border: `3px solid ${INK}`,
-              boxShadow: `3px 3px 0 0 ${INK}`,
+              fontFamily: "var(--font-heading, monospace)",
+              color: "var(--color-ink, #4A3B52)",
+              background: "var(--bg-accent, #D6C9F5)",
+              border:
+                "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+              boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
+              borderRadius: "var(--border-radius, 0px)",
             }}
           >
             Inquiry
           </span>
           <h2
+            className="break-words"
             style={{
-              fontFamily: PIXEL_FONT,
-              color: INK,
-              fontSize: "20px",
+              fontFamily: "var(--font-heading, monospace)",
+              color: "var(--color-ink, #4A3B52)",
+              fontSize: "clamp(16px, 4vw, 20px)",
               lineHeight: 1.6,
             }}
           >
@@ -85,38 +87,49 @@ export default function ContactForm() {
           </h2>
           <p
             className="text-sm leading-relaxed font-normal"
-            style={{ color: MUTED_TEXT }}
+            style={{
+              fontFamily: "var(--font-body, monospace)",
+              color: "var(--color-muted, #504159)",
+            }}
           >
             Punya ide proyek, tawaran kolaborasi, atau sekadar ingin menyapa?
             Kirimkan pesan melalui form ini.
           </p>
         </div>
 
-        <div className="md:col-span-7">
+        <div className="md:col-span-7 min-w-0">
           {success ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ ease: "easeOut" }}
-              className="p-6 space-y-3"
+              className="p-5 sm:p-6 space-y-3"
               style={{
-                background: "#E3F5E9",
-                border: `3px solid ${INK}`,
-                boxShadow: `4px 4px 0 0 ${INK}`,
+                background: "var(--badge-bg, #E3F5E9)",
+                border:
+                  "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+                boxShadow: "var(--box-shadow-lg, 4px 4px 0 0 #4A3B52)",
+                borderRadius: "var(--border-radius, 0px)",
               }}
             >
               <div
                 className="flex items-center gap-2 text-sm"
                 style={{
-                  color: "#2C6B47",
-                  fontFamily: PIXEL_FONT,
+                  color: "var(--badge-dot, #2C6B47)",
+                  fontFamily: "var(--font-heading, monospace)",
                   fontSize: "11px",
                 }}
               >
-                <CheckCircle2 className="w-5 h-5" />
+                <CheckCircle2 className="w-5 h-5 shrink-0" />
                 Pesan terkirim dengan aman!
               </div>
-              <p className="text-xs" style={{ color: MUTED_TEXT }}>
+              <p
+                className="text-xs"
+                style={{
+                  fontFamily: "var(--font-body, monospace)",
+                  color: "var(--color-muted, #504159)",
+                }}
+              >
                 Terima kasih sudah menghubungi. Saya akan merespons sesegera
                 mungkin.
               </p>
@@ -124,9 +137,9 @@ export default function ContactForm() {
                 onClick={() => setSuccess(false)}
                 className="text-xs pt-2"
                 style={{
-                  fontFamily: PIXEL_FONT,
+                  fontFamily: "var(--font-heading, monospace)",
                   fontSize: "9px",
-                  color: "#2C6B47",
+                  color: "var(--badge-dot, #2C6B47)",
                   textDecoration: "underline",
                   textUnderlineOffset: "4px",
                   background: "none",
@@ -141,11 +154,14 @@ export default function ContactForm() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
                 <div
-                  className="p-3 text-xs"
+                  className="p-3 text-xs break-words"
                   style={{
-                    color: "#8E2B3D",
-                    background: "#FBE4E8",
-                    border: `3px solid ${INK}`,
+                    color: "var(--error-text, #8E2B3D)",
+                    background: "var(--error-bg, #FBE4E8)",
+                    border:
+                      "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+                    borderRadius: "var(--border-radius, 0px)",
+                    fontFamily: "var(--font-body, monospace)",
                   }}
                 >
                   {error}
@@ -211,18 +227,26 @@ export default function ContactForm() {
                 />
               </div>
 
+              {/* Same --bg-secondary fill as the Hero primary button and
+                  the About "Background" badge — text must use --on-accent
+                  so it stays readable in the terminal theme (neon-on-neon
+                  otherwise). */}
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs disabled:opacity-50 transition-all"
                 style={{
-                  fontFamily: PIXEL_FONT,
+                  fontFamily: "var(--font-heading, monospace)",
                   fontSize: "10px",
-                  color: INK,
-                  background: "#FFD873",
-                  border: `3px solid ${INK}`,
-                  boxShadow: loading ? "none" : `3px 3px 0 0 ${INK}`,
-                  transform: loading ? "translate(3px,3px)" : "translate(0,0)",
+                  color: "var(--on-accent, #4A3B52)",
+                  background: "var(--bg-secondary, #FFD873)",
+                  border:
+                    "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
+                  boxShadow: loading
+                    ? "none"
+                    : "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
+                  transform: loading ? "translate(2px,2px)" : "translate(0,0)",
+                  borderRadius: "var(--border-radius, 0px)",
                   cursor: loading ? "default" : "pointer",
                 }}
               >
