@@ -9,7 +9,7 @@ const LINKS = [
 
 export default function PixelNavbar() {
   const [mounted, setMounted] = useState(false);
-  const [active, setActive] = useState(null);
+  const [active, setActive] = useState<string | null>(null);
   const [blink, setBlink] = useState(true);
 
   useEffect(() => {

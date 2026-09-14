@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Home from "./pages/public/Home";
@@ -8,16 +9,23 @@ import ProjectsManager from "./pages/admin/ProjectsManager";
 import ExperienceManager from "./pages/admin/ExperienceManager";
 import MessagesInbox from "./pages/admin/MessagesInbox";
 
-function ProtectedRoute({ children }: { children: JSX.Element }) {
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-zinc-500 font-mono text-xs">
-        Memeriksa sesi admin...
+      <div className="min-h-screen flex items-center justify-center bg-[#FFF6EC] text-[#3A2E3D] font-pixel text-xs">
+        <div className="border-4 border-[#3A2E3D] bg-[#FFD866] px-6 py-4 shadow-[6px_6px_0_#3A2E3D]">
+          Memeriksa sesi admin...
+        </div>
       </div>
     );
   }
-  if (!user) return <Navigate to="/admin/login" replace />;
+
+  if (!user) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
   return <AdminLayout>{children}</AdminLayout>;
 }
 
@@ -26,10 +34,10 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public Home */}
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
 
-          {/* Admin Auth */}
+          {/* Admin Auth Route */}
           <Route path="/admin/login" element={<AdminLogin />} />
 
           {/* Protected Admin Routes */}
@@ -66,7 +74,7 @@ export default function App() {
             }
           />
 
-          {/* Fallback Catch-all */}
+          {/* Fallback Catch-all Route */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
