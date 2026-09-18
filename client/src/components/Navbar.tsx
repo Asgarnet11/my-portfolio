@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Search } from "lucide-react";
-import CommandPalette from "./CommandPalette";
+
+const CommandPalette = lazy(() => import("./CommandPalette"));
 
 const THEMES = [
   { id: "pixel", label: "PIXEL" },
@@ -317,11 +318,15 @@ export default function PixelNavbar() {
         </div>
       </header>
 
-      {/* Global Command Palette Dialog */}
-      <CommandPalette
-        isOpen={paletteOpen}
-        onClose={() => setPaletteOpen(false)}
-      />
+      {/* Global Command Palette Dialog (Lazy Loaded on demand) */}
+      {paletteOpen && (
+        <Suspense fallback={null}>
+          <CommandPalette
+            isOpen={paletteOpen}
+            onClose={() => setPaletteOpen(false)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

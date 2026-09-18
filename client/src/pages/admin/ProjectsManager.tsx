@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { api } from "../../lib/api";
+import { compressImageToWebP } from "../../lib/imageCompressor";
 import {
   Plus,
   Trash2,
@@ -128,11 +129,12 @@ export default function ProjectsManager() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     setUploading(true);
     try {
+      const optimizedFile = await compressImageToWebP(file, 1000, 0.82);
+      const formData = new FormData();
+      formData.append("file", optimizedFile);
+
       const res = await api.post("/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });

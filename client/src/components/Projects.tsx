@@ -1,8 +1,10 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState, lazy, Suspense, type CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { api } from "../lib/api";
-import ProjectModal, { type ProjectDetail } from "./ProjectModal";
+import type { ProjectDetail } from "./ProjectModal";
+
+const ProjectModal = lazy(() => import("./ProjectModal"));
 
 const cardColors = [
   "var(--card-accent-1, #FFC7D6)",
@@ -131,6 +133,9 @@ export default function Projects() {
                       src={proj.cover_image}
                       alt={`Cuplikan antarmuka proyek ${proj.title}`}
                       loading="lazy"
+                      decoding="async"
+                      width={800}
+                      height={500}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       style={{
                         imageRendering:
@@ -250,11 +255,15 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Case Study Modal */}
-      <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
+      {/* Case Study Modal (Lazy Loaded on demand) */}
+      {selectedProject && (
+        <Suspense fallback={null}>
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        </Suspense>
+      )}
     </section>
   );
 }

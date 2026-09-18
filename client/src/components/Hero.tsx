@@ -187,6 +187,10 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
                 <img
                   src={data.avatarUrl}
                   alt="Profile"
+                  width={600}
+                  height={750}
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full h-full object-cover"
                   style={{
                     border:

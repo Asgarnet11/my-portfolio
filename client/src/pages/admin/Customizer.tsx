@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { api } from "../../lib/api";
+import { compressImageToWebP } from "../../lib/imageCompressor";
 import { Upload, X, User, FileText, Share2, Sliders, Check, RefreshCw } from "lucide-react";
 
 interface SectionData {
@@ -200,11 +201,12 @@ export default function Customizer() {
   };
 
   const handleAvatarUpload = async (key: string, file: File) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
     setUploadingKey(key);
     try {
+      const optimizedFile = await compressImageToWebP(file, 800, 0.82);
+      const formData = new FormData();
+      formData.append("file", optimizedFile);
+
       const res = await api.post("/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });

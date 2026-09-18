@@ -1,6 +1,7 @@
 /// <reference types="multer" />
 import { Router, Request, Response } from "express";
 import multer from "multer";
+import sharp from "sharp";
 import { supabase } from "../config/supabase";
 import { requireAuth } from "../middlewares/auth.middleware";
 
@@ -14,7 +15,7 @@ const ALLOWED_MIME_TYPES: Record<string, string> = {
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB max
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max before compression
   fileFilter: (_req, file, cb) => {
     if (ALLOWED_MIME_TYPES[file.mimetype]) {
       cb(null, true);
@@ -31,7 +32,7 @@ router.post(
     upload.single("file")(req, res, (err) => {
       if (err instanceof multer.MulterError) {
         if (err.code === "LIMIT_FILE_SIZE") {
-          return res.status(400).json({ error: "Ukuran file terlalu besar. Maksimal 5MB." });
+          return res.status(400).json({ error: "Ukuran file terlalu besar. Maksimal 10MB." });
         }
         return res.status(400).json({ error: `Gagal upload: ${err.message}` });
       } else if (err) {
@@ -47,13 +48,19 @@ router.post(
         return res.status(400).json({ error: "File gambar wajib diunggah." });
       }
 
-      const safeExt = ALLOWED_MIME_TYPES[file.mimetype] || "png";
-      const fileName = `projects/${Date.now()}-${Math.round(Math.random() * 1e9)}.${safeExt}`;
+      // Automatically convert and optimize to WebP
+      const optimizedBuffer = await sharp(file.buffer)
+        .resize({ width: 1200, withoutEnlargement: true })
+        .webp({ quality: 82 })
+        .toBuffer();
+
+      const fileName = `projects/${Date.now()}-${Math.round(Math.random() * 1e9)}.webp`;
 
       const { error } = await supabase.storage
         .from("portfolio-assets")
-        .upload(fileName, file.buffer, {
-          contentType: file.mimetype,
+        .upload(fileName, optimizedBuffer, {
+          contentType: "image/webp",
+          cacheControl: "31536000",
           upsert: true,
         });
 
