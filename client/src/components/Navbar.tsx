@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "../context/ThemeContext";
+import { Search } from "lucide-react";
+import CommandPalette from "./CommandPalette";
 
 const THEMES = [
   { id: "pixel", label: "PIXEL" },
@@ -74,6 +76,8 @@ export default function PixelNavbar() {
   const [mounted, setMounted] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const [blink, setBlink] = useState(true);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [localTime, setLocalTime] = useState("");
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 40);
@@ -83,6 +87,39 @@ export default function PixelNavbar() {
   useEffect(() => {
     const i = setInterval(() => setBlink((b) => !b), 600);
     return () => clearInterval(i);
+  }, []);
+
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const now = new Intl.DateTimeFormat("id-ID", {
+          timeZone: "Asia/Makassar",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }).format(new Date());
+        setLocalTime(now);
+      } catch {
+        const d = new Date();
+        setLocalTime(
+          `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`,
+        );
+      }
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return (
@@ -108,41 +145,64 @@ export default function PixelNavbar() {
         >
           <div
             className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-5 py-3"
-            style={{ maxWidth: 820, margin: "0 auto" }}
+            style={{ maxWidth: 880, margin: "0 auto" }}
           >
-            {/* Logo: pixel house + cursor blink */}
-            <a
-              href="#"
-              aria-label="Asgar Fatwahyudi Portfolio Home"
-              className="flex items-center gap-1.5 sm:gap-2 shrink-0"
-              style={{
-                textDecoration: "none",
-                color: "var(--color-ink, #4A3B52)",
-                whiteSpace: "nowrap",
-              }}
-            >
-              <PixelHouse />
-              <span className="text-[10px] sm:text-xs">
-                Asgar
-                <span
-                  className="hidden sm:inline"
-                  style={{ color: "var(--accent-color, #74489D)" }}
-                >
-                  Fatwahyudi
+            {/* Logo: pixel house + cursor blink + local time status */}
+            <div className="flex items-center gap-3 shrink-0">
+              <a
+                href="#"
+                aria-label="Asgar Fatwahyudi Portfolio Home"
+                className="flex items-center gap-1.5 sm:gap-2 shrink-0"
+                style={{
+                  textDecoration: "none",
+                  color: "var(--color-ink, #4A3B52)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <PixelHouse />
+                <span className="text-[10px] sm:text-xs">
+                  Asgar
+                  <span
+                    className="hidden sm:inline"
+                    style={{ color: "var(--accent-color, #74489D)" }}
+                  >
+                    Fatwahyudi
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      opacity: blink ? 1 : 0,
+                      color: "var(--color-ink, #4A3B52)",
+                    }}
+                  >
+                    _
+                  </span>
                 </span>
-                <span
-                  aria-hidden="true"
-                  style={{
-                    opacity: blink ? 1 : 0,
-                    color: "var(--color-ink, #4A3B52)",
-                  }}
-                >
-                  _
-                </span>
-              </span>
-            </a>
+              </a>
 
-            {/* Nav links & Theme Switcher */}
+              {/* Live Location / Time Widget */}
+              <div
+                className="hidden lg:flex items-center gap-1.5 px-2 py-0.5 text-[8px]"
+                style={{
+                  fontFamily: "var(--font-body, monospace)",
+                  background: "var(--badge-bg, #E3F5E9)",
+                  border:
+                    "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
+                  borderRadius: "var(--border-radius, 0px)",
+                  color: "var(--badge-dot, #2C6B47)",
+                  fontWeight: 600,
+                }}
+                title="Waktu Lokal Makassar (WITA, UTC+8)"
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full animate-ping shrink-0"
+                  style={{ background: "var(--badge-dot, #2C6B47)" }}
+                />
+                <span>MKS {localTime ? `• ${localTime}` : ""}</span>
+              </div>
+            </div>
+
+            {/* Nav links, Command Palette Button & Theme Switcher */}
             <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
               <nav
                 aria-label="Primary Navigation"
@@ -182,7 +242,6 @@ export default function PixelNavbar() {
                       }}
                     >
                       <Icon />
-                      {/* label hides on the smallest screens; icon + aria-label keep it usable */}
                       <span className="hidden xs:inline sm:inline">
                         {label}
                       </span>
@@ -190,6 +249,28 @@ export default function PixelNavbar() {
                   );
                 })}
               </nav>
+
+              {/* Command Palette Trigger Button */}
+              <button
+                type="button"
+                onClick={() => setPaletteOpen(true)}
+                aria-label="Buka Command Palette (Ctrl+K)"
+                title="Buka Menu Aksi Cepat (Cmd+K / Ctrl+K)"
+                className="flex items-center gap-1 px-1.5 sm:px-2 py-1.5 shrink-0 cursor-pointer active:translate-x-0.5 active:translate-y-0.5 transition-transform"
+                style={{
+                  fontFamily: "var(--font-heading, monospace)",
+                  fontSize: "8px",
+                  background: "var(--bg-primary, #FFF6E9)",
+                  border:
+                    "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
+                  borderRadius: "var(--border-radius, 0px)",
+                  boxShadow: "var(--box-shadow, 2px 2px 0 0 #4A3B52)",
+                  color: "var(--color-ink, #4A3B52)",
+                }}
+              >
+                <Search className="w-2.5 h-2.5 shrink-0" />
+                <span className="hidden sm:inline">⌘K</span>
+              </button>
 
               {/* Theme Switcher Toggle */}
               <div
@@ -226,7 +307,6 @@ export default function PixelNavbar() {
                       transition: "all 0.2s ease",
                     }}
                   >
-                    {/* full label on sm+, first letter only on the smallest screens */}
                     <span className="hidden sm:inline">{t.label}</span>
                     <span className="sm:hidden">{t.label[0]}</span>
                   </button>
@@ -236,6 +316,12 @@ export default function PixelNavbar() {
           </div>
         </div>
       </header>
+
+      {/* Global Command Palette Dialog */}
+      <CommandPalette
+        isOpen={paletteOpen}
+        onClose={() => setPaletteOpen(false)}
+      />
     </div>
   );
 }

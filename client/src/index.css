@@ -6,7 +6,7 @@
 :root,
 [data-theme="pixel"] {
   --font-heading: "Press Start 2P", monospace;
-  --font-body: "Press Start 2P", monospace;
+  --font-body: "JetBrains Mono", monospace;
 
   /* Backgrounds */
   --bg-primary: #fff6e9;
@@ -105,8 +105,8 @@
    TEMA 3: DARK TERMINAL
    ------------------------------------------------------------- */
 [data-theme="terminal"] {
-  --font-heading: "Courier New", Courier, monospace;
-  --font-body: "Courier New", Courier, monospace;
+  --font-heading: "JetBrains Mono", monospace;
+  --font-body: "JetBrains Mono", monospace;
 
   /* Backgrounds */
   --bg-primary: #0a0e14;

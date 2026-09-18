@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, CheckCircle2 } from "lucide-react";
+import { Send, CheckCircle2, Copy, Check, Mail } from "lucide-react";
 import { api } from "../lib/api";
 
 const fieldStyle: React.CSSProperties = {
@@ -31,6 +31,13 @@ export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText("asgarfatwahyudi@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,6 +103,60 @@ export default function ContactForm() {
             Punya ide proyek, tawaran kolaborasi, atau sekadar ingin menyapa?
             Kirimkan pesan melalui form ini.
           </p>
+
+          <div className="pt-2 space-y-2">
+            <span
+              className="block text-[9px] uppercase tracking-wider"
+              style={{
+                fontFamily: "var(--font-heading, monospace)",
+                color: "var(--color-muted, #504159)",
+              }}
+            >
+              Direct Email
+            </span>
+            <button
+              type="button"
+              onClick={copyEmail}
+              className="flex items-center justify-between w-full p-2.5 text-xs transition-all cursor-pointer active:translate-x-0.5 active:translate-y-0.5"
+              style={{
+                background: "var(--bg-primary, #FFF6E9)",
+                border:
+                  "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
+                boxShadow: "var(--box-shadow, 2px 2px 0 0 #4A3B52)",
+                borderRadius: "var(--border-radius, 0px)",
+                color: "var(--color-ink, #4A3B52)",
+                fontFamily: "var(--font-body, monospace)",
+              }}
+              title="Klik untuk menyalin email"
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <Mail className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate text-xs">asgarfatwahyudi@gmail.com</span>
+              </div>
+              <span
+                className="flex items-center gap-1 text-[8px] sm:text-[9px] shrink-0 font-bold px-1.5 py-0.5"
+                style={{
+                  background: copied
+                    ? "var(--badge-bg, #E3F5E9)"
+                    : "var(--bg-secondary, #FFD873)",
+                  color: copied
+                    ? "var(--badge-dot, #2C6B47)"
+                    : "var(--on-accent, #4A3B52)",
+                  fontFamily: "var(--font-heading, monospace)",
+                }}
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3 h-3" /> Tersalin!
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3 h-3" /> Salin
+                  </>
+                )}
+              </span>
+            </button>
+          </div>
         </div>
 
         <div className="md:col-span-7 min-w-0">

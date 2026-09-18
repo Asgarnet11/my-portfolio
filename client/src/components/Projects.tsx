@@ -1,7 +1,8 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import { api } from "../lib/api";
+import ProjectModal, { type ProjectDetail } from "./ProjectModal";
 
 const cardColors = [
   "var(--card-accent-1, #FFC7D6)",
@@ -26,29 +27,24 @@ const GithubIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
   </svg>
 );
 
-interface Project {
-  id: string;
-  title: string;
-  summary: string;
-  cover_image?: string;
-  tech_stack: string[];
-  live_url?: string;
-  repo_url?: string;
-}
-
 export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<ProjectDetail[]>([]);
+  const [selectedProject, setSelectedProject] = useState<ProjectDetail | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchProjects = async () => {
       try {
         const res = await api.get("/projects/public");
-        setProjects(res.data.data || []);
+        if (isMounted) setProjects(res.data.data || []);
       } catch (err) {
         console.error("Gagal mengambil data proyek:", err);
       }
     };
     fetchProjects();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (projects.length === 0) return null;
@@ -61,9 +57,6 @@ export default function Projects() {
     >
       <div className="space-y-10 sm:space-y-12">
         <div className="space-y-2">
-          {/* card-accent-2 (mint/blue/dark-teal depending on theme) always
-              stays safe with --color-ink text — unlike --bg-secondary,
-              this token isn't neon in any theme. No on-accent bug here. */}
           <span
             className="inline-block text-[9px] sm:text-[10px] px-2 py-1"
             style={{
@@ -89,6 +82,15 @@ export default function Projects() {
           >
             Featured Projects
           </h2>
+          <p
+            className="text-xs sm:text-sm font-normal"
+            style={{
+              fontFamily: "var(--font-body, monospace)",
+              color: "var(--color-muted, #504159)",
+            }}
+          >
+            Klik salah satu proyek untuk membaca studi kasus teknis & arsitektur sistem.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
@@ -117,7 +119,8 @@ export default function Projects() {
                 {/* Gambar Cover Project */}
                 {proj.cover_image && (
                   <div
-                    className="w-full h-44 sm:h-52 overflow-hidden"
+                    onClick={() => setSelectedProject(proj)}
+                    className="w-full h-44 sm:h-52 overflow-hidden cursor-pointer group relative"
                     style={{
                       borderBottom:
                         "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
@@ -128,20 +131,29 @@ export default function Projects() {
                       src={proj.cover_image}
                       alt={`Cuplikan antarmuka proyek ${proj.title}`}
                       loading="lazy"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       style={{
                         imageRendering:
                           "var(--img-rendering, pixelated)" as CSSProperties["imageRendering"],
                       }}
                     />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <span
+                        className="px-3 py-1.5 text-[9px] font-bold text-[#3A2E3D] bg-[#FFD866] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D]"
+                        style={{ fontFamily: "var(--font-heading, monospace)" }}
+                      >
+                        Buka Studi Kasus ↗
+                      </span>
+                    </div>
                   </div>
                 )}
 
                 <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between min-w-0">
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div className="flex justify-between items-start gap-3">
                       <h3
-                        className="break-words"
+                        onClick={() => setSelectedProject(proj)}
+                        className="break-words cursor-pointer hover:underline"
                         style={{
                           fontFamily: "var(--font-heading, monospace)",
                           color: "var(--color-ink, #4A3B52)",
@@ -151,7 +163,7 @@ export default function Projects() {
                       >
                         {proj.title}
                       </h3>
-                      <div className="flex items-center gap-3 shrink-0">
+                      <div className="flex items-center gap-2.5 shrink-0">
                         {proj.repo_url && (
                           <a
                             href={proj.repo_url}
@@ -160,6 +172,7 @@ export default function Projects() {
                             aria-label={`Lihat repositori GitHub untuk ${proj.title}`}
                             style={{ color: "var(--color-ink, #4A3B52)" }}
                             className="hover:opacity-60 transition-opacity"
+                            title="GitHub Repo"
                           >
                             <GithubIcon className="w-4 h-4" />
                           </a>
@@ -172,6 +185,7 @@ export default function Projects() {
                             aria-label={`Kunjungi situs langsung untuk ${proj.title}`}
                             style={{ color: "var(--color-ink, #4A3B52)" }}
                             className="hover:opacity-60 transition-opacity"
+                            title="Live Demo"
                           >
                             <ArrowUpRight className="w-4 h-4" />
                           </a>
@@ -190,23 +204,44 @@ export default function Projects() {
                     </p>
                   </div>
 
-                  <div className="pt-4 sm:pt-6 flex flex-wrap gap-2">
-                    {proj.tech_stack?.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-[9px] px-2 py-1"
-                        style={{
-                          fontFamily: "var(--font-heading, monospace)",
-                          color: "var(--color-ink, #4A3B52)",
-                          background: accent,
-                          border:
-                            "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                          borderRadius: "var(--border-radius, 0px)",
-                        }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                  <div className="pt-3 space-y-3">
+                    {/* Tech Stack Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {proj.tech_stack?.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-[9px] px-2 py-1"
+                          style={{
+                            fontFamily: "var(--font-heading, monospace)",
+                            color: "var(--color-ink, #4A3B52)",
+                            background: accent,
+                            border:
+                              "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
+                            borderRadius: "var(--border-radius, 0px)",
+                          }}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Button Case Study Detail */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedProject(proj)}
+                      className="w-full py-2 px-3 text-[9px] flex items-center justify-center gap-1.5 transition-transform hover:-translate-y-0.5 active:translate-y-0.5 font-bold"
+                      style={{
+                        fontFamily: "var(--font-heading, monospace)",
+                        background: "var(--bg-secondary, #FFD866)",
+                        color: "var(--on-accent, #4A3B52)",
+                        border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
+                        boxShadow: "var(--box-shadow, 2px 2px 0 0 #4A3B52)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <BookOpen className="w-3 h-3" />
+                      <span>Studi Kasus Teknis</span>
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -214,6 +249,12 @@ export default function Projects() {
           })}
         </div>
       </div>
+
+      {/* Case Study Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </section>
   );
 }

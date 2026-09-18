@@ -34,6 +34,13 @@ interface Section {
 export default function Home() {
   const [sections, setSections] = useState<Record<string, Section>>({});
   const [loading, setLoading] = useState(true);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  const handleCopyEmail = (emailStr: string) => {
+    navigator.clipboard.writeText(emailStr);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
+  };
 
   useEffect(() => {
     const loadContent = async () => {
@@ -154,16 +161,25 @@ export default function Home() {
               </a>
             )}
             {socialsSec?.data?.email && (
-              <a
-                href={`mailto:${socialsSec.data.email}`}
+              <button
+                type="button"
+                onClick={() =>
+                  handleCopyEmail(socialsSec.data.email as string)
+                }
                 style={{
                   color: "var(--color-ink, #4A3B52)",
-                  textDecoration: "none",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
                 }}
                 className="hover:opacity-70 transition-opacity"
+                title="Klik untuk salin alamat email"
               >
-                Email
-              </a>
+                {copiedEmail ? "✓ Email Tersalin!" : "Email"}
+              </button>
             )}
           </div>
         </footer>

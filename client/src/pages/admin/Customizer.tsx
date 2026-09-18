@@ -39,6 +39,103 @@ const getSectionIcon = (key: string) => {
   }
 };
 
+function SkillsManagerInput({
+  skills,
+  onChange,
+}: {
+  skills: string[];
+  onChange: (newSkills: string[]) => void;
+}) {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleAdd = (val: string) => {
+    const trimmed = val.trim();
+    if (!trimmed) return;
+    if (skills.includes(trimmed)) {
+      setInputValue("");
+      return;
+    }
+    onChange([...skills, trimmed]);
+    setInputValue("");
+  };
+
+  const handleRemove = (index: number) => {
+    onChange(skills.filter((_, i) => i !== index));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      handleAdd(inputValue);
+    } else if (e.key === "Backspace" && !inputValue && skills.length > 0) {
+      handleRemove(skills.length - 1);
+    }
+  };
+
+  const suggestions = [
+    "TypeScript",
+    "React",
+    "Node.js",
+    "Express.js",
+    "PostgreSQL",
+    "Supabase",
+    "TailwindCSS",
+    "Docker",
+    "Next.js",
+    "Prisma",
+  ].filter((s) => !skills.includes(s));
+
+  return (
+    <div className="space-y-2">
+      {/* Active Skills Badges */}
+      <div className="flex flex-wrap gap-2 p-2.5 bg-[#FFF6EC] border-2 border-[#3A2E3D] min-h-[46px] items-center">
+        {skills.map((skill, idx) => (
+          <span
+            key={skill}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono bg-[#FFD873] text-[#3A2E3D] border border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D]"
+          >
+            <span>{skill}</span>
+            <button
+              type="button"
+              onClick={() => handleRemove(idx)}
+              className="text-[#3A2E3D] hover:text-red-700 font-bold ml-0.5 cursor-pointer leading-none"
+              title={`Hapus ${skill}`}
+            >
+              ×
+            </button>
+          </span>
+        ))}
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={() => handleAdd(inputValue)}
+          placeholder={skills.length === 0 ? "Ketik skill lalu tekan Enter..." : "+ Tambah skill..."}
+          className="flex-1 min-w-[140px] text-xs bg-transparent outline-none py-1 text-[#3A2E3D]"
+        />
+      </div>
+
+      {/* Suggested Quick Add Chips */}
+      {suggestions.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+          <span className="text-[10px] opacity-60">Saran cepat:</span>
+          {suggestions.slice(0, 6).map((sugg) => (
+            <button
+              key={sugg}
+              type="button"
+              onClick={() => handleAdd(sugg)}
+              className="text-[10px] px-2 py-0.5 bg-[#FFF6EC] border border-[#3A2E3D]/50 hover:border-[#3A2E3D] hover:bg-[#FFD873] transition-colors cursor-pointer"
+            >
+              + {sugg}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Customizer() {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
@@ -430,24 +527,22 @@ export default function Customizer() {
                   </div>
                   <div>
                     <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
-                      Tech Stack / Skills (pisahkan dengan koma)
+                      Tech Stack / Skills
                     </label>
-                    <input
-                      type="text"
-                      placeholder="TypeScript, Express.js, PostgreSQL, React, Tailwind CSS"
-                      value={
+                    <SkillsManagerInput
+                      skills={
                         Array.isArray(section.data?.skills)
-                          ? section.data.skills.join(", ")
-                          : (section.data?.skills as string) || ""
+                          ? section.data.skills
+                          : typeof section.data?.skills === "string" && section.data.skills
+                          ? (section.data.skills as string)
+                              .split(",")
+                              .map((s) => s.trim())
+                              .filter(Boolean)
+                          : []
                       }
-                      onChange={(e) => {
-                        const arr = e.target.value
-                          .split(",")
-                          .map((s) => s.trim())
-                          .filter(Boolean);
-                        handleDataChange(section.key, "skills", arr);
-                      }}
-                      className={inputClasses}
+                      onChange={(newSkills) =>
+                        handleDataChange(section.key, "skills", newSkills)
+                      }
                     />
                   </div>
                 </div>
