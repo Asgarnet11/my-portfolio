@@ -17,8 +17,13 @@ export const requireAuth = (
     return res.status(401).json({ error: "Unauthorized: Sesi tidak valid" });
   }
 
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    console.error("CRITICAL: JWT_SECRET belum diatur di environment variable!");
+    return res.status(500).json({ error: "Konfigurasi server otentikasi tidak lengkap" });
+  }
+
   try {
-    const secret = process.env.JWT_SECRET || "fallback_secret";
     const decoded = jwt.verify(token, secret) as { userId: string };
     req.userId = decoded.userId;
     next();

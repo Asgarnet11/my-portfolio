@@ -43,8 +43,9 @@ export default function ContactForm() {
       setEmail("");
       setSubject("");
       setMessage("");
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Gagal mengirim pesan.");
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { error?: string } } };
+      setError(axiosErr.response?.data?.error || "Gagal mengirim pesan.");
     } finally {
       setLoading(false);
     }

@@ -7,12 +7,27 @@ import Experience from "../../components/Experience";
 import Projects from "../../components/Projects";
 import ContactForm from "../../components/ContactForm";
 
+interface SectionData {
+  statusBadge?: string;
+  avatarUrl?: string;
+  ctaPrimaryText?: string;
+  ctaPrimaryLink?: string;
+  ctaSecondaryText?: string;
+  ctaSecondaryLink?: string;
+  bio?: string;
+  skills?: string[];
+  github?: string;
+  linkedin?: string;
+  email?: string;
+  [key: string]: unknown;
+}
+
 interface Section {
   id: string;
   key: string;
   title: string;
   subtitle: string;
-  data: any;
+  data: SectionData;
   is_active: boolean;
 }
 

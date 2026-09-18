@@ -15,9 +15,10 @@ export default function AdminLogin() {
     try {
       await login(email, password);
       navigate("/admin/customizer");
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { error?: string } } };
       setError(
-        err.response?.data?.error || "Login gagal, periksa email/password.",
+        axiosErr.response?.data?.error || "Login gagal, periksa email/password.",
       );
     }
   };
