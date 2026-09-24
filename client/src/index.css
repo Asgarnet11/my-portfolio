@@ -36,7 +36,7 @@
 
   /* Badges & Status */
   --badge-bg: #e3f5e9;
-  --badge-dot: #2c6b47;
+  --badge-dot: #1b4d31;
   --error-bg: #fbe4e8;
   --error-text: #8e2b3d;
 
@@ -175,4 +175,20 @@ a {
 }
 .no-scrollbar {
   scrollbar-width: none;
+}
+
+/* GPU-accelerated idle bobbing animation without JavaScript forced reflow */
+@keyframes hero-bobbing {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-hero-bob {
+  animation: hero-bobbing 2.5s ease-in-out infinite;
+  will-change: transform;
 }

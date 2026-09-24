@@ -14,6 +14,10 @@ export const getPublicSections = async (_req: Request, res: Response) => {
       console.error("Gagal mengambil section publik:", error);
       return res.status(500).json({ error: "Gagal memuat konten situs." });
     }
+    res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=86400",
+    );
     return res.status(200).json({ data });
   } catch (err) {
     console.error("Error internal getPublicSections:", err);

@@ -31,9 +31,60 @@ interface Section {
   is_active: boolean;
 }
 
+const DEFAULT_SECTIONS: Record<string, Section> = {
+  hero: {
+    id: "default-hero",
+    key: "hero",
+    title: "Hi, I am Muh Asgar Fatwahyudi",
+    subtitle: "Building clean backends and responsive user interfaces.",
+    data: {
+      avatarUrl:
+        "https://relxttjsqsvhesreewha.supabase.co/storage/v1/object/public/portfolio-assets/projects/1789713386781-953399969.webp",
+      statusBadge: "Available for new opportunities",
+      ctaPrimaryLink: "#projects",
+      ctaPrimaryText: "View Projects",
+      ctaSecondaryLink: "#contact-form",
+      ctaSecondaryText: "Contact Me",
+    },
+    is_active: true,
+  },
+  about: {
+    id: "default-about",
+    key: "about",
+    title: "About Me",
+    subtitle: "Crafting software with care and intentionality.",
+    data: {
+      bio: "Saya adalah lulusan Sistem Informasi yang memiliki ketertarikan kuat pada Web Development, Sistem Informasi, dan Data Management. Saat ini saya bekerja sebagai Pranata Komputer di BPVP Kendari, dengan pengalaman dalam mengembangkan dan memelihara sistem informasi, membangun dashboard monitoring, mengelola database dan API, melakukan pengujian sistem, serta menyelesaikan berbagai permasalahan teknis untuk mendukung digitalisasi proses kerja.\n\nSaya memiliki pengalaman menggunakan Laravel, PHP, JavaScript, TypeScript, React, Next.js, Node.js, Python, MySQL, Tailwind CSS, Git, dan GitHub. Pengalaman kerja sebelumnya di bidang operasional dan administrasi juga membentuk kemampuan saya dalam ketelitian, pengelolaan data, komunikasi, teamwork, problem solving, dan bekerja berdasarkan target.\n\nSaya terus mengembangkan kemampuan teknis dan profesional dengan tujuan menjadi Software/Web Developer yang mampu membangun solusi digital yang efektif, terstruktur, dan memberikan dampak nyata bagi pengguna maupun organisasi.",
+      skills: [
+        "TypeScript",
+        "Express.js",
+        "PostgreSQL",
+        "React",
+        "PHP",
+        "Laravel",
+        "Tailwind CSS",
+        "mySQL",
+      ],
+    },
+    is_active: true,
+  },
+  socials: {
+    id: "default-socials",
+    key: "socials",
+    title: "Connect",
+    subtitle: "Find me on the web",
+    data: {
+      email: "afatwahyudi@gmail.com",
+      github: "https://github.com/Asgarnet11",
+      linkedin: "https://www.linkedin.com/in/muh-asgar-fatwahyudi/",
+    },
+    is_active: true,
+  },
+};
+
 export default function Home() {
-  const [sections, setSections] = useState<Record<string, Section>>({});
-  const [loading, setLoading] = useState(true);
+  const [sections, setSections] =
+    useState<Record<string, Section>>(DEFAULT_SECTIONS);
   const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleCopyEmail = (emailStr: string) => {
@@ -43,6 +94,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    let isMounted = true;
     const loadContent = async () => {
       try {
         const res = await api.get("/sections/public");
@@ -50,32 +102,17 @@ export default function Home() {
         res.data.data.forEach((item: Section) => {
           mapping[item.key] = item;
         });
-        setSections(mapping);
+        if (isMounted) setSections(mapping);
       } catch (err) {
         console.error("Gagal memuat konten publik:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
     loadContent();
+    return () => {
+      isMounted = false;
+    };
   }, []);
-
-  if (loading) {
-    return (
-      <div
-        className="min-h-screen flex items-center justify-center text-center px-6 text-xs"
-        style={{
-          background: "var(--bg-primary, #FFF6E9)",
-          color: "var(--color-muted, #504159)",
-          fontFamily: "var(--font-body, monospace)",
-          fontSize: "10px",
-        }}
-      >
-        Loading experience...
-      </div>
-    );
-  }
 
   const heroSec = sections["hero"];
   const aboutSec = sections["about"];

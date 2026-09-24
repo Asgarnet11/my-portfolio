@@ -162,17 +162,8 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
           transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
           className="lg:col-span-5 flex justify-center lg:justify-end"
         >
-          {/* idle bobbing wrapper - separate from entrance animation */}
-          <motion.div
-            className="relative w-56 sm:w-64 md:w-72"
-            animate={{ y: [0, -8, 0] }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-              times: [0, 0.5, 1],
-            }}
-          >
+          {/* idle bobbing wrapper - GPU CSS animation eliminates JS forced reflow */}
+          <div className="relative w-56 sm:w-64 md:w-72 animate-hero-bob">
             <div
               className="relative w-full aspect-[4/5] overflow-hidden flex items-center justify-center p-2"
               style={{
@@ -244,26 +235,32 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
 
               {/* Tag teknis di sudut frame */}
               <div
-                className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 py-1.5 px-2.5 flex justify-between"
+                className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 py-1.5 px-2.5 flex items-center justify-between"
                 style={{
                   fontFamily: "var(--font-heading, monospace)",
-                  fontSize: "8px",
+                  fontSize: "9px",
                   background: "var(--bg-primary, #FFF6E9)",
                   border: "2px solid var(--color-ink, #4A3B52)",
                   color: "var(--color-ink, #4A3B52)",
                 }}
               >
-                <span>DEV // KND</span>
-                <motion.span
-                  style={{ color: "var(--badge-dot, #2C6B47)" }}
-                  animate={{ opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 1.2, repeat: Infinity }}
+                <span className="font-bold">DEV // KND</span>
+                <span
+                  className="inline-flex items-center gap-1.5 font-bold"
+                  style={{ color: "var(--badge-dot, #1B4D31)" }}
                 >
+                  <span
+                    className="w-1.5 h-1.5 animate-pulse shrink-0"
+                    style={{
+                      background: "var(--badge-dot, #1B4D31)",
+                      borderRadius: "var(--node-radius, 0px)",
+                    }}
+                  />
                   ACTIVE
-                </motion.span>
+                </span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>

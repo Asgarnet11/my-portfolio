@@ -23,9 +23,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     let isMounted = true;
     const verifyAuth = async () => {
+      // Tidak perlu memanggil /auth/me pada rute publik (home), hindari network delay & log error di console
+      if (
+        typeof window !== "undefined" &&
+        !window.location.pathname.startsWith("/admin")
+      ) {
+        if (isMounted) setLoading(false);
+        return;
+      }
+
       try {
         const res = await api.get("/auth/me");
-        if (isMounted) setUser(res.data.user);
+        if (isMounted) setUser(res.data?.user || null);
       } catch {
         if (isMounted) setUser(null);
       } finally {

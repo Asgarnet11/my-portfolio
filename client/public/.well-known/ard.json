@@ -1,0 +1,38 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Muh Asgar Fatwahyudi",
+    "identifier": "https://asgarnet.vercel.app",
+    "documentationUrl": "https://asgarnet.vercel.app/llms.txt"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:asgarnet.vercel.app:portfolio:developer-profile",
+      "displayName": "Muh Asgar Fatwahyudi - Technical Profile & Portfolio",
+      "type": "text/markdown",
+      "url": "https://asgarnet.vercel.app/llms.txt",
+      "description": "Comprehensive technical profile, software engineering projects, backend architecture experience, and contact details for Muh Asgar Fatwahyudi.",
+      "tags": [
+        "portfolio",
+        "developer",
+        "software-engineer",
+        "backend",
+        "fullstack",
+        "react",
+        "nodejs"
+      ],
+      "capabilities": [
+        "DeveloperPortfolio",
+        "TechnicalProfile",
+        "ProjectShowcase"
+      ],
+      "representativeQueries": [
+        "Who is Muh Asgar Fatwahyudi?",
+        "What software engineering projects has Asgar built?",
+        "What tech stack and backend skills does Asgar use?",
+        "How can I contact Muh Asgar Fatwahyudi for software engineering roles?"
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -257,7 +257,7 @@ export default function PixelNavbar() {
                 onClick={() => setPaletteOpen(true)}
                 aria-label="Buka Command Palette (Ctrl+K)"
                 title="Buka Menu Aksi Cepat (Cmd+K / Ctrl+K)"
-                className="flex items-center gap-1 px-1.5 sm:px-2 py-1.5 shrink-0 cursor-pointer active:translate-x-0.5 active:translate-y-0.5 transition-transform"
+                className="flex items-center justify-center gap-1 min-w-[28px] sm:min-w-[32px] min-h-[28px] sm:min-h-[30px] px-1.5 sm:px-2 py-1 shrink-0 cursor-pointer active:translate-x-0.5 active:translate-y-0.5 transition-transform"
                 style={{
                   fontFamily: "var(--font-heading, monospace)",
                   fontSize: "8px",
@@ -269,19 +269,18 @@ export default function PixelNavbar() {
                   color: "var(--color-ink, #4A3B52)",
                 }}
               >
-                <Search className="w-2.5 h-2.5 shrink-0" />
+                <Search className="w-3 h-3 shrink-0" />
                 <span className="hidden sm:inline">⌘K</span>
               </button>
 
               {/* Theme Switcher Toggle */}
               <div
-                className="flex items-center shrink-0"
+                className="flex items-center shrink-0 gap-1 p-0.5"
                 style={{
                   border:
                     "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
                   borderRadius: "var(--border-radius, 0px)",
                   background: "var(--bg-primary, #FFF6E9)",
-                  padding: "2px",
                   boxShadow: "var(--box-shadow, 2px 2px 0 0 #4A3B52)",
                 }}
               >
@@ -290,10 +289,10 @@ export default function PixelNavbar() {
                     key={t.id}
                     onClick={() => setTheme(t.id)}
                     aria-label={`Ganti ke tema ${t.label}`}
-                    className="px-1 sm:px-1.5 py-1"
+                    className="min-w-[28px] sm:min-w-[32px] min-h-[28px] sm:min-h-[30px] px-1.5 sm:px-2 flex items-center justify-center"
                     style={{
                       fontFamily: "var(--font-heading, monospace)",
-                      fontSize: "7px",
+                      fontSize: "8px",
                       background:
                         theme === t.id
                           ? "var(--color-ink, #4A3B52)"
@@ -309,7 +308,7 @@ export default function PixelNavbar() {
                     }}
                   >
                     <span className="hidden sm:inline">{t.label}</span>
-                    <span className="sm:hidden">{t.label[0]}</span>
+                    <span className="sm:hidden font-bold">{t.label[0]}</span>
                   </button>
                 ))}
               </div>

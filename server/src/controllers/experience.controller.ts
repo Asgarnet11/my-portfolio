@@ -14,6 +14,10 @@ export const getPublicExperiences = async (_req: Request, res: Response) => {
       console.error("Gagal mengambil pengalaman publik:", error);
       return res.status(500).json({ error: "Gagal memuat data pengalaman kerja." });
     }
+    res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=86400",
+    );
     return res.status(200).json({ data });
   } catch (err) {
     console.error("Error internal getPublicExperiences:", err);

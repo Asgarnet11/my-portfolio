@@ -58,24 +58,32 @@ export const logout = (_req: Request, res: Response) => {
   return res.status(200).json({ message: "Logout berhasil" });
 };
 
-export const checkAuthStatus = async (req: AuthenticatedRequest, res: Response) => {
-  if (!req.userId) {
-    return res.status(401).json({ error: "Unauthorized: Sesi tidak valid" });
+export const checkAuthStatus = async (req: Request, res: Response) => {
+  const token =
+    req.cookies?.admin_token || req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(200).json({ user: null });
+  }
+
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    return res.status(200).json({ user: null });
   }
 
   try {
+    const decoded = jwt.verify(token, secret) as { userId: string };
     const { data: user, error } = await supabase
       .from("users")
       .select("id, email, name")
-      .eq("id", req.userId)
+      .eq("id", decoded.userId)
       .single();
 
     if (error || !user) {
-      return res.status(404).json({ error: "User tidak ditemukan" });
+      return res.status(200).json({ user: null });
     }
     return res.status(200).json({ user });
-  } catch (err) {
-    console.error("Kesalahan saat cek status auth:", err);
-    return res.status(500).json({ error: "Gagal memverifikasi status login" });
+  } catch {
+    return res.status(200).json({ user: null });
   }
 };
