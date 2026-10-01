@@ -15,6 +15,17 @@ interface HeroProps {
 }
 
 export default function Hero({ title, subtitle, data }: HeroProps) {
+  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.substring(1);
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <section
       className="min-h-[85vh] flex flex-col justify-center pt-24 sm:pt-28 pb-16 relative"
@@ -116,6 +127,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
           >
             <motion.a
               href={data?.ctaPrimaryLink || "#projects"}
+              onClick={(e) => handleScrollTo(e, data?.ctaPrimaryLink || "#projects")}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-[20px] font-semibold text-sm transition-all duration-200 cursor-pointer shadow-lg"
@@ -131,6 +143,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
 
             <motion.a
               href={data?.ctaSecondaryLink || "#contact-form"}
+              onClick={(e) => handleScrollTo(e, data?.ctaSecondaryLink || "#contact-form")}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-[20px] font-medium text-sm transition-all duration-200 cursor-pointer text-white"

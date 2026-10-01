@@ -2,11 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { api } from "../lib/api";
 
-interface LenisInstance {
-  stop: () => void;
-  start: () => void;
-}
-
 export default function LoadingScreen() {
   const [displayProgress, setDisplayProgress] = useState(0);
   const [isMounted, setIsMounted] = useState(true);
@@ -22,31 +17,20 @@ export default function LoadingScreen() {
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // 1. Kunci scroll selama loading dan pulihkan saat selesai/unmount
+  // 1. Kelola scroll: Hanya kunci saat loading aktif, dan pastikan SELALU dibuka kembali
   useEffect(() => {
-    const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-
-    const lockScroll = () => {
+    if (isMounted) {
       document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-      const lenis = (window as unknown as { __lenis?: LenisInstance }).__lenis;
-      if (lenis) lenis.stop();
-    };
-
-    const unlockScroll = () => {
-      document.body.style.overflow = originalBodyOverflow || "";
-      document.documentElement.style.overflow = originalHtmlOverflow || "";
-      const lenis = (window as unknown as { __lenis?: LenisInstance }).__lenis;
-      if (lenis) lenis.start();
-    };
-
-    lockScroll();
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
 
     return () => {
-      unlockScroll();
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
-  }, []);
+  }, [isMounted]);
 
   // 2. Muat data backend Express dan pantau batas waktu
   useEffect(() => {
@@ -77,12 +61,12 @@ export default function LoadingScreen() {
 
     fetchCriticalData();
 
-    // Batas waktu: Maksimal 1.2 detik bila data ringan/cepat, atau timeout 8s
+    // Batas waktu: Maksimal 1.0 detik bila data ringan/cepat, atau timeout 8s
     const fastLoadTimer = setTimeout(() => {
       if (isSubscribed) {
         targetProgressRef.current = 100;
       }
-    }, 900);
+    }, 800);
 
     const timeout8s = setTimeout(() => {
       if (!isCompletedRef.current) {
@@ -111,7 +95,7 @@ export default function LoadingScreen() {
 
       if (current < target) {
         const diff = target - current;
-        const increment = Math.max(0.6, diff * 0.12);
+        const increment = Math.max(0.8, diff * 0.14);
         const next = Math.min(target, current + increment);
 
         currentProgressRef.current = next;
@@ -124,15 +108,17 @@ export default function LoadingScreen() {
 
         if (!isCompletedRef.current) {
           isCompletedRef.current = true;
+          // Buka kunci scroll segera
           document.body.style.overflow = "";
+          document.documentElement.style.overflow = "";
 
-          // Tahan maksimal 300ms saat 100% lalu transisi fade out
+          // Tahan maksimal 250ms saat 100% lalu transisi fade out
           setTimeout(() => {
             setIsMounted(false);
             if (apiError) {
               setShowToast(true);
             }
-          }, prefersReducedMotion ? 50 : 300);
+          }, prefersReducedMotion ? 40 : 250);
         }
       }
 
@@ -154,9 +140,9 @@ export default function LoadingScreen() {
             exit={
               prefersReducedMotion
                 ? { opacity: 0 }
-                : { opacity: 0, y: -20, transition: { duration: 0.35, ease: "easeInOut" } }
+                : { opacity: 0, y: -20, transition: { duration: 0.3, ease: "easeInOut" } }
             }
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center p-4 select-none"
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center p-4 select-none pointer-events-auto"
             style={{
               backgroundColor: "#09090B",
               color: "#FFFFFF",

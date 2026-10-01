@@ -61,6 +61,21 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.substring(1);
+      if (!targetId) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <div style={{ fontFamily: "var(--font-heading, 'Inter', sans-serif)" }}>
       <header
@@ -86,8 +101,9 @@ export default function Navbar() {
           <div className="flex items-center gap-3 shrink-0">
             <a
               href="#"
+              onClick={(e) => handleNavClick(e, "#")}
               aria-label="Asgar Portfolio Home"
-              className="flex items-center gap-2 group text-decoration-none"
+              className="flex items-center gap-2 group text-decoration-none cursor-pointer"
             >
               <div
                 className="w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105"
@@ -142,7 +158,8 @@ export default function Navbar() {
               <a
                 key={label}
                 href={href}
-                className="px-3.5 py-1.5 text-xs rounded-full font-medium transition-all duration-200 text-zinc-300 hover:text-white hover:bg-white/5 active:scale-95"
+                onClick={(e) => handleNavClick(e, href)}
+                className="px-3.5 py-1.5 text-xs rounded-full font-medium transition-all duration-200 text-zinc-300 hover:text-white hover:bg-white/5 active:scale-95 cursor-pointer"
               >
                 {label}
               </a>

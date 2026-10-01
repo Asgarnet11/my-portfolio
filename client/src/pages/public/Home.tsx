@@ -120,7 +120,7 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen overflow-x-hidden"
+      className="min-h-screen overflow-x-clip"
       style={{
         background: "var(--bg-primary, #09090B)",
         color: "var(--color-ink, #FFFFFF)",
