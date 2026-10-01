@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, PerformanceMonitor, Sparkles } from "@react-three/drei";
+import { Float, PerformanceMonitor, Sparkles, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -116,114 +116,40 @@ class Scene3DErrorBoundary extends Component<
   }
 }
 
-// 4. Komposisi 3D Modern: Quantum Orbital Glass Ring & Core
-function QuantumOrbital({
+// 4. Komponen 3D yang memuat aset model format .glb (/models/quantum-orbital.glb)
+function QuantumOrbitalModel({
   targets,
   mouseRef,
   isMobile,
   isLowTier,
   reducedMotion,
 }: QuantumOrbitalProps) {
+  // Muat model .glb via useGLTF (terintegrasi otomatis dengan useProgress & Suspense)
+  const { scene } = useGLTF("/models/quantum-orbital.glb");
+  const clone = useMemo(() => scene.clone(), [scene]);
+
   const mainGroupRef = useRef<THREE.Group>(null);
-  const ring1Ref = useRef<THREE.Mesh>(null);
-  const ring2Ref = useRef<THREE.Mesh>(null);
-  const coreRef = useRef<THREE.Mesh>(null);
-  const satellite1Ref = useRef<THREE.Mesh>(null);
-  const satellite2Ref = useRef<THREE.Mesh>(null);
+  const ring1Ref = useRef<THREE.Object3D | null>(null);
+  const ring2Ref = useRef<THREE.Object3D | null>(null);
+  const coreRef = useRef<THREE.Object3D | null>(null);
+  const sat1Ref = useRef<THREE.Object3D | null>(null);
+  const sat2Ref = useRef<THREE.Object3D | null>(null);
 
-  // Waktu orbit satelit
-  const orbitTime = useRef(0);
-
-  // Memoize seluruh Geometri & Material untuk ZERO alokasi berulang
-  const assets = useMemo(() => {
-    // A. Core: Dodecahedron bertekstur kristal/kaca lembut
-    const coreGeo = new THREE.DodecahedronGeometry(0.72, isLowTier ? 0 : 1);
-    const coreMat = isLowTier
-      ? new THREE.MeshStandardMaterial({
-          color: "#F6E8DA",
-          roughness: 0.25,
-          metalness: 0.15,
-          transparent: true,
-          opacity: 0.85,
-        })
-      : new THREE.MeshPhysicalMaterial({
-          color: "#FFF5EC",
-          roughness: 0.12,
-          metalness: 0.08,
-          clearcoat: 1.0,
-          clearcoatRoughness: 0.1,
-          transmission: 0.75, // Efek frosted glass mewah
-          ior: 1.45,
-          thickness: 1.5,
-          transparent: true,
-          opacity: 0.82,
-        });
-
-    // B. Cincin Orbital 1 (Slender metallic ring luar)
-    const ring1Geo = new THREE.TorusGeometry(1.65, 0.03, isLowTier ? 12 : 24, isLowTier ? 48 : 96);
-    const ring1Mat = new THREE.MeshStandardMaterial({
-      color: "#E2A478",
-      roughness: 0.2,
-      metalness: 0.8, // Kilau metallic gold/champagne
-    });
-
-    // C. Cincin Orbital 2 (Slender frosted ring dalam)
-    const ring2Geo = new THREE.TorusGeometry(1.25, 0.024, isLowTier ? 12 : 24, isLowTier ? 48 : 96);
-    const ring2Mat = new THREE.MeshStandardMaterial({
-      color: "#D4C2F0",
-      roughness: 0.3,
-      metalness: 0.5, // Aksen lilac/iridescent halus
-      transparent: true,
-      opacity: 0.8,
-    });
-
-    // D. Node Satelit Mini (Partikel teknologi bersinar)
-    const satGeo = new THREE.SphereGeometry(0.065, 12, 12);
-    const sat1Mat = new THREE.MeshStandardMaterial({
-      color: "#FFB066",
-      emissive: "#FF8C33",
-      emissiveIntensity: 0.8,
-      roughness: 0.2,
-    });
-    const sat2Mat = new THREE.MeshStandardMaterial({
-      color: "#C2A8F5",
-      emissive: "#9973E8",
-      emissiveIntensity: 0.8,
-      roughness: 0.2,
-    });
-
-    return {
-      coreGeo,
-      coreMat,
-      ring1Geo,
-      ring1Mat,
-      ring2Geo,
-      ring2Mat,
-      satGeo,
-      sat1Mat,
-      sat2Mat,
-    };
-  }, [isLowTier]);
-
-  // Pembersihan memori WebGL saat unmount
+  // Akses node-node spesifik di dalam berkas .glb
   useEffect(() => {
-    return () => {
-      assets.coreGeo.dispose();
-      assets.coreMat.dispose();
-      assets.ring1Geo.dispose();
-      assets.ring1Mat.dispose();
-      assets.ring2Geo.dispose();
-      assets.ring2Mat.dispose();
-      assets.satGeo.dispose();
-      assets.sat1Mat.dispose();
-      assets.sat2Mat.dispose();
-    };
-  }, [assets]);
+    ring1Ref.current = clone.getObjectByName("RingOuter") || null;
+    ring2Ref.current = clone.getObjectByName("RingInner") || null;
+    coreRef.current = clone.getObjectByName("Core") || null;
+    sat1Ref.current = clone.getObjectByName("TechNode1") || null;
+    sat2Ref.current = clone.getObjectByName("TechNode2") || null;
+  }, [clone]);
+
+  const orbitTime = useRef(0);
 
   useFrame((state, delta) => {
     if (reducedMotion) {
       if (mainGroupRef.current) {
-        mainGroupRef.current.position.set(isMobile ? 0 : 2.4, isMobile ? -0.8 : 0.1, -0.4);
+        mainGroupRef.current.position.set(isMobile ? 0 : 2.4, isMobile ? -0.85 : 0.1, -0.4);
         mainGroupRef.current.rotation.set(0.2, 0.4, 0);
       }
       state.camera.position.set(0, 0, 6);
@@ -234,10 +160,10 @@ function QuantumOrbital({
     const mouse = mouseRef.current || { x: 0, y: 0 };
     if (!t) return;
 
-    // 1. Pergerakan orbit mandiri untuk cincin & core
     orbitTime.current += delta;
     const time = orbitTime.current;
 
+    // A. Rotasi mandiri bagian-bagian model .glb
     if (ring1Ref.current) {
       ring1Ref.current.rotation.x = 0.8 + Math.sin(time * 0.4) * 0.15;
       ring1Ref.current.rotation.y = time * 0.25;
@@ -247,33 +173,32 @@ function QuantumOrbital({
       ring2Ref.current.rotation.y = -time * 0.3;
     }
     if (coreRef.current) {
-      coreRef.current.rotation.x += delta * 0.1;
-      coreRef.current.rotation.y += delta * 0.14;
+      coreRef.current.rotation.x += delta * 0.08;
+      coreRef.current.rotation.y += delta * 0.12;
     }
 
-    // Posisi satelit mengitari cincin
-    if (satellite1Ref.current) {
-      const angle1 = time * 0.8;
-      satellite1Ref.current.position.set(
-        Math.cos(angle1) * 1.65,
-        Math.sin(angle1) * 0.4,
-        Math.sin(angle1) * 1.65
+    // B. Posisi satelit mengorbit
+    if (sat1Ref.current) {
+      const a1 = time * 0.8;
+      sat1Ref.current.position.set(
+        Math.cos(a1) * 1.65,
+        Math.sin(a1) * 0.4,
+        Math.sin(a1) * 1.65
       );
     }
-    if (satellite2Ref.current && !isLowTier) {
-      const angle2 = -time * 0.9 + 2;
-      satellite2Ref.current.position.set(
-        Math.cos(angle2) * 1.25,
-        Math.sin(angle2) * 0.5,
-        Math.sin(angle2) * 1.25
+    if (sat2Ref.current && !isLowTier) {
+      const a2 = -time * 0.9 + 2;
+      sat2Ref.current.position.set(
+        Math.cos(a2) * 1.25,
+        Math.sin(a2) * 0.5,
+        Math.sin(a2) * 1.25
       );
     }
 
-    // 2. Interpolasi Scroll + Interaktivitas Mouse Parallax
+    // C. Interpolasi Scroll + Interaktivitas Mouse Parallax
     if (mainGroupRef.current) {
-      // Parallax mouse halus
-      const mouseTiltX = mouse.y * 0.25;
-      const mouseTiltY = mouse.x * 0.35;
+      const mouseTiltX = mouse.y * 0.22;
+      const mouseTiltY = mouse.x * 0.32;
 
       mainGroupRef.current.position.x = THREE.MathUtils.damp(
         mainGroupRef.current.position.x,
@@ -314,7 +239,7 @@ function QuantumOrbital({
       );
     }
 
-    // 3. Parallax kamera yang lembut
+    // D. Parallax kamera halus
     state.camera.position.x = THREE.MathUtils.damp(
       state.camera.position.x,
       t.cameraX + mouse.x * 0.15,
@@ -331,7 +256,6 @@ function QuantumOrbital({
 
   return (
     <>
-      {/* Debu partikel atmosferik halus (Stardust depth) */}
       <Sparkles
         count={isLowTier ? 20 : 50}
         scale={[12, 10, 6]}
@@ -352,51 +276,16 @@ function QuantumOrbital({
           position={[isMobile ? 0 : 2.4, isMobile ? -0.85 : 0.1, -0.4]}
           scale={isMobile ? 0.95 : 1.3}
         >
-          {/* Core Kristal Kaca Halus */}
-          <mesh
-            ref={coreRef}
-            geometry={assets.coreGeo}
-            material={assets.coreMat}
-            castShadow={false}
-            receiveShadow={false}
-          />
-
-          {/* Cincin Orbital 1 (Metallic Gold) */}
-          <mesh
-            ref={ring1Ref}
-            geometry={assets.ring1Geo}
-            material={assets.ring1Mat}
-            castShadow={false}
-            receiveShadow={false}
-          />
-
-          {/* Cincin Orbital 2 (Frosted Iridescent) */}
-          <mesh
-            ref={ring2Ref}
-            geometry={assets.ring2Geo}
-            material={assets.ring2Mat}
-            castShadow={false}
-            receiveShadow={false}
-          />
-
-          {/* Satelit Mengorbit */}
-          <mesh
-            ref={satellite1Ref}
-            geometry={assets.satGeo}
-            material={assets.sat1Mat}
-          />
-          {!isLowTier && (
-            <mesh
-              ref={satellite2Ref}
-              geometry={assets.satGeo}
-              material={assets.sat2Mat}
-            />
-          )}
+          {/* Objek 3D berformat .glb */}
+          <primitive object={clone} />
         </group>
       </Float>
     </>
   );
 }
+
+// Preload model .glb agar langsung ter-cache di memori
+useGLTF.preload("/models/quantum-orbital.glb");
 
 // 5. Komponen Utama Scene3D
 export default function Scene3D() {
@@ -414,7 +303,6 @@ export default function Scene3D() {
 
   const mouseRef = useRef({ x: 0, y: 0 });
 
-  // Posisi target scroll (ditempatkan anggun di area kanan agar tidak menabrak foto kartu)
   const targets = useRef<ScrollTargets>({
     rotX: 0,
     rotY: 0,
@@ -426,12 +314,10 @@ export default function Scene3D() {
     cameraY: 0,
   });
 
-  // Track pergerakan kursor mouse untuk parallax interaktif
   useEffect(() => {
     if (reducedMotion || isMobile) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Normalisasi -1 ke 1
       mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
@@ -442,7 +328,6 @@ export default function Scene3D() {
     };
   }, [reducedMotion, isMobile]);
 
-  // Pantau visibilitas tab untuk jeda render loop
   useEffect(() => {
     const handleVisibilityChange = () => {
       setIsTabVisible(document.visibilityState === "visible");
@@ -466,7 +351,6 @@ export default function Scene3D() {
     };
   }, []);
 
-  // Inisialisasi Lenis dan ScrollTrigger
   useEffect(() => {
     if (reducedMotion) {
       return;
@@ -555,7 +439,6 @@ export default function Scene3D() {
     };
   }, [isMobile, reducedMotion]);
 
-  // Fallback visual bila WebGL tidak tersedia
   if (!isWebGLSupported) {
     return (
       <div
@@ -599,7 +482,6 @@ export default function Scene3D() {
           aria-hidden="true"
           tabIndex={-1}
         >
-          {/* Adaptasi performa otomatis */}
           <PerformanceMonitor
             threshold={0.75}
             flipflops={3}
@@ -615,8 +497,7 @@ export default function Scene3D() {
             }}
           />
 
-          {/* Tata cahaya studio: Warm Key Light + Iridescent Rim Light */}
-          <ambientLight intensity={1.1} color="#FFF8F0" />
+          <ambientLight intensity={1.2} color="#FFF8F0" />
           <directionalLight
             position={[6, 8, 6]}
             intensity={1.8}
@@ -625,7 +506,7 @@ export default function Scene3D() {
           <directionalLight
             position={[-6, -4, -4]}
             intensity={0.8}
-            color="#D8CCF4" // Soft lavender rim reflections
+            color="#D8CCF4"
           />
           <pointLight
             position={[2, 0, 3]}
@@ -634,7 +515,7 @@ export default function Scene3D() {
           />
 
           <Suspense fallback={null}>
-            <QuantumOrbital
+            <QuantumOrbitalModel
               targets={targets}
               mouseRef={mouseRef}
               isMobile={isMobile}
