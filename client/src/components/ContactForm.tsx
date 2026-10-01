@@ -77,13 +77,13 @@ export default function ContactForm() {
             >
               Let&apos;s Connect
             </h2>
-            <p className="text-sm text-zinc-400 font-normal leading-relaxed">
+            <p className="text-sm text-zinc-300 font-normal leading-relaxed">
               Tertarik berdiskusi mengenai proyek kolaborasi, rekayasa infrastruktur, arsitektur WebGL/3D, atau peluang baru? Kirimkan pesan melalui form ini.
             </p>
 
             {/* Direct Email Card */}
             <div className="pt-4 space-y-2">
-              <span className="block text-xs font-mono text-zinc-500 uppercase tracking-wider">
+              <span className="block text-xs font-mono text-zinc-400 uppercase tracking-wider">
                 Direct Channel
               </span>
               <button
@@ -107,7 +107,7 @@ export default function ContactForm() {
                   className="flex items-center gap-1 text-[11px] font-mono shrink-0 font-medium px-2 py-0.5 rounded-md transition-all"
                   style={{
                     background: copied ? "#00E559" : "rgba(255, 255, 255, 0.08)",
-                    color: copied ? "#09090B" : "#A1A1AA",
+                    color: copied ? "#09090B" : "#D4D4D8",
                   }}
                 >
                   {copied ? (

@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { api } from "../../lib/api";
 import Navbar from "../../components/Navbar";
 import Hero from "../../components/Hero";
 import About from "../../components/About";
-import Experience from "../../components/Experience";
-import Projects from "../../components/Projects";
-import ContactForm from "../../components/ContactForm";
+
+const Experience = lazy(() => import("../../components/Experience"));
+const Projects = lazy(() => import("../../components/Projects"));
+const ContactForm = lazy(() => import("../../components/ContactForm"));
 
 interface SectionData {
   statusBadge?: string;
@@ -144,11 +145,17 @@ export default function Home() {
           />
         )}
 
-        <Experience />
+        <Suspense fallback={null}>
+          <Experience />
+        </Suspense>
 
-        <Projects />
+        <Suspense fallback={null}>
+          <Projects />
+        </Suspense>
 
-        <ContactForm />
+        <Suspense fallback={null}>
+          <ContactForm />
+        </Suspense>
 
         {/* Footer / Connect Section */}
         <footer
