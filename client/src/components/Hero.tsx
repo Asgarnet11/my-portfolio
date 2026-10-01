@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Terminal, User } from "lucide-react";
-import type { CSSProperties, ReactNode } from "react";
+import { ArrowUpRight, Terminal, User, Cpu, Sparkles, Activity } from "lucide-react";
 
 interface HeroProps {
   title?: string;
@@ -15,247 +14,218 @@ interface HeroProps {
   };
 }
 
-// Primary = filled with --bg-secondary, so its text MUST use --on-accent
-// (not --color-ink) since --color-ink isn't guaranteed to contrast with
-// --bg-secondary in every theme (see theme.css note on the terminal theme).
-// Secondary = outlined on --bg-accent, so --color-ink is safe there.
-function PixelButton({
-  href,
-  variant,
-  children,
-}: {
-  href: string;
-  variant: "primary" | "secondary";
-  children: ReactNode;
-}) {
-  const isPrimary = variant === "primary";
-  return (
-    <motion.a
-      href={href}
-      className="inline-flex items-center gap-2 px-5 py-2.5 text-sm"
-      style={{
-        fontFamily: "var(--font-heading, monospace)",
-        fontSize: "10px",
-        color: isPrimary
-          ? "var(--on-accent, #4A3B52)"
-          : "var(--color-ink, #4A3B52)",
-        background: isPrimary
-          ? "var(--bg-secondary, #FFD873)"
-          : "var(--bg-accent, #D6C9F5)",
-        border: "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-        borderRadius: "var(--border-radius, 0px)",
-      }}
-      initial={{
-        boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
-        x: 0,
-        y: 0,
-      }}
-      whileHover={{
-        x: -1,
-        y: -1,
-        boxShadow: "var(--box-shadow-hover, 4px 4px 0 0 #4A3B52)",
-      }}
-      whileTap={{ x: 3, y: 3, boxShadow: "none" }}
-      transition={{ duration: 0.08 }}
-    >
-      {children}
-    </motion.a>
-  );
-}
-
 export default function Hero({ title, subtitle, data }: HeroProps) {
   return (
     <section
-      className="min-h-[85vh] flex flex-col justify-center pt-20 sm:pt-24 pb-12 sm:pb-16 border-b-4"
+      className="min-h-[85vh] flex flex-col justify-center pt-24 sm:pt-28 pb-16 relative"
       style={{
-        borderColor: "var(--color-ink, #4A3B52)",
-        background: "var(--bg-primary, #FFF6E9)",
+        fontFamily: "var(--font-body, 'Inter', sans-serif)",
       }}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-        {/* Kolom Kiri: Teks & CTA */}
-        <div className="lg:col-span-7 space-y-5 sm:space-y-6 min-w-0">
-          {data?.statusBadge && (
+        {/* Kolom Kiri: Teks, Telemetri AI, & CTA */}
+        <div className="lg:col-span-7 space-y-6 min-w-0">
+          {/* Top Status & Telemetry Badge */}
+          <div className="flex flex-wrap items-center gap-2">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium"
               style={{
-                fontFamily: "var(--font-heading, monospace)",
-                fontSize: "9px",
-                color: "var(--color-ink, #4A3B52)",
-                background: "var(--badge-bg, #E3F5E9)",
-                border:
-                  "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                borderRadius: "var(--border-radius, 0px)",
-                boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
+                background: "rgba(0, 229, 89, 0.1)",
+                border: "1px solid rgba(0, 229, 89, 0.3)",
+                color: "var(--color-primary, #00E559)",
               }}
             >
               <span
-                className="w-2 h-2 animate-pulse shrink-0"
-                style={{
-                  background: "var(--badge-dot, #2C6B47)",
-                  borderRadius: "var(--node-radius, 0px)",
-                }}
+                className="w-2 h-2 rounded-full animate-pulse shrink-0"
+                style={{ background: "var(--color-primary, #00E559)" }}
               />
-              {data.statusBadge}
+              <span>{data?.statusBadge || "AVAILABLE FOR WORK"}</span>
             </motion.div>
-          )}
 
+            {/* AI Engine Telemetry Chip */}
+            <div
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono text-zinc-400"
+              style={{
+                background: "rgba(26, 27, 30, 0.8)",
+                border: "1px solid var(--color-border, #27272A)",
+              }}
+            >
+              <Cpu className="w-3 h-3 text-[#38BDF8]" />
+              <span>Engine: Neural-X</span>
+            </div>
+          </div>
+
+          {/* Heading */}
           <motion.h1
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
-            className="tracking-tight break-words"
+            transition={{ duration: 0.45, delay: 0.1, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-white"
             style={{
-              fontFamily: "var(--font-heading, monospace)",
-              color: "var(--color-ink, #4A3B52)",
-              fontSize: "clamp(22px, 6vw, 44px)",
-              lineHeight: 1.4,
+              fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+              lineHeight: 1.08,
             }}
           >
-            {title || "Hi, I am Asgar"}
+            {title ? (
+              title
+            ) : (
+              <>
+                Building <span style={{ color: "var(--color-primary, #00E559)" }}>AI-driven</span> software & modern interfaces.
+              </>
+            )}
           </motion.h1>
 
+          {/* Subtitle / Bio summary */}
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-            className="text-base sm:text-lg font-normal leading-relaxed max-w-xl"
-            style={{
-              fontFamily: "var(--font-body, monospace)",
-              color: "var(--color-muted, #504159)",
-            }}
+            transition={{ duration: 0.45, delay: 0.2, ease: "easeOut" }}
+            className="text-base sm:text-lg leading-relaxed text-zinc-400 max-w-xl font-normal"
           >
             {subtitle ||
-              "Building clean backends and responsive user interfaces."}
+              "Full-stack engineer crafting high-throughput systems, resilient backend APIs, and tactile interactive web experiences."}
           </motion.p>
 
+          {/* AI Workflow Meta Chips */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.25 }}
+            className="flex flex-wrap gap-2 pt-1 text-[11px] font-mono text-zinc-400"
+          >
+            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-zinc-800 flex items-center gap-1.5">
+              <Sparkles className="w-3 h-3 text-[#00E559]" /> Mode: Precision
+            </span>
+            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-zinc-800">
+              Model: X4 32-Tok
+            </span>
+            <span className="px-2.5 py-1 rounded-md bg-zinc-900/80 border border-zinc-800 text-zinc-500">
+              Visual Mood Experiment +2
+            </span>
+          </motion.div>
+
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
-            className="pt-2 flex flex-wrap gap-3 sm:gap-4 items-center"
+            transition={{ duration: 0.45, delay: 0.3, ease: "easeOut" }}
+            className="pt-4 flex flex-wrap gap-4 items-center"
           >
-            <PixelButton
+            <motion.a
               href={data?.ctaPrimaryLink || "#projects"}
-              variant="primary"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-[20px] font-semibold text-sm transition-all duration-200 cursor-pointer shadow-lg"
+              style={{
+                background: "var(--color-primary, #00E559)",
+                color: "#09090B",
+                boxShadow: "0 0 24px rgba(0, 229, 89, 0.25)",
+              }}
             >
-              {data?.ctaPrimaryText || "View Projects"}
+              <span>{data?.ctaPrimaryText || "View Projects"}</span>
               <ArrowUpRight className="w-4 h-4" />
-            </PixelButton>
-            <PixelButton
+            </motion.a>
+
+            <motion.a
               href={data?.ctaSecondaryLink || "#contact-form"}
-              variant="secondary"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-[20px] font-medium text-sm transition-all duration-200 cursor-pointer text-white"
+              style={{
+                background: "var(--color-surface, #1A1B1E)",
+                border: "1px solid var(--color-border, #27272A)",
+              }}
             >
-              <Terminal className="w-4 h-4" />
-              {data?.ctaSecondaryText || "Contact Me"}
-            </PixelButton>
+              <Terminal className="w-4 h-4 text-zinc-400" />
+              <span>{data?.ctaSecondaryText || "Contact Me"}</span>
+            </motion.a>
           </motion.div>
         </div>
 
-        {/* Kolom Kanan: Frame Gambar / Signature Visual */}
+        {/* Kolom Kanan: Bento Avatar Card */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+          transition={{ duration: 0.45, delay: 0.25, ease: "easeOut" }}
           className="lg:col-span-5 flex justify-center lg:justify-end"
         >
-          {/* idle bobbing wrapper - GPU CSS animation eliminates JS forced reflow */}
-          <div className="relative w-56 sm:w-64 md:w-72 animate-hero-bob">
+          <div className="relative w-64 sm:w-72 md:w-80">
+            {/* Ambient Backlight Glow */}
             <div
-              className="relative w-full aspect-[4/5] overflow-hidden flex items-center justify-center p-2"
+              className="absolute -inset-1 rounded-[24px] opacity-40 blur-xl transition-all duration-500"
               style={{
-                background: "var(--card-frame-bg, #FFC7D6)",
-                border:
-                  "var(--border-width-lg, 4px) solid var(--color-ink, #4A3B52)",
-                borderRadius: "var(--border-radius, 0px)",
-                boxShadow: "var(--box-shadow-lg, 6px 6px 0 0 #4A3B52)",
+                background: "radial-gradient(circle, rgba(0, 229, 89, 0.3) 0%, rgba(56, 189, 248, 0.15) 60%, transparent 80%)",
+              }}
+            />
+
+            {/* Bento Card Surface */}
+            <div
+              className="relative w-full rounded-[20px] overflow-hidden p-3.5 space-y-3 transition-all duration-300"
+              style={{
+                background: "var(--color-surface, #1A1B1E)",
+                border: "1px solid var(--color-border, #27272A)",
+                boxShadow: "0 16px 36px -4px rgba(0, 0, 0, 0.7)",
               }}
             >
-              {data?.avatarUrl ? (
-                <img
-                  src={data.avatarUrl}
-                  alt="Profile"
-                  width={600}
-                  height={750}
-                  fetchPriority="high"
-                  decoding="async"
-                  className="w-full h-full object-cover"
-                  style={{
-                    border:
-                      "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                    imageRendering:
-                      "var(--img-rendering, auto)" as CSSProperties["imageRendering"],
-                  }}
-                />
-              ) : (
-                <div
-                  className="w-full h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center space-y-3"
-                  style={{
-                    background: "var(--bg-primary, #FFF6E9)",
-                    border:
-                      "var(--border-width, 3px) dashed var(--color-ink, #4A3B52)",
-                  }}
-                >
-                  <div
-                    className="p-3"
-                    style={{
-                      background: "var(--bg-accent, #D6C9F5)",
-                      border:
-                        "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                    }}
-                  >
-                    <User
-                      className="w-7 h-7 sm:w-8 sm:h-8"
-                      style={{ color: "var(--color-ink, #4A3B52)" }}
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <div
-                      className="text-xs"
-                      style={{
-                        fontFamily: "var(--font-heading, monospace)",
-                        fontSize: "9px",
-                        color: "var(--color-ink, #4A3B52)",
-                      }}
-                    >
-                      Photo Slot
-                    </div>
-                    <p
-                      className="text-[10px] sm:text-[11px] leading-tight"
-                      style={{ color: "var(--color-muted, #504159)" }}
-                    >
-                      Atur `avatarUrl` di JSON Site Customizer
-                    </p>
-                  </div>
-                </div>
-              )}
+              {/* Card Header Telemetry */}
+              <div className="flex items-center justify-between px-2 pt-1 text-[11px] font-mono text-zinc-400">
+                <span className="flex items-center gap-1.5">
+                  <Activity className="w-3.5 h-3.5 text-[#00E559]" />
+                  TELEMETRY
+                </span>
+                <span className="text-zinc-500">LATENCY 14ms</span>
+              </div>
 
-              {/* Tag teknis di sudut frame */}
+              {/* Avatar Image Frame */}
+              <div className="relative w-full aspect-[4/5] rounded-[16px] overflow-hidden bg-zinc-900 border border-zinc-800">
+                {data?.avatarUrl ? (
+                  <img
+                    src={data.avatarUrl}
+                    alt="Profile"
+                    width={600}
+                    height={750}
+                    fetchPriority="high"
+                    decoding="async"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center space-y-3 bg-zinc-900/60">
+                    <div className="p-3 rounded-full bg-zinc-800 border border-zinc-700">
+                      <User className="w-8 h-8 text-zinc-300" />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-xs font-mono font-medium text-white">
+                        Operator Node
+                      </div>
+                      <p className="text-[11px] text-zinc-500">
+                        Atur avatarUrl di Site Customizer
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Technical Bottom Tag */}
               <div
-                className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 py-1.5 px-2.5 flex items-center justify-between"
+                className="py-2 px-3 rounded-xl flex items-center justify-between font-mono text-[11px]"
                 style={{
-                  fontFamily: "var(--font-heading, monospace)",
-                  fontSize: "9px",
-                  background: "var(--bg-primary, #FFF6E9)",
-                  border: "2px solid var(--color-ink, #4A3B52)",
-                  color: "var(--color-ink, #4A3B52)",
+                  background: "rgba(10, 10, 12, 0.8)",
+                  border: "1px solid var(--color-border, #27272A)",
                 }}
               >
-                <span className="font-bold">DEV // KND</span>
+                <span className="text-zinc-400 font-medium">DEV // KND</span>
                 <span
-                  className="inline-flex items-center gap-1.5 font-bold"
-                  style={{ color: "var(--badge-dot, #1B4D31)" }}
+                  className="inline-flex items-center gap-1.5 font-semibold text-[10px] px-2 py-0.5 rounded-full"
+                  style={{
+                    background: "rgba(0, 229, 89, 0.12)",
+                    color: "var(--color-primary, #00E559)",
+                    border: "1px solid rgba(0, 229, 89, 0.25)",
+                  }}
                 >
-                  <span
-                    className="w-1.5 h-1.5 animate-pulse shrink-0"
-                    style={{
-                      background: "var(--badge-dot, #1B4D31)",
-                      borderRadius: "var(--node-radius, 0px)",
-                    }}
-                  />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00E559] animate-pulse" />
                   ACTIVE
                 </span>
               </div>

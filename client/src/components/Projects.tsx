@@ -1,17 +1,10 @@
-import { useEffect, useState, lazy, Suspense, type CSSProperties } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import { ArrowUpRight, BookOpen, Layers, ExternalLink } from "lucide-react";
 import { api } from "../lib/api";
 import type { ProjectDetail } from "./ProjectModal";
 
 const ProjectModal = lazy(() => import("./ProjectModal"));
-
-const cardColors = [
-  "var(--card-accent-1, #FFC7D6)",
-  "var(--card-accent-2, #B8E6C9)",
-  "var(--card-accent-3, #D6C9F5)",
-  "var(--card-accent-4, #FFD873)",
-];
 
 const GithubIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
   <svg
@@ -54,208 +47,171 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="py-14 sm:py-20 border-b-4 transition-colors duration-300"
-      style={{ borderColor: "var(--color-ink, #4A3B52)" }}
+      className="py-16 sm:py-20 relative"
+      style={{
+        fontFamily: "var(--font-body, 'Inter', sans-serif)",
+      }}
     >
-      <div className="space-y-10 sm:space-y-12">
-        <div className="space-y-2">
-          <span
-            className="inline-block text-[9px] sm:text-[10px] px-2 py-1"
+      <div className="space-y-10">
+        {/* Section Header */}
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium"
             style={{
-              fontFamily: "var(--font-heading, monospace)",
-              color: "var(--color-ink, #4A3B52)",
-              background: "var(--card-accent-2, #B8E6C9)",
-              border:
-                "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-              boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
-              borderRadius: "var(--border-radius, 0px)",
+              background: "rgba(0, 229, 89, 0.1)",
+              border: "1px solid rgba(0, 229, 89, 0.3)",
+              color: "var(--color-primary, #00E559)",
             }}
           >
-            Selected Works
-          </span>
+            <Layers className="w-3 h-3 text-[#00E559]" />
+            SELECTED WORKS
+          </div>
           <h2
-            className="tracking-tight break-words"
+            className="text-3xl sm:text-4xl font-medium tracking-tight text-white"
             style={{
-              fontFamily: "var(--font-heading, monospace)",
-              color: "var(--color-ink, #4A3B52)",
-              fontSize: "clamp(16px, 4vw, 20px)",
-              lineHeight: 1.6,
+              fontFamily: "var(--font-heading, 'Inter', sans-serif)",
             }}
           >
             Featured Projects
           </h2>
-          <p
-            className="text-xs sm:text-sm font-normal"
-            style={{
-              fontFamily: "var(--font-body, monospace)",
-              color: "var(--color-muted, #504159)",
-            }}
-          >
-            Klik salah satu proyek untuk membaca studi kasus teknis & arsitektur sistem.
+          <p className="text-sm text-zinc-400 max-w-2xl font-normal">
+            Kumpulan aplikasi, sistem backend terdistribusi, dan eksplorasi antarmuka yang dirancang dengan presisi teknis tinggi.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          {projects.map((proj, idx) => {
-            const accent = cardColors[idx % cardColors.length];
-            return (
-              <motion.div
-                key={proj.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.35,
-                  delay: idx * 0.08,
-                  ease: "easeOut",
-                }}
-                className="overflow-hidden flex flex-col justify-between transition-all min-w-0"
-                style={{
-                  background: "var(--bg-primary, #FFF6E9)",
-                  border:
-                    "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                  boxShadow: "var(--box-shadow-lg, 4px 4px 0 0 #4A3B52)",
-                  borderRadius: "var(--border-radius, 0px)",
-                }}
-              >
-                {/* Gambar Cover Project */}
-                {proj.cover_image && (
-                  <div
-                    onClick={() => setSelectedProject(proj)}
-                    className="w-full h-44 sm:h-52 overflow-hidden cursor-pointer group relative"
-                    style={{
-                      borderBottom:
-                        "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                      background: accent,
-                    }}
-                  >
-                    <img
-                      src={proj.cover_image}
-                      alt={`Cuplikan antarmuka proyek ${proj.title}`}
-                      loading="lazy"
-                      decoding="async"
-                      width={800}
-                      height={500}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.map((proj, idx) => (
+            <motion.div
+              key={proj.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.4,
+                delay: idx * 0.08,
+                ease: "easeOut",
+              }}
+              className="rounded-[20px] overflow-hidden flex flex-col justify-between transition-all duration-300 group hover:border-zinc-700"
+              style={{
+                background: "var(--color-surface, #1A1B1E)",
+                border: "1px solid var(--color-border, #27272A)",
+                boxShadow: "0 12px 32px -4px rgba(0, 0, 0, 0.6)",
+              }}
+            >
+              {/* Gambar Cover Project */}
+              {proj.cover_image && (
+                <div
+                  onClick={() => setSelectedProject(proj)}
+                  className="w-full h-48 sm:h-56 overflow-hidden cursor-pointer relative bg-zinc-900"
+                >
+                  <img
+                    src={proj.cover_image}
+                    alt={`Cuplikan antarmuka proyek ${proj.title}`}
+                    loading="lazy"
+                    decoding="async"
+                    width={800}
+                    height={500}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                    <span
+                      className="px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-transform duration-200 group-hover:scale-105"
                       style={{
-                        imageRendering:
-                          "var(--img-rendering, pixelated)" as CSSProperties["imageRendering"],
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <span
-                        className="px-3 py-1.5 text-[9px] font-bold text-[#3A2E3D] bg-[#FFD866] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D]"
-                        style={{ fontFamily: "var(--font-heading, monospace)" }}
-                      >
-                        Buka Studi Kasus ↗
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between min-w-0">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-start gap-3">
-                      <h3
-                        onClick={() => setSelectedProject(proj)}
-                        className="break-words cursor-pointer hover:underline"
-                        style={{
-                          fontFamily: "var(--font-heading, monospace)",
-                          color: "var(--color-ink, #4A3B52)",
-                          fontSize: "12px",
-                          lineHeight: 1.7,
-                        }}
-                      >
-                        {proj.title}
-                      </h3>
-                      <div className="flex items-center gap-2.5 shrink-0">
-                        {proj.repo_url && (
-                          <a
-                            href={proj.repo_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label={`Lihat repositori GitHub untuk ${proj.title}`}
-                            style={{ color: "var(--color-ink, #4A3B52)" }}
-                            className="hover:opacity-60 transition-opacity"
-                            title="GitHub Repo"
-                          >
-                            <GithubIcon className="w-4 h-4" />
-                          </a>
-                        )}
-                        {proj.live_url && (
-                          <a
-                            href={proj.live_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label={`Kunjungi situs langsung untuk ${proj.title}`}
-                            style={{ color: "var(--color-ink, #4A3B52)" }}
-                            className="hover:opacity-60 transition-opacity"
-                            title="Live Demo"
-                          >
-                            <ArrowUpRight className="w-4 h-4" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-
-                    <p
-                      className="text-sm font-normal leading-relaxed break-words"
-                      style={{
-                        fontFamily: "var(--font-body, monospace)",
-                        color: "var(--color-muted, #504159)",
+                        background: "var(--color-primary, #00E559)",
+                        color: "#09090B",
+                        boxShadow: "0 0 16px rgba(0, 229, 89, 0.4)",
                       }}
                     >
-                      {proj.summary}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 space-y-3">
-                    {/* Tech Stack Tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {proj.tech_stack?.map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-[9px] px-2 py-1"
-                          style={{
-                            fontFamily: "var(--font-heading, monospace)",
-                            color: "var(--color-ink, #4A3B52)",
-                            background: accent,
-                            border:
-                              "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                            borderRadius: "var(--border-radius, 0px)",
-                          }}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Button Case Study Detail */}
-                    <button
-                      type="button"
-                      onClick={() => setSelectedProject(proj)}
-                      className="w-full py-2 px-3 text-[9px] flex items-center justify-center gap-1.5 transition-transform hover:-translate-y-0.5 active:translate-y-0.5 font-bold"
-                      style={{
-                        fontFamily: "var(--font-heading, monospace)",
-                        background: "var(--bg-secondary, #FFD866)",
-                        color: "var(--on-accent, #4A3B52)",
-                        border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                        boxShadow: "var(--box-shadow, 2px 2px 0 0 #4A3B52)",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <BookOpen className="w-3 h-3" />
-                      <span>Studi Kasus Teknis</span>
-                    </button>
+                      Buka Studi Kasus <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
                   </div>
                 </div>
-              </motion.div>
-            );
-          })}
+              )}
+
+              {/* Card Body */}
+              <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-start gap-3">
+                    <h3
+                      onClick={() => setSelectedProject(proj)}
+                      className="text-lg font-medium text-white cursor-pointer hover:text-[#00E559] transition-colors"
+                      style={{
+                        fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+                      }}
+                    >
+                      {proj.title}
+                    </h3>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {proj.repo_url && (
+                        <a
+                          href={proj.repo_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`GitHub repo untuk ${proj.title}`}
+                          className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                          title="GitHub Repo"
+                        >
+                          <GithubIcon className="w-4 h-4" />
+                        </a>
+                      )}
+                      {proj.live_url && (
+                        <a
+                          href={proj.live_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`Live demo untuk ${proj.title}`}
+                          className="p-1.5 rounded-lg text-zinc-400 hover:text-[#00E559] hover:bg-zinc-800 transition-colors"
+                          title="Live Demo"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-zinc-400 leading-relaxed font-normal">
+                    {proj.summary}
+                  </p>
+                </div>
+
+                <div className="pt-4 space-y-4">
+                  {/* Tech Stack Pills */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {proj.tech_stack?.map((tech) => (
+                      <span
+                        key={tech}
+                        className="text-[11px] font-mono px-2.5 py-1 rounded-full text-zinc-300"
+                        style={{
+                          background: "rgba(10, 10, 12, 0.7)",
+                          border: "1px solid var(--color-border, #27272A)",
+                        }}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Case Study Button */}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProject(proj)}
+                    className="w-full py-2.5 px-4 rounded-[14px] text-xs font-medium flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer text-white hover:text-[#00E559] hover:border-zinc-700"
+                    style={{
+                      background: "rgba(10, 10, 12, 0.5)",
+                      border: "1px solid var(--color-border, #27272A)",
+                    }}
+                  >
+                    <BookOpen className="w-3.5 h-3.5 text-[#38BDF8]" />
+                    <span>Baca Studi Kasus Teknis</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
 
-      {/* Case Study Modal (Lazy Loaded on demand) */}
+      {/* Case Study Modal */}
       {selectedProject && (
         <Suspense fallback={null}>
           <ProjectModal

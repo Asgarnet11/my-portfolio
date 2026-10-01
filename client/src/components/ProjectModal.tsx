@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, Code2, Layers, BookOpen } from "lucide-react";
+import { X, ExternalLink, Code2, Layers, BookOpen, Sparkles } from "lucide-react";
 
 const GithubIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
   <svg
@@ -59,7 +59,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
           />
 
           {/* Modal Container */}
@@ -68,35 +68,32 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto z-10 p-5 sm:p-7 space-y-6"
+            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8 space-y-6 rounded-[20px]"
             style={{
-              background: "var(--bg-primary, #FFF6E9)",
-              color: "var(--color-ink, #4A3B52)",
-              border: "var(--border-width-lg, 4px) solid var(--color-ink, #4A3B52)",
-              boxShadow: "var(--box-shadow-lg, 8px 8px 0 0 #4A3B52)",
-              borderRadius: "var(--border-radius, 0px)",
-              fontFamily: "var(--font-body, monospace)",
+              background: "var(--color-surface, #1A1B1E)",
+              border: "1px solid var(--color-border, #27272A)",
+              boxShadow: "0 24px 48px -8px rgba(0, 0, 0, 0.8)",
+              fontFamily: "var(--font-body, 'Inter', sans-serif)",
             }}
           >
             {/* Header with Title and Close Button */}
-            <div className="flex items-start justify-between gap-4 border-b-2 pb-4" style={{ borderColor: "var(--color-ink, #4A3B52)" }}>
-              <div className="space-y-1">
-                <span
-                  className="inline-block text-[9px] px-2 py-0.5 uppercase tracking-wider"
+            <div className="flex items-start justify-between gap-4 border-b border-zinc-800 pb-4">
+              <div className="space-y-1.5">
+                <div
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-medium"
                   style={{
-                    fontFamily: "var(--font-heading, monospace)",
-                    background: "var(--bg-secondary, #FFD873)",
-                    color: "var(--on-accent, #4A3B52)",
-                    border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
+                    background: "rgba(0, 229, 89, 0.1)",
+                    border: "1px solid rgba(0, 229, 89, 0.3)",
+                    color: "var(--color-primary, #00E559)",
                   }}
                 >
-                  Technical Case Study
-                </span>
+                  <Sparkles className="w-3 h-3 text-[#00E559]" />
+                  TECHNICAL CASE STUDY
+                </div>
                 <h2
-                  className="text-lg sm:text-xl font-bold tracking-tight pt-1"
+                  className="text-xl sm:text-2xl font-medium tracking-tight text-white pt-1"
                   style={{
-                    fontFamily: "var(--font-heading, monospace)",
-                    color: "var(--color-ink, #4A3B52)",
+                    fontFamily: "var(--font-heading, 'Inter', sans-serif)",
                   }}
                 >
                   {project.title}
@@ -106,27 +103,15 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <button
                 onClick={onClose}
                 aria-label="Tutup jendela studi kasus"
-                className="p-1.5 hover:opacity-70 transition-transform active:translate-y-0.5"
-                style={{
-                  background: "var(--card-frame-bg, #FFC7D6)",
-                  border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                  boxShadow: "var(--box-shadow, 2px 2px 0 0 #4A3B52)",
-                  cursor: "pointer",
-                }}
+                className="p-2 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Cover Image */}
             {project.cover_image && (
-              <div
-                className="w-full h-48 sm:h-64 overflow-hidden"
-                style={{
-                  border: "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                  boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
-                }}
-              >
+              <div className="w-full h-52 sm:h-64 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800">
                 <img
                   src={project.cover_image}
                   alt={`Screenshot ${project.title}`}
@@ -142,15 +127,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   href={project.live_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold transition-transform hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200"
                   style={{
-                    fontFamily: "var(--font-heading, monospace)",
-                    fontSize: "10px",
-                    background: "var(--bg-secondary, #FFD873)",
-                    color: "var(--on-accent, #4A3B52)",
-                    border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                    boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
-                    textDecoration: "none",
+                    background: "var(--color-primary, #00E559)",
+                    color: "#09090B",
+                    boxShadow: "0 0 16px rgba(0, 229, 89, 0.3)",
                   }}
                 >
                   <span>Buka Live Demo</span>
@@ -162,88 +143,55 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   href={project.repo_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold transition-transform hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium text-white transition-all duration-200"
                   style={{
-                    fontFamily: "var(--font-heading, monospace)",
-                    fontSize: "10px",
-                    background: "var(--bg-accent, #D6C9F5)",
-                    color: "var(--color-ink, #4A3B52)",
-                    border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                    boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
-                    textDecoration: "none",
+                    background: "#09090B",
+                    border: "1px solid var(--color-border, #27272A)",
                   }}
                 >
-                  <span>Repositori GitHub</span>
                   <GithubIcon className="w-3.5 h-3.5" />
+                  <span>Repositori GitHub</span>
                 </a>
               )}
             </div>
 
             {/* Overview / Problem Solved */}
             <div className="space-y-2">
-              <h3
-                className="text-xs uppercase flex items-center gap-2 font-bold"
-                style={{ fontFamily: "var(--font-heading, monospace)" }}
-              >
-                <BookOpen className="w-3.5 h-3.5 text-[#74489D]" />
+              <h3 className="text-xs font-mono font-medium uppercase text-zinc-400 flex items-center gap-2">
+                <BookOpen className="w-3.5 h-3.5 text-[#38BDF8]" />
                 <span>Ringkasan & Tujuan Proyek</span>
               </h3>
-              <p
-                className="text-sm leading-relaxed p-3.5"
-                style={{
-                  background: "var(--card-accent-2, #B8E6C9)",
-                  border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                  borderRadius: "var(--border-radius, 0px)",
-                }}
-              >
+              <p className="text-sm text-zinc-300 leading-relaxed p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 font-normal">
                 {project.summary}
               </p>
             </div>
 
             {/* Technical Architecture & Case Study */}
             <div className="space-y-2">
-              <h3
-                className="text-xs uppercase flex items-center gap-2 font-bold"
-                style={{ fontFamily: "var(--font-heading, monospace)" }}
-              >
-                <Layers className="w-3.5 h-3.5 text-[#74489D]" />
+              <h3 className="text-xs font-mono font-medium uppercase text-zinc-400 flex items-center gap-2">
+                <Layers className="w-3.5 h-3.5 text-[#00E559]" />
                 <span>Keputusan Arsitektur & Rekayasa</span>
               </h3>
-              <div
-                className="text-sm leading-relaxed whitespace-pre-wrap p-4 text-justify"
-                style={{
-                  background: "var(--bg-primary, #FFF6E9)",
-                  border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                  borderRadius: "var(--border-radius, 0px)",
-                  boxShadow: "inset 2px 2px 0 0 rgba(74,59,82,0.1)",
-                }}
-              >
+              <div className="text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 font-normal">
                 {project.case_study ||
-                  "Proyek ini dirancang dengan fokus pada skalabilitas backend, pemisahan dependensi monorepo yang rapi, serta pengalaman pengguna yang responsif. Menggunakan prinsip clean architecture, query database terindeks, dan penanganan status asinkron yang tangguh."}
+                  "Proyek ini dirancang dengan fokus pada skalabilitas backend, isolasi komponen, serta pengalaman interaksi real-time tanpa latensi. Mengadopsi prinsip clean domain architecture, indexing database terstruktur, dan pemrosesan asinkron yang andal."}
               </div>
             </div>
 
             {/* Tech Stack Pills */}
-            <div className="space-y-2">
-              <h3
-                className="text-xs uppercase flex items-center gap-2 font-bold"
-                style={{ fontFamily: "var(--font-heading, monospace)" }}
-              >
-                <Code2 className="w-3.5 h-3.5 text-[#74489D]" />
+            <div className="space-y-2.5">
+              <h3 className="text-xs font-mono font-medium uppercase text-zinc-400 flex items-center gap-2">
+                <Code2 className="w-3.5 h-3.5 text-[#38BDF8]" />
                 <span>Teknologi yang Digunakan</span>
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.tech_stack?.map((tech) => (
                   <span
                     key={tech}
-                    className="text-xs px-2.5 py-1"
+                    className="text-xs font-mono px-3 py-1 rounded-full text-zinc-300"
                     style={{
-                      fontFamily: "var(--font-heading, monospace)",
-                      fontSize: "9px",
-                      background: "var(--card-accent-3, #D6C9F5)",
-                      color: "var(--color-ink, #4A3B52)",
-                      border: "var(--border-width, 2px) solid var(--color-ink, #4A3B52)",
-                      borderRadius: "var(--border-radius, 0px)",
+                      background: "#09090B",
+                      border: "1px solid var(--color-border, #27272A)",
                     }}
                   >
                     #{tech}

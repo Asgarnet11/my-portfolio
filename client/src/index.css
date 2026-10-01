@@ -1,53 +1,63 @@
 @import "tailwindcss";
 
 /* -------------------------------------------------------------
-   TEMA 1: RETRO PIXEL (Default)
+   AI WORKFLOW INTERFACE (DESIGN.md Reference Standard)
+   Neuform Featured Theme
    ------------------------------------------------------------- */
 :root,
+[data-theme="neuform"],
 [data-theme="pixel"] {
-  --font-heading: "Press Start 2P", monospace;
-  --font-body: "JetBrains Mono", monospace;
+  --font-heading: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Palette Tokens from DESIGN.md */
+  --color-primary: #00E559;
+  --color-secondary: #09090B;
+  --color-accent: #38BDF8;
+  --color-surface: #1A1B1E;
+  --color-border: #27272A;
 
   /* Backgrounds */
-  --bg-primary: #fff6e9;
-  --bg-secondary: #ffd873;
-  --bg-accent: #d6c9f5;
-  --card-frame-bg: #ffc7d6;
+  --bg-primary: #09090B;          /* Deep Obsidian Canvas */
+  --bg-surface: #1A1B1E;          /* Card / Panel Surface */
+  --bg-surface-elevated: #23242A; /* Elevated Surface */
+  --bg-secondary: #00E559;        /* Primary CTA Fill: Electric Neon Green */
+  --bg-accent: #1A1B1E;           /* Secondary Action Fill */
+  --card-frame-bg: #1A1B1E;
 
   /* Typography Colors */
-  --color-ink: #4a3b52;
-  --color-muted: #504159;
-  --accent-color: #74489d;
-
-  /* Text color guaranteed to be readable ON TOP of --bg-secondary
-     (e.g. the primary CTA button fill). Don't assume --color-ink
-     always contrasts with --bg-secondary — in some themes they can
-     land close together, so this is set explicitly per theme. */
-  --on-accent: #4a3b52;
+  --color-ink: #FFFFFF;           /* Text Primary */
+  --color-muted: #A1A1AA;         /* Text Secondary */
+  --accent-color: #38BDF8;        /* Sky Blue Accent */
+  --on-accent: #09090B;           /* Dark ink text on top of Neon Green */
 
   /* Borders & Shadows */
-  --border-width: 3px;
-  --border-width-lg: 4px;
-  --border-radius: 0px;
-  --node-radius: 0px;
-  --box-shadow: 3px 3px 0 0 #4a3b52;
-  --box-shadow-lg: 4px 4px 0 0 #4a3b52;
-  --box-shadow-hover: 5px 5px 0 0 #4a3b52;
+  --border-color: #27272A;
+  --border-width: 1px;
+  --border-width-lg: 1px;
+  --border-radius: 20px;          /* Card radius: 20px */
+  --control-radius: 20px;         /* Control radius: 20px */
+  --node-radius: 9999px;          /* Pill radius: 9999px */
+  --box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6), 0 0 0 1px #27272A;
+  --box-shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.8), 0 0 0 1px #27272A;
+  --box-shadow-hover: 0 16px 36px -4px rgba(0, 229, 89, 0.18), 0 0 0 1px #00E559;
 
   /* Badges & Status */
-  --badge-bg: #e3f5e9;
-  --badge-dot: #1b4d31;
-  --error-bg: #fbe4e8;
-  --error-text: #8e2b3d;
+  --badge-bg: rgba(0, 229, 89, 0.1);
+  --badge-border: rgba(0, 229, 89, 0.3);
+  --badge-dot: #00E559;
+  --error-bg: #2d1217;
+  --error-text: #ff4b68;
 
   /* Cards Accent Palette */
-  --card-accent-1: #ffc7d6;
-  --card-accent-2: #b8e6c9;
-  --card-accent-3: #d6c9f5;
-  --card-accent-4: #ffd873;
+  --card-accent-1: #1A1B1E;
+  --card-accent-2: #1A1B1E;
+  --card-accent-3: #1A1B1E;
+  --card-accent-4: #1A1B1E;
 
   /* Rendering */
-  --img-rendering: pixelated;
+  --img-rendering: auto;
 }
 
 /* -------------------------------------------------------------

@@ -1,4 +1,5 @@
 import { motion, type Variants } from "framer-motion";
+import { Terminal, Sparkles } from "lucide-react";
 
 interface AboutProps {
   title?: string;
@@ -9,31 +10,20 @@ interface AboutProps {
   };
 }
 
-const tagColors = [
-  "var(--card-accent-1, #FFC7D6)",
-  "var(--card-accent-2, #B8E6C9)",
-  "var(--card-accent-3, #D6C9F5)",
-  "var(--card-accent-4, #FFD873)",
-];
-
-// Container drives the stagger so tags pop in one-by-one instead of
-// each tag re-deriving its own delay — reads as one deliberate motion
-// instead of "everything fades up the same amount, generically".
 const skillContainer: Variants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.06 },
+    transition: { staggerChildren: 0.04 },
   },
 };
 
 const skillItem: Variants = {
-  hidden: { opacity: 0, y: 12, scale: 0.85, rotate: -4 },
+  hidden: { opacity: 0, y: 8, scale: 0.95 },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
-    rotate: 0,
-    transition: { type: "spring", stiffness: 420, damping: 22 },
+    transition: { type: "spring", stiffness: 350, damping: 25 },
   },
 };
 
@@ -41,137 +31,136 @@ export default function About({ title, subtitle, data }: AboutProps) {
   return (
     <section
       id="about"
-      className="py-14 sm:py-20 border-b-4 transition-colors duration-300"
-      style={{ borderColor: "var(--color-ink, #4A3B52)" }}
+      className="py-16 sm:py-20 relative"
+      style={{
+        fontFamily: "var(--font-body, 'Inter', sans-serif)",
+      }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10">
-        <div className="md:col-span-4 space-y-3 min-w-0">
-          {/* Same class of bug as the Hero primary button: this badge
-              fills with --bg-secondary, so its text must use --on-accent,
-              not --color-ink — in the terminal theme both --color-ink and
-              --bg-secondary are neon green, which makes the label vanish. */}
-          <motion.span
-            initial={{ opacity: 0, y: -8, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 380, damping: 20 }}
-            className="inline-block text-[9px] sm:text-[10px] px-2 py-1"
-            style={{
-              fontFamily: "var(--font-heading, monospace)",
-              color: "var(--on-accent, #4A3B52)",
-              background: "var(--bg-secondary, #FFD873)",
-              border:
-                "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-              boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
-              borderRadius: "var(--border-radius, 0px)",
-            }}
-          >
-            Background
-          </motion.span>
+      {/* Bento Grid Container */}
+      <div
+        className="rounded-[20px] p-6 sm:p-10 transition-all duration-300 relative overflow-hidden"
+        style={{
+          background: "var(--color-surface, #1A1B1E)",
+          border: "1px solid var(--color-border, #27272A)",
+          boxShadow: "0 12px 32px -4px rgba(0, 0, 0, 0.7)",
+        }}
+      >
+        {/* Subtle Ambient Background Gradient */}
+        <div
+          className="absolute top-0 right-0 w-96 h-96 pointer-events-none opacity-20 blur-3xl -z-10"
+          style={{
+            background: "radial-gradient(circle, rgba(0, 229, 89, 0.4) 0%, rgba(56, 189, 248, 0.2) 60%, transparent 80%)",
+          }}
+        />
 
-          <motion.h2
-            initial={{ opacity: 0, x: -14 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={
-              {
-                type: "spring",
-                stiffness: 260,
-                damping: 24,
-                delay: 0.05,
-              } as const
-            }
-            className="tracking-tight break-words"
-            style={{
-              fontFamily: "var(--font-heading, monospace)",
-              color: "var(--color-ink, #4A3B52)",
-              fontSize: "clamp(16px, 4vw, 20px)",
-              lineHeight: 1.6,
-            }}
-          >
-            {title || "About Me"}
-          </motion.h2>
-
-          {subtitle && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
+          {/* Kolom Kiri: Metadata & Heading */}
+          <div className="md:col-span-4 space-y-4 min-w-0">
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.12, duration: 0.3 }}
-              className="text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium"
               style={{
-                fontFamily: "var(--font-body, monospace)",
-                color: "var(--color-muted, #504159)",
+                background: "rgba(0, 229, 89, 0.1)",
+                border: "1px solid rgba(0, 229, 89, 0.3)",
+                color: "var(--color-primary, #00E559)",
               }}
             >
-              {subtitle}
-            </motion.p>
-          )}
-        </div>
+              <Sparkles className="w-3 h-3 text-[#00E559]" />
+              BACKGROUND
+            </motion.div>
 
-        <div className="md:col-span-8 space-y-8 min-w-0">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="text-base leading-relaxed whitespace-pre-line font-normal break-words"
-            style={{
-              fontFamily: "var(--font-body, monospace)",
-              color: "var(--color-ink, #4A3B52)",
-            }}
-          >
-            {data?.bio ||
-              "Building reliable digital solutions with intentional craftsmanship."}
-          </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.35, delay: 0.05 }}
+              className="text-2xl sm:text-3xl font-medium tracking-tight text-white"
+              style={{
+                fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+                lineHeight: 1.2,
+              }}
+            >
+              {title || "Architecting Modern Systems"}
+            </motion.h2>
 
-          {data?.skills && data.skills.length > 0 && (
-            <div className="space-y-3">
-              <span
-                className="block text-[9px] sm:text-[10px] tracking-wider"
-                style={{
-                  fontFamily: "var(--font-heading, monospace)",
-                  color: "var(--color-muted, #504159)",
-                }}
-              >
-                Core Technologies
-              </span>
-
-              <motion.div
-                className="flex flex-wrap gap-2 sm:gap-3"
-                variants={skillContainer}
-                initial="hidden"
-                whileInView="show"
+            {subtitle && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
+                transition={{ delay: 0.1, duration: 0.3 }}
+                className="text-sm text-zinc-400 leading-relaxed font-normal"
               >
-                {data.skills.map((skill, index) => (
-                  <motion.span
-                    key={skill}
-                    variants={skillItem}
-                    whileHover={{
-                      y: -3,
-                      rotate: index % 2 === 0 ? -2 : 2,
-                      boxShadow: "var(--box-shadow-hover, 4px 4px 0 0 #4A3B52)",
-                    }}
-                    whileTap={{ y: 1, boxShadow: "none" }}
-                    className="px-2.5 sm:px-3 py-1 text-xs cursor-default"
-                    style={{
-                      fontFamily: "var(--font-heading, monospace)",
-                      fontSize: "9px",
-                      color: "var(--color-ink, #4A3B52)",
-                      background: tagColors[index % tagColors.length],
-                      border:
-                        "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                      boxShadow: "var(--box-shadow, 2px 2px 0 0 #4A3B52)",
-                      borderRadius: "var(--border-radius, 0px)",
-                    }}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </motion.div>
+                {subtitle}
+              </motion.p>
+            )}
+
+            {/* AI Workflow Quick Metrics */}
+            <div className="pt-2 hidden sm:grid grid-cols-2 gap-3 text-left font-mono">
+              <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+                <span className="text-[10px] text-zinc-500 block">PRECISION</span>
+                <span className="text-xs font-semibold text-white">Production 99.9%</span>
+              </div>
+              <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+                <span className="text-[10px] text-zinc-500 block">PARADIGM</span>
+                <span className="text-xs font-semibold text-[#00E559]">Event-Driven</span>
+              </div>
             </div>
-          )}
+          </div>
+
+          {/* Kolom Kanan: Bio & Core Technologies */}
+          <div className="md:col-span-8 space-y-8 min-w-0">
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              className="text-base text-zinc-300 leading-relaxed font-normal break-words whitespace-pre-line"
+            >
+              {data?.bio ||
+                "Specialized in constructing dependable backend architectures, high-performance web applications, and immersive digital interfaces. Focused on code correctness, clean domain design, and sub-second interaction latency."}
+            </motion.p>
+
+            {data?.skills && data.skills.length > 0 && (
+              <div className="space-y-4 pt-2">
+                <div className="flex items-center gap-2">
+                  <Terminal className="w-3.5 h-3.5 text-[#38BDF8]" />
+                  <span className="text-xs font-mono font-medium text-zinc-400 uppercase tracking-wider">
+                    Core Technologies & Tools
+                  </span>
+                </div>
+
+                <motion.div
+                  className="flex flex-wrap gap-2 sm:gap-2.5"
+                  variants={skillContainer}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                >
+                  {data.skills.map((skill) => (
+                    <motion.span
+                      key={skill}
+                      variants={skillItem}
+                      whileHover={{
+                        scale: 1.04,
+                        borderColor: "rgba(0, 229, 89, 0.6)",
+                        color: "#00E559",
+                      }}
+                      className="px-3.5 py-1.5 rounded-full text-xs font-mono font-medium text-zinc-300 transition-all duration-200 cursor-default"
+                      style={{
+                        background: "rgba(10, 10, 12, 0.6)",
+                        border: "1px solid var(--color-border, #27272A)",
+                      }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </motion.div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>

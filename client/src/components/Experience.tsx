@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Briefcase, Calendar, MapPin } from "lucide-react";
 import { api } from "../lib/api";
 
 interface ExperienceItem {
@@ -11,13 +12,6 @@ interface ExperienceItem {
   end_date?: string | null;
   description: string;
 }
-
-const nodeColors = [
-  "var(--card-accent-1, #FFC7D6)",
-  "var(--card-accent-2, #B8E6C9)",
-  "var(--card-accent-3, #D6C9F5)",
-  "var(--card-accent-4, #FFD873)",
-];
 
 export default function Experience() {
   const [experiences, setExperiences] = useState<ExperienceItem[]>([]);
@@ -48,60 +42,56 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="py-14 sm:py-20 border-b-4 transition-colors duration-300"
-      style={{ borderColor: "var(--color-ink, #4A3B52)" }}
+      className="py-16 sm:py-20 relative"
+      style={{
+        fontFamily: "var(--font-body, 'Inter', sans-serif)",
+      }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10">
-        <div className="md:col-span-4 space-y-3">
-          {/* card-accent-3 stays dark/light-neutral in every theme, never
-              collides with --color-ink text — unlike --bg-secondary. */}
-          <span
-            className="inline-block text-[9px] sm:text-[10px] px-2 py-1"
-            style={{
-              fontFamily: "var(--font-heading, monospace)",
-              color: "var(--color-ink, #4A3B52)",
-              background: "var(--card-accent-3, #D6C9F5)",
-              border:
-                "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-              boxShadow: "var(--box-shadow, 3px 3px 0 0 #4A3B52)",
-              borderRadius: "var(--border-radius, 0px)",
-            }}
-          >
-            Career Path
-          </span>
-          <h2
-            style={{
-              fontFamily: "var(--font-heading, monospace)",
-              color: "var(--color-ink, #4A3B52)",
-              fontSize: "18px",
-              lineHeight: 1.6,
-            }}
-            className="sm:text-[20px]"
-          >
-            Experience
-          </h2>
-          <p
-            className="text-sm"
-            style={{
-              fontFamily: "var(--font-body, monospace)",
-              color: "var(--color-muted, #504159)",
-            }}
-          >
-            Jejak Pekerjaan Saya
-          </p>
-        </div>
+      {/* Bento Container */}
+      <div
+        className="rounded-[20px] p-6 sm:p-10 transition-all duration-300 relative overflow-hidden"
+        style={{
+          background: "var(--color-surface, #1A1B1E)",
+          border: "1px solid var(--color-border, #27272A)",
+          boxShadow: "0 12px 32px -4px rgba(0, 0, 0, 0.7)",
+        }}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+          {/* Header Column */}
+          <div className="md:col-span-4 space-y-3">
+            <div
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium"
+              style={{
+                background: "rgba(0, 229, 89, 0.1)",
+                border: "1px solid rgba(0, 229, 89, 0.3)",
+                color: "var(--color-primary, #00E559)",
+              }}
+            >
+              <Briefcase className="w-3 h-3 text-[#00E559]" />
+              CAREER PATH
+            </div>
+            <h2
+              className="text-2xl sm:text-3xl font-medium tracking-tight text-white"
+              style={{
+                fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+              }}
+            >
+              Work Experience
+            </h2>
+            <p className="text-sm text-zinc-400 font-normal leading-relaxed">
+              Riwayat kontribusi profesional, kepemimpinan tim rekayasa perangkat lunak, dan pengembangan produk.
+            </p>
+          </div>
 
-        <div className="md:col-span-8 min-w-0">
-          <div
-            className="relative ml-2 pl-6 sm:pl-8 space-y-10 sm:space-y-12"
-            style={{
-              borderLeft:
-                "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-            }}
-          >
-            {experiences.map((exp, idx) => {
-              const accent = nodeColors[idx % nodeColors.length];
-              return (
+          {/* Timeline Column */}
+          <div className="md:col-span-8 min-w-0">
+            <div
+              className="relative ml-2 pl-6 sm:pl-8 space-y-10"
+              style={{
+                borderLeft: "1px solid var(--color-border, #27272A)",
+              }}
+            >
+              {experiences.map((exp, idx) => (
                 <motion.div
                   key={exp.id}
                   initial={{ opacity: 0, x: -10 }}
@@ -112,86 +102,52 @@ export default function Experience() {
                     delay: idx * 0.08,
                     ease: "easeOut",
                   }}
-                  className="relative"
+                  className="relative space-y-2"
                 >
-                  {/* Bullet node */}
+                  {/* Glowing Node Dot */}
                   <div
-                    className="absolute -left-[27px] sm:-left-[35px] top-1 w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all"
+                    className="absolute -left-[30px] sm:-left-[38px] top-1.5 w-3 h-3 rounded-full flex items-center justify-center"
                     style={{
-                      background: accent,
-                      border:
-                        "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                      borderRadius: "var(--node-radius, 0px)",
+                      background: "var(--color-primary, #00E559)",
+                      boxShadow: "0 0 10px rgba(0, 229, 89, 0.6)",
                     }}
                   />
 
-                  <div className="space-y-2 min-w-0">
+                  {/* Header: Role & Company */}
+                  <div className="space-y-1">
                     <h3
-                      className="break-words"
+                      className="text-base sm:text-lg font-medium text-white flex flex-wrap items-center gap-1.5"
                       style={{
-                        color: "var(--color-ink, #4A3B52)",
-                        fontFamily: "var(--font-heading, monospace)",
-                        fontSize: "11px",
-                        lineHeight: 1.9,
+                        fontFamily: "var(--font-heading, 'Inter', sans-serif)",
                       }}
                     >
-                      {exp.role}{" "}
-                      <span style={{ color: "var(--color-muted, #504159)" }}>
-                        @
-                      </span>{" "}
-                      <span style={{ color: "var(--color-ink, #4A3B52)" }}>
-                        {exp.company}
-                      </span>
+                      <span>{exp.role}</span>
+                      <span className="text-[#38BDF8] font-normal">@</span>
+                      <span className="text-zinc-200">{exp.company}</span>
                     </h3>
 
-                    {/* Date + location */}
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                      <span
-                        style={{
-                          fontFamily: "var(--font-heading, monospace)",
-                          fontSize: "8px",
-                          color: "var(--color-muted, #504159)",
-                        }}
-                      >
-                        {formatDate(exp.start_date)} —{" "}
-                        {formatDate(exp.end_date)}
+                    {/* Meta: Date & Location */}
+                    <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-zinc-400">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-zinc-500" />
+                        {formatDate(exp.start_date)} — {formatDate(exp.end_date)}
                       </span>
                       {exp.location && (
-                        <>
-                          <span
-                            style={{
-                              color: "var(--color-muted, #504159)",
-                              fontSize: "8px",
-                            }}
-                          >
-                            ·
-                          </span>
-                          <span
-                            style={{
-                              fontFamily: "var(--font-heading, monospace)",
-                              fontSize: "8px",
-                              color: "var(--color-muted, #504159)",
-                            }}
-                          >
-                            {exp.location}
-                          </span>
-                        </>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-zinc-500" />
+                          {exp.location}
+                        </span>
                       )}
                     </div>
-
-                    <p
-                      className="text-sm font-normal leading-relaxed pt-1 whitespace-pre-line break-words"
-                      style={{
-                        fontFamily: "var(--font-body, monospace)",
-                        color: "var(--color-ink, #4A3B52)",
-                      }}
-                    >
-                      {exp.description}
-                    </p>
                   </div>
+
+                  {/* Description */}
+                  <p className="text-sm text-zinc-300 leading-relaxed font-normal whitespace-pre-line pt-1">
+                    {exp.description}
+                  </p>
                 </motion.div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </div>

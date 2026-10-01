@@ -122,12 +122,12 @@ export default function Home() {
     <div
       className="min-h-screen overflow-x-hidden"
       style={{
-        background: "var(--bg-primary, #FFF6E9)",
-        color: "var(--color-ink, #4A3B52)",
+        background: "var(--bg-primary, #09090B)",
+        color: "var(--color-ink, #FFFFFF)",
       }}
     >
       <Navbar />
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {heroSec?.is_active && (
           <Hero
             title={heroSec.title}
@@ -153,32 +153,29 @@ export default function Home() {
         {/* Footer / Connect Section */}
         <footer
           id="contact"
-          className="py-10 sm:py-16 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 text-xs mt-12 sm:mt-20"
+          className="py-10 sm:py-14 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs mt-16 sm:mt-24"
           style={{
-            borderTop:
-              "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-            color: "var(--color-muted, #504159)",
-            fontFamily: "var(--font-body, monospace)",
-            fontSize: "9px",
+            borderTop: "1px solid var(--border-color, #27272A)",
+            color: "var(--color-muted, #A1A1AA)",
+            fontFamily: "var(--font-mono, monospace)",
+            fontSize: "11px",
           }}
         >
-          <div className="leading-relaxed">
-            © {new Date().getFullYear()} — Built with A2dev.
+          <div className="leading-relaxed flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#00E559] animate-pulse" />
+            <span>© {new Date().getFullYear()} — Built with AI Workflow Interface.</span>
           </div>
           <div
-            className="flex flex-wrap gap-x-4 gap-y-2"
-            style={{ color: "var(--color-ink, #4A3B52)" }}
+            className="flex flex-wrap gap-x-5 gap-y-2"
+            style={{ color: "var(--color-muted, #A1A1AA)" }}
           >
             {socialsSec?.data?.github && (
               <a
                 href={socialsSec.data.github}
                 target="_blank"
                 rel="noreferrer"
-                style={{
-                  color: "var(--color-ink, #4A3B52)",
-                  textDecoration: "none",
-                }}
-                className="hover:opacity-70 transition-opacity"
+                className="hover:text-[#00E559] transition-colors"
+                style={{ textDecoration: "none" }}
               >
                 GitHub
               </a>
@@ -188,11 +185,8 @@ export default function Home() {
                 href={socialsSec.data.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                style={{
-                  color: "var(--color-ink, #4A3B52)",
-                  textDecoration: "none",
-                }}
-                className="hover:opacity-70 transition-opacity"
+                className="hover:text-[#00E559] transition-colors"
+                style={{ textDecoration: "none" }}
               >
                 LinkedIn
               </a>
@@ -204,7 +198,6 @@ export default function Home() {
                   handleCopyEmail(socialsSec.data.email as string)
                 }
                 style={{
-                  color: "var(--color-ink, #4A3B52)",
                   background: "none",
                   border: "none",
                   padding: 0,
@@ -212,7 +205,7 @@ export default function Home() {
                   fontFamily: "inherit",
                   fontSize: "inherit",
                 }}
-                className="hover:opacity-70 transition-opacity"
+                className="hover:text-[#00E559] transition-colors"
                 title="Klik untuk salin alamat email"
               >
                 {copiedEmail ? "✓ Email Tersalin!" : "Email"}

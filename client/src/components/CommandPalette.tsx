@@ -57,37 +57,37 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
       id: "nav-about",
       category: "Navigasi",
       label: "Lompat ke About Me",
-      icon: <User className="w-3.5 h-3.5" />,
+      icon: <User className="w-4 h-4 text-[#38BDF8]" />,
       action: () => scrollToSection("about"),
     },
     {
       id: "nav-experience",
       category: "Navigasi",
-      label: "Lompat ke Pengalaman Kerja",
-      icon: <Briefcase className="w-3.5 h-3.5" />,
+      label: "Lompat ke Work Experience",
+      icon: <Briefcase className="w-4 h-4 text-[#38BDF8]" />,
       action: () => scrollToSection("experience"),
     },
     {
       id: "nav-projects",
       category: "Navigasi",
       label: "Lompat ke Featured Projects",
-      icon: <FolderKanban className="w-3.5 h-3.5" />,
+      icon: <FolderKanban className="w-4 h-4 text-[#38BDF8]" />,
       action: () => scrollToSection("projects"),
     },
     {
       id: "nav-contact",
       category: "Navigasi",
       label: "Lompat ke Hubungi Saya",
-      icon: <Mail className="w-3.5 h-3.5" />,
+      icon: <Mail className="w-4 h-4 text-[#38BDF8]" />,
       action: () => scrollToSection("contact-form"),
     },
 
     // Tema
     {
-      id: "theme-pixel",
+      id: "theme-neuform",
       category: "Tema Tampilan",
-      label: "Aktifkan Tema: Retro Pixel (Default)",
-      icon: <Sliders className="w-3.5 h-3.5" />,
+      label: "Aktifkan Tema: Neuform AI (Default DESIGN.md)",
+      icon: <Sliders className="w-4 h-4 text-[#00E559]" />,
       action: () => {
         setTheme("pixel");
         onClose();
@@ -97,7 +97,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
       id: "theme-modern",
       category: "Tema Tampilan",
       label: "Aktifkan Tema: Modern Clean",
-      icon: <Sliders className="w-3.5 h-3.5" />,
+      icon: <Sliders className="w-4 h-4 text-[#00E559]" />,
       action: () => {
         setTheme("modern");
         onClose();
@@ -107,7 +107,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
       id: "theme-terminal",
       category: "Tema Tampilan",
       label: "Aktifkan Tema: Dark Terminal",
-      icon: <Sliders className="w-3.5 h-3.5" />,
+      icon: <Sliders className="w-4 h-4 text-[#00E559]" />,
       action: () => {
         setTheme("terminal");
         onClose();
@@ -119,14 +119,14 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
       id: "copy-email",
       category: "Aksi Cepat",
       label: copied ? "Email Berhasil Tersalin!" : "Salin Alamat Email ke Clipboard",
-      icon: copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />,
+      icon: copied ? <Check className="w-4 h-4 text-[#00E559]" /> : <Copy className="w-4 h-4 text-[#00E559]" />,
       action: () => copyEmail(),
     },
     {
       id: "open-github",
       category: "Aksi Cepat",
       label: "Kunjungi GitHub Profil Asgar",
-      icon: <Globe className="w-3.5 h-3.5" />,
+      icon: <Globe className="w-4 h-4 text-[#38BDF8]" />,
       action: () => {
         window.open("https://github.com/Asgarnet11", "_blank");
         onClose();
@@ -156,11 +156,11 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
 
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setSelectedIndex((prev) => (prev + 1) % filteredCommands.length);
+        setSelectedIndex((prev) => (prev + 1) % (filteredCommands.length || 1));
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         setSelectedIndex((prev) =>
-          prev === 0 ? filteredCommands.length - 1 : prev - 1,
+          prev === 0 ? (filteredCommands.length || 1) - 1 : prev - 1,
         );
       } else if (e.key === "Enter" && filteredCommands[selectedIndex]) {
         e.preventDefault();
@@ -177,13 +177,13 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
           />
 
           <motion.div
@@ -191,47 +191,30 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="relative w-full max-w-lg overflow-hidden z-10"
+            className="relative w-full max-w-xl overflow-hidden z-10 rounded-[20px] shadow-2xl"
             style={{
-              background: "var(--bg-primary, #FFF6E9)",
-              border: "var(--border-width-lg, 4px) solid var(--color-ink, #4A3B52)",
-              boxShadow: "var(--box-shadow-lg, 8px 8px 0 0 #4A3B52)",
-              borderRadius: "var(--border-radius, 0px)",
-              fontFamily: "var(--font-body, monospace)",
+              background: "var(--color-surface, #1A1B1E)",
+              border: "1px solid var(--color-border, #27272A)",
+              fontFamily: "var(--font-body, 'Inter', sans-serif)",
             }}
           >
             {/* Search Input Bar */}
-            <div
-              className="flex items-center gap-3 px-4 py-3.5 border-b-2"
-              style={{ borderColor: "var(--color-ink, #4A3B52)" }}
-            >
-              <Search className="w-4 h-4 opacity-70" />
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-zinc-800">
+              <Search className="w-4 h-4 text-zinc-400" />
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Ketik perintah atau cari (About, Tema, Proyek)..."
+                placeholder="Ketik perintah atau cari (About, Proyek, Tema)..."
                 value={query}
                 onChange={(e) => {
                   setQuery(e.target.value);
                   setSelectedIndex(0);
                 }}
-                className="w-full text-xs sm:text-sm bg-transparent outline-none"
-                style={{
-                  color: "var(--color-ink, #4A3B52)",
-                  fontFamily: "var(--font-body, monospace)",
-                }}
+                className="w-full text-sm bg-transparent outline-none text-white placeholder-zinc-500 font-sans"
               />
-              <span
-                className="text-[9px] px-1.5 py-0.5 border"
-                style={{
-                  fontFamily: "var(--font-heading, monospace)",
-                  background: "var(--bg-secondary, #FFD873)",
-                  color: "var(--on-accent, #4A3B52)",
-                  borderColor: "var(--color-ink, #4A3B52)",
-                }}
-              >
+              <kbd className="text-[10px] px-2 py-0.5 rounded font-mono bg-zinc-800 text-zinc-400 border border-zinc-700">
                 ESC
-              </span>
+              </kbd>
             </div>
 
             {/* Results List */}
@@ -243,53 +226,38 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                     key={cmd.id}
                     onClick={() => cmd.action()}
                     onMouseEnter={() => setSelectedIndex(index)}
-                    className="flex items-center justify-between px-3 py-2.5 text-xs cursor-pointer transition-colors"
-                    style={{
-                      background: isSelected ? "var(--bg-secondary, #FFD873)" : "transparent",
-                      color: isSelected ? "var(--on-accent, #4A3B52)" : "var(--color-ink, #4A3B52)",
-                      border: isSelected
-                        ? "var(--border-width, 2px) solid var(--color-ink, #4A3B52)"
-                        : "var(--border-width, 2px) solid transparent",
-                      borderRadius: "var(--border-radius, 0px)",
-                    }}
+                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs cursor-pointer transition-all duration-150 ${
+                      isSelected
+                        ? "bg-[#00E559] text-black font-semibold shadow-md"
+                        : "text-zinc-300 hover:bg-zinc-800/60"
+                    }`}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="flex items-center gap-3 min-w-0">
                       <span className="shrink-0">{cmd.icon}</span>
                       <span className="truncate">{cmd.label}</span>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0 opacity-70">
-                      <span
-                        className="text-[8px] uppercase tracking-wider"
-                        style={{ fontFamily: "var(--font-heading, monospace)" }}
-                      >
+                      <span className="text-[10px] uppercase font-mono tracking-wider">
                         {cmd.category}
                       </span>
-                      {isSelected && <ArrowRight className="w-3 h-3" />}
+                      {isSelected && <ArrowRight className="w-3.5 h-3.5" />}
                     </div>
                   </div>
                 );
               })}
 
               {filteredCommands.length === 0 && (
-                <div className="p-6 text-center text-xs opacity-60">
+                <div className="p-8 text-center text-xs text-zinc-500 font-mono">
                   Tidak ada perintah yang cocok dengan &quot;{query}&quot;
                 </div>
               )}
             </div>
 
             {/* Footer Shortcut Hints */}
-            <div
-              className="px-4 py-2 text-[9px] flex items-center justify-between border-t"
-              style={{
-                borderColor: "var(--color-ink, #4A3B52)",
-                color: "var(--color-muted, #504159)",
-                fontFamily: "var(--font-heading, monospace)",
-                background: "var(--bg-primary, #FFF6E9)",
-              }}
-            >
+            <div className="px-5 py-3 text-[11px] font-mono flex items-center justify-between border-t border-zinc-800 text-zinc-500 bg-zinc-900/50">
               <span>↑↓ Navigasi</span>
-              <span>↵ Jalankan</span>
+              <span>↵ Eksekusi</span>
               <span>ESC Tutup</span>
             </div>
           </motion.div>
