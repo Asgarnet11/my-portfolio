@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useProgress } from "@react-three/drei";
 import { AnimatePresence, motion } from "framer-motion";
 import { api } from "../lib/api";
 
@@ -9,29 +8,21 @@ interface LenisInstance {
 }
 
 export default function LoadingScreen() {
-  const { progress: r3fProgress, active: r3fActive } = useProgress();
-
   const [displayProgress, setDisplayProgress] = useState(0);
-  const [isExiting, setIsExiting] = useState(false);
   const [isMounted, setIsMounted] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
 
-  // Target progress yang dihitung secara dinamis
-  const targetProgressRef = useRef(15);
-  // Nilai float saat interpolasi
+  const targetProgressRef = useRef(20);
   const currentProgressRef = useRef(0);
-  // Status data API selesai (berhasil / gagal)
   const apiFinishedRef = useRef(false);
-  // Menandai apakah loading sudah diselesaikan (mencegah double trigger)
   const isCompletedRef = useRef(false);
 
-  // Deteksi prefers-reduced-motion pengguna
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // 1. Kunci scroll selama loading dan pastikan dikembalikan saat selesai/unmount
+  // 1. Kunci scroll selama loading dan pulihkan saat selesai/unmount
   useEffect(() => {
     const originalBodyOverflow = document.body.style.overflow;
     const originalHtmlOverflow = document.documentElement.style.overflow;
@@ -57,11 +48,11 @@ export default function LoadingScreen() {
     };
   }, []);
 
-  // 2. Muat data backend Express dan pantau batas waktu (Timeout 8s & batas maksimal 1.2s untuk aset ringan)
+  // 2. Muat data backend Express dan pantau batas waktu
   useEffect(() => {
     let isSubscribed = true;
 
-    // A. Fetch data awal backend
+    // Fetch data awal backend
     const fetchCriticalData = async () => {
       try {
         await Promise.allSettled([
@@ -70,6 +61,7 @@ export default function LoadingScreen() {
         ]);
         if (isSubscribed) {
           apiFinishedRef.current = true;
+          targetProgressRef.current = 100;
         }
       } catch (err) {
         console.warn("Koneksi API lambat atau gagal:", err);
@@ -78,16 +70,22 @@ export default function LoadingScreen() {
           setApiError(
             "Koneksi backend lambat. Menampilkan konten yang tersedia secara offline/cache."
           );
+          targetProgressRef.current = 100;
         }
       }
     };
 
     fetchCriticalData();
 
-    // B. Batas waktu 8 detik: Bila API lambat atau gagal, jangan macet di 99%
+    // Batas waktu: Maksimal 1.2 detik bila data ringan/cepat, atau timeout 8s
+    const fastLoadTimer = setTimeout(() => {
+      if (isSubscribed) {
+        targetProgressRef.current = 100;
+      }
+    }, 900);
+
     const timeout8s = setTimeout(() => {
       if (!isCompletedRef.current) {
-        console.warn("Batas waktu 8 detik loading terlewati. Membuka situs...");
         apiFinishedRef.current = true;
         setApiError(
           "Koneksi ke backend membutuhkan waktu lebih lama. Data akan diperbarui di latar belakang."
@@ -96,41 +94,14 @@ export default function LoadingScreen() {
       }
     }, 8000);
 
-    // C. Jika tidak ada aset 3D berat (atau selesai cepat), jangan tampil lebih dari 1.2 detik
-    const fastLoadTimer = setTimeout(() => {
-      if (isSubscribed && (!r3fActive || r3fProgress >= 100)) {
-        targetProgressRef.current = 100;
-      }
-    }, 1200);
-
     return () => {
       isSubscribed = false;
-      clearTimeout(timeout8s);
       clearTimeout(fastLoadTimer);
+      clearTimeout(timeout8s);
     };
-  }, [r3fActive, r3fProgress]);
+  }, []);
 
-  // 3. Gabungkan progress aset 3D (useProgress) dan API Express
-  useEffect(() => {
-    if (isCompletedRef.current) return;
-
-    // Bobot: 50% aset 3D, 50% data API backend
-    const threeWeight = r3fActive ? (r3fProgress || 0) * 0.5 : 50;
-    const apiWeight = apiFinishedRef.current ? 50 : 25;
-    const combined = Math.min(100, Math.round(threeWeight + apiWeight));
-
-    // Angka persentase tidak boleh mundur
-    if (combined > targetProgressRef.current) {
-      targetProgressRef.current = combined;
-    }
-
-    // Jika aset 3D selesai dan API selesai, capai 100%
-    if ((!r3fActive || r3fProgress >= 100) && apiFinishedRef.current) {
-      targetProgressRef.current = 100;
-    }
-  }, [r3fProgress, r3fActive]);
-
-  // 4. Loop interpolasi halus (requestAnimationFrame) agar angka tidak melompat kasar
+  // 3. Interpolasi halus requestAnimationFrame
   useEffect(() => {
     let animId: number;
 
@@ -139,146 +110,117 @@ export default function LoadingScreen() {
       const current = currentProgressRef.current;
 
       if (current < target) {
-        // Interpolasi eksponensial halus dengan kecepatan minimum
         const diff = target - current;
-        const increment = Math.max(0.35, diff * 0.08);
+        const increment = Math.max(0.6, diff * 0.12);
         const next = Math.min(target, current + increment);
 
         currentProgressRef.current = next;
         setDisplayProgress(Math.floor(next));
       }
 
-      // Saat mencapai target 100%, tahan sebentar (maksimal 400 ms) lalu trigger transisi keluar
       if (currentProgressRef.current >= 99.8 && target === 100) {
         currentProgressRef.current = 100;
         setDisplayProgress(100);
 
         if (!isCompletedRef.current) {
           isCompletedRef.current = true;
-
-          // Buka kunci scroll segera setelah target 100% tercapai
           document.body.style.overflow = "";
-          document.documentElement.style.overflow = "";
-          const lenis = (window as unknown as { __lenis?: LenisInstance })
-            .__lenis;
-          if (lenis) lenis.start();
 
-          // Tahan maksimal 300ms (<= 400ms) sebelum menghilang
+          // Tahan maksimal 300ms saat 100% lalu transisi fade out
           setTimeout(() => {
-            setIsExiting(true);
+            setIsMounted(false);
             if (apiError) {
               setShowToast(true);
             }
-          }, 300);
+          }, prefersReducedMotion ? 50 : 300);
         }
-        return;
       }
 
-      animId = requestAnimationFrame(step);
+      if (!isCompletedRef.current || currentProgressRef.current < 100) {
+        animId = requestAnimationFrame(step);
+      }
     };
 
     animId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(animId);
-  }, [apiError]);
-
-  // Auto-dismiss pesan error ramah setelah 5 detik
-  useEffect(() => {
-    if (showToast) {
-      const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [showToast]);
+  }, [apiError, prefersReducedMotion]);
 
   return (
     <>
-      <AnimatePresence
-        onExitComplete={() => {
-          setIsMounted(false);
-        }}
-      >
-        {isMounted && !isExiting && (
+      <AnimatePresence>
+        {isMounted && (
           <motion.div
-            initial={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 1 }}
             exit={
               prefersReducedMotion
                 ? { opacity: 0 }
-                : { opacity: 0, y: -24, transition: { duration: 0.35, ease: "easeInOut" } }
+                : { opacity: 0, y: -20, transition: { duration: 0.35, ease: "easeInOut" } }
             }
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 select-none"
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center p-4 select-none"
             style={{
-              backgroundColor: "var(--bg-primary, #FFF6EC)",
-              color: "var(--color-ink, #4A3B52)",
-              fontFamily: "var(--font-heading, monospace)",
+              backgroundColor: "#09090B",
+              color: "#FFFFFF",
+              fontFamily: "var(--font-heading, 'Inter', sans-serif)",
             }}
+            role="status"
+            aria-live="polite"
+            aria-label={`Memuat konten situs: ${displayProgress}%`}
           >
-            {/* Screen reader announcements */}
-            <div aria-live="polite" className="sr-only">
-              {displayProgress < 100
-                ? `Memuat portofolio, ${displayProgress}% selesai`
-                : "Situs siap ditampilkan"}
-            </div>
+            {/* Ambient Background Glow */}
+            <div
+              className="absolute w-72 h-72 rounded-full opacity-20 blur-3xl pointer-events-none"
+              style={{
+                background: "radial-gradient(circle, #00E559 0%, #38BDF8 60%, transparent 80%)",
+              }}
+            />
 
-            <div className="w-full max-w-xs sm:max-w-sm flex flex-col items-center gap-6">
-              {/* Logo / Nama singkat */}
-              <div className="flex items-center gap-2 px-3 py-1.5 text-xs">
-                <span
-                  className="w-2.5 h-2.5 animate-ping inline-block"
+            <div className="relative z-10 w-full max-w-xs flex flex-col items-center space-y-6 text-center">
+              {/* Logo / Monogram */}
+              <div className="flex flex-col items-center space-y-2">
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg"
                   style={{
-                    backgroundColor: "var(--color-ink, #4A3B52)",
-                    borderRadius: "var(--node-radius, 0px)",
+                    background: "rgba(26, 27, 30, 0.9)",
+                    border: "1px solid #27272A",
+                    color: "#00E559",
+                    boxShadow: "0 0 24px rgba(0, 229, 89, 0.2)",
                   }}
-                />
-                <span
-                  className="tracking-widest font-bold text-sm"
-                  style={{ color: "var(--color-ink, #4A3B52)" }}
                 >
-                  ASGAR // DEV
-                </span>
+                  AF
+                </div>
+                <div className="text-sm font-semibold tracking-wider text-white">
+                  ASGAR FATWAHYUDI
+                </div>
+                <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest">
+                  PORTFOLIO // INTERFACE
+                </div>
               </div>
 
-              {/* Progress bar accessible wrapper */}
-              <div className="w-full space-y-2">
+              {/* Progress Bar Container */}
+              <div className="w-full space-y-2.5">
                 <div
-                  role="progressbar"
-                  aria-valuenow={displayProgress}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-label="Progres pemuatan situs"
-                  className="w-full h-5 overflow-hidden p-0.5"
+                  className="w-full h-1.5 rounded-full overflow-hidden p-0"
                   style={{
-                    border: "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-                    backgroundColor: "var(--bg-secondary, #FFD866)",
-                    boxShadow: "var(--box-shadow, 4px 4px 0 0 #4A3B52)",
-                    borderRadius: "var(--border-radius, 0px)",
+                    backgroundColor: "#1A1B1E",
+                    border: "1px solid #27272A",
                   }}
                 >
                   <div
-                    className="h-full transition-all duration-75"
+                    className="h-full rounded-full transition-all duration-75"
                     style={{
                       width: `${displayProgress}%`,
-                      backgroundColor: "#E29E72", // Warm terracotta accent
-                      borderRadius: "var(--border-radius, 0px)",
+                      backgroundColor: "#00E559",
+                      boxShadow: "0 0 12px rgba(0, 229, 89, 0.6)",
                     }}
                   />
                 </div>
 
-                {/* Persentase dan indikator status */}
-                <div
-                  className="flex justify-between items-center text-[10px]"
-                  style={{
-                    fontFamily: "var(--font-body, monospace)",
-                    color: "var(--color-muted, #504159)",
-                  }}
-                >
-                  <span className="uppercase tracking-wider">
-                    {displayProgress < 100 ? "Memuat komponen..." : "Siap!"}
+                {/* Persentase Numerik */}
+                <div className="flex justify-between items-center text-xs font-mono">
+                  <span className="text-zinc-500 text-[11px] uppercase tracking-wider">
+                    {displayProgress < 100 ? "INITIALIZING" : "SYSTEM READY"}
                   </span>
-                  <span
-                    className="font-bold"
-                    style={{ color: "var(--color-ink, #4A3B52)" }}
-                  >
+                  <span className="font-semibold text-[#00E559] text-sm tabular-nums">
                     {displayProgress}%
                   </span>
                 </div>
@@ -288,34 +230,29 @@ export default function LoadingScreen() {
         )}
       </AnimatePresence>
 
-      {/* Toast notifikasi ramah bila koneksi backend lambat / timeout */}
+      {/* Toast Notifikasi Error Jika Backend Lambat/Gagal */}
       <AnimatePresence>
         {showToast && apiError && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed bottom-6 right-6 z-[110] max-w-sm p-4 text-xs flex items-start gap-3 shadow-lg"
+            className="fixed bottom-6 right-6 z-50 max-w-sm p-4 rounded-2xl shadow-2xl flex items-start gap-3 text-xs"
             style={{
-              backgroundColor: "var(--bg-secondary, #FFD866)",
-              border: "var(--border-width, 3px) solid var(--color-ink, #4A3B52)",
-              color: "var(--color-ink, #4A3B52)",
-              boxShadow: "var(--box-shadow, 4px 4px 0 0 #4A3B52)",
-              fontFamily: "var(--font-body, monospace)",
+              backgroundColor: "#1A1B1E",
+              color: "#FFFFFF",
+              border: "1px solid #27272A",
+              fontFamily: "var(--font-body, 'Inter', sans-serif)",
             }}
           >
-            <span className="text-base select-none">💡</span>
-            <div className="flex-1">
-              <p className="font-semibold mb-1">Catatan Sambungan:</p>
-              <p className="text-[11px] leading-relaxed opacity-90">
-                {apiError}
-              </p>
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-400 mt-1 shrink-0 animate-ping" />
+            <div className="space-y-1">
+              <div className="font-semibold text-white">Pemberitahuan Sistem</div>
+              <p className="text-zinc-400 leading-relaxed font-normal">{apiError}</p>
             </div>
             <button
-              type="button"
               onClick={() => setShowToast(false)}
-              className="text-xs font-bold px-1.5 py-0.5 hover:opacity-70 transition-opacity"
+              className="text-zinc-500 hover:text-white p-1 ml-auto cursor-pointer"
               aria-label="Tutup notifikasi"
             >
               ✕
