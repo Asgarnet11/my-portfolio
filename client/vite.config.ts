@@ -9,6 +9,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          if (id.includes("node_modules/three") || id.includes("node_modules/@react-three")) {
+            return "vendor-three";
+          }
+          if (id.includes("node_modules/gsap") || id.includes("node_modules/lenis")) {
+            return "vendor-scroll";
+          }
           if (id.includes("node_modules/framer-motion") || id.includes("node_modules/motion-dom")) {
             return "vendor-motion";
           }

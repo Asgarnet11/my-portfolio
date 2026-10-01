@@ -4,6 +4,10 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Home from "./pages/public/Home";
 import AdminLayout from "./components/admin/AdminLayout";
+import LoadingScreen from "./components/LoadingScreen";
+
+// Lazy load 3D scene so text and critical page content render immediately
+const Scene3D = lazy(() => import("./components/Scene3D"));
 
 // Code splitting / dynamic import for admin panel chunks
 const AdminLogin = lazy(() => import("./pages/admin/Login"));
@@ -80,6 +84,10 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <LoadingScreen />
+        <Suspense fallback={null}>
+          <Scene3D />
+        </Suspense>
         <BrowserRouter>
           <Routes>
             {/* Public Routes */}
