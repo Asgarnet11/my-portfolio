@@ -1,6 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, BookOpen, Layers, ExternalLink } from "lucide-react";
+import { ArrowUpRight, Layers, ExternalLink } from "lucide-react";
 import { api } from "../lib/api";
 import type { ProjectDetail } from "./ProjectModal";
 
@@ -56,30 +56,29 @@ export default function Projects() {
         {/* Section Header */}
         <div className="space-y-3">
           <div
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium"
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-[460]"
             style={{
-              background: "var(--badge-bg)",
-              border: "1px solid var(--badge-border)",
-              color: "var(--color-accent)",
+              backgroundColor: "var(--color-secondary)",
+              color: "var(--on-secondary)",
             }}
           >
-            <Layers className="w-3 h-3" />
-            SELECTED WORKS
+            <Layers className="w-3.5 h-3.5" />
+            <span>Portofolio & Studi Kasus</span>
           </div>
           <h2
-            className="text-3xl sm:text-4xl font-semibold tracking-tight"
+            className="text-3xl sm:text-4xl font-[460] tracking-[-0.025em]"
             style={{
               fontFamily: "var(--font-heading, 'Inter', sans-serif)",
               color: "var(--color-ink)",
             }}
           >
-            Featured Projects
+            Proyek Rekayasa & Karya Terpilih
           </h2>
           <p
             className="text-sm max-w-2xl font-normal leading-relaxed"
             style={{ color: "var(--color-muted)" }}
           >
-            Kumpulan aplikasi web modern, sistem backend terdistribusi, dan otomasi digital yang dibangun dengan fondasi arsitektur bersih.
+            Aplikasi web terintegrasi, arsitektur database, dan solusi digitalisasi layanan publik yang dikembangkan dengan standar teknis yang kokoh.
           </p>
         </div>
 
@@ -88,19 +87,18 @@ export default function Projects() {
           {projects.map((proj, idx) => (
             <motion.div
               key={proj.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{
-                duration: 0.4,
-                delay: idx * 0.08,
+                duration: 0.35,
+                delay: idx * 0.06,
                 ease: "easeOut",
               }}
-              className="rounded-[20px] overflow-hidden flex flex-col justify-between transition-all duration-300 group border"
+              className="rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 group border shadow-xs"
               style={{
-                background: "var(--bg-surface)",
+                backgroundColor: "var(--bg-surface)",
                 borderColor: "var(--border-color)",
-                boxShadow: "var(--box-shadow)",
               }}
             >
               {/* Gambar Cover Project */}
@@ -219,23 +217,15 @@ export default function Projects() {
                   <button
                     type="button"
                     onClick={() => setSelectedProject(proj)}
-                    className="w-full py-2.5 px-4 rounded-[14px] text-xs font-medium flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer border"
+                    className="w-full py-2.5 px-4 rounded-xl text-xs font-[460] flex items-center justify-between transition-all duration-200 cursor-pointer border hover:opacity-90"
                     style={{
-                      background: "var(--bg-surface-elevated)",
+                      backgroundColor: "var(--bg-surface-elevated)",
                       borderColor: "var(--border-color)",
                       color: "var(--color-ink)",
                     }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "var(--color-accent)";
-                      e.currentTarget.style.color = "var(--color-accent)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "var(--border-color)";
-                      e.currentTarget.style.color = "var(--color-ink)";
-                    }}
                   >
-                    <BookOpen className="w-3.5 h-3.5" style={{ color: "var(--color-accent)" }} />
-                    <span>Lihat Rincian Studi Kasus</span>
+                    <span className="font-medium">Pelajari Studi Kasus</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" style={{ color: "var(--color-accent)" }} />
                   </button>
                 </div>
               </div>

@@ -51,50 +51,48 @@ export default function Experience() {
         fontFamily: "var(--font-body, 'Inter', sans-serif)",
       }}
     >
-      {/* Bento Container */}
+      {/* Bento Container (Tema-utama.MD: 16px radius, Paper White #ffffff, 1px #e3e3e2) */}
       <div
-        className="rounded-[20px] p-6 sm:p-10 transition-all duration-300 relative overflow-hidden border"
+        className="rounded-2xl p-6 sm:p-10 transition-all duration-300 relative border shadow-xs"
         style={{
-          background: "var(--bg-surface)",
+          backgroundColor: "var(--bg-surface)",
           borderColor: "var(--border-color)",
-          boxShadow: "var(--box-shadow)",
         }}
       >
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
           {/* Header Column */}
-          <div className="md:col-span-4 space-y-3">
+          <div className="md:col-span-5 space-y-4">
             <div
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium"
+              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-[460]"
               style={{
-                background: "var(--badge-bg)",
-                border: "1px solid var(--badge-border)",
-                color: "var(--color-accent)",
+                backgroundColor: "var(--color-secondary)",
+                color: "var(--on-secondary)",
               }}
             >
-              <Briefcase className="w-3 h-3" />
-              CAREER & MILESTONES
+              <Briefcase className="w-3.5 h-3.5" />
+              <span>Jejak Karier & Pengalaman</span>
             </div>
             <h2
-              className="text-2xl sm:text-3xl font-semibold tracking-tight"
+              className="text-2xl sm:text-3xl lg:text-4xl font-[460] tracking-[-0.025em]"
               style={{
                 fontFamily: "var(--font-heading, 'Inter', sans-serif)",
                 color: "var(--color-ink)",
               }}
             >
-              Work Experience
+              Pengalaman Kerja & Kontribusi
             </h2>
             <p
               className="text-sm font-normal leading-relaxed"
               style={{ color: "var(--color-muted)" }}
             >
-              Riwayat kontribusi profesional, tanggung jawab rekayasa sistem informasi, dan pengelolaan data teknologi.
+              Riwayat kontribusi profesional, tanggung jawab rekayasa sistem informasi, dan pengelolaan data teknologi di lingkungan institusi.
             </p>
           </div>
 
           {/* Timeline Column */}
-          <div className="md:col-span-8 min-w-0">
+          <div className="md:col-span-7 min-w-0">
             <div
-              className="relative ml-2 pl-6 sm:pl-8 space-y-10"
+              className="relative ml-2 pl-6 sm:pl-8 space-y-8"
               style={{
                 borderLeft: "1px solid var(--border-color)",
               }}
@@ -102,22 +100,22 @@ export default function Experience() {
               {experiences.map((exp, idx) => (
                 <motion.div
                   key={exp.id}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: -8 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{
                     duration: 0.35,
-                    delay: idx * 0.08,
+                    delay: idx * 0.06,
                     ease: "easeOut",
                   }}
                   className="relative space-y-2"
                 >
-                  {/* Glowing Node Dot */}
+                  {/* Clean Node Dot */}
                   <div
-                    className="absolute -left-[30px] sm:-left-[38px] top-1.5 w-3 h-3 rounded-full flex items-center justify-center"
+                    className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-3 h-3 rounded-full border-2"
                     style={{
-                      background: "var(--color-accent)",
-                      boxShadow: "0 0 10px var(--color-accent)",
+                      backgroundColor: "var(--color-primary)",
+                      borderColor: "var(--bg-surface)",
                     }}
                   />
 

@@ -15,7 +15,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "terminal",
+  theme: "editorial",
   setTheme: () => {},
 });
 
@@ -24,8 +24,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
     const saved = localStorage.getItem("app_theme") as Theme;
-    if (saved === "editorial" || saved === "modern") return "editorial";
-    return "terminal";
+    if (saved === "terminal" || saved === "dark" || saved === "pixel") return "terminal";
+    return "editorial";
   });
 
   const setTheme = (t: Theme) => {

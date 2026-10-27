@@ -3,6 +3,38 @@ import { api } from "../../lib/api";
 import Navbar from "../../components/Navbar";
 import Hero from "../../components/Hero";
 import About from "../../components/About";
+import { ArrowUpRight, ShieldCheck, Mail, Building2 } from "lucide-react";
+
+const GithubIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+const LinkedinIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect x="2" y="9" width="4" height="12" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
 
 const Experience = lazy(() => import("../../components/Experience"));
 const Projects = lazy(() => import("../../components/Projects"));
@@ -36,35 +68,37 @@ const DEFAULT_SECTIONS: Record<string, Section> = {
   hero: {
     id: "default-hero",
     key: "hero",
-    title: "Hi, I am Muh Asgar Fatwahyudi",
-    subtitle: "Building clean backends and responsive user interfaces.",
+    title: "Hi, saya Muh Asgar Fatwahyudi",
+    subtitle: "Membangun arsitektur backend andal & antarmuka web responsif.",
     data: {
       avatarUrl:
         "https://relxttjsqsvhesreewha.supabase.co/storage/v1/object/public/portfolio-assets/projects/1789713386781-953399969.webp",
-      statusBadge: "Available for new opportunities",
+      statusBadge: "Pranata Komputer BPVP Kendari • Kemnaker RI",
       ctaPrimaryLink: "#projects",
-      ctaPrimaryText: "View Projects",
+      ctaPrimaryText: "Lihat Proyek & Karya",
       ctaSecondaryLink: "#contact-form",
-      ctaSecondaryText: "Contact Me",
+      ctaSecondaryText: "Hubungi Saya",
     },
     is_active: true,
   },
   about: {
     id: "default-about",
     key: "about",
-    title: "About Me",
-    subtitle: "Crafting software with care and intentionality.",
+    title: "Mewujudkan Sistem Informasi yang Terstruktur & Andal",
+    subtitle: "Dedikasi rekayasa perangkat lunak untuk digitalisasi layanan vokasi.",
     data: {
-      bio: "Saya adalah lulusan Sistem Informasi yang memiliki ketertarikan kuat pada Web Development, Sistem Informasi, dan Data Management. Saat ini saya bekerja sebagai Pranata Komputer di BPVP Kendari, dengan pengalaman dalam mengembangkan dan memelihara sistem informasi, membangun dashboard monitoring, mengelola database dan API, melakukan pengujian sistem, serta menyelesaikan berbagai permasalahan teknis untuk mendukung digitalisasi proses kerja.\n\nSaya memiliki pengalaman menggunakan Laravel, PHP, JavaScript, TypeScript, React, Next.js, Node.js, Python, MySQL, Tailwind CSS, Git, dan GitHub. Pengalaman kerja sebelumnya di bidang operasional dan administrasi juga membentuk kemampuan saya dalam ketelitian, pengelolaan data, komunikasi, teamwork, problem solving, dan bekerja berdasarkan target.\n\nSaya terus mengembangkan kemampuan teknis dan profesional dengan tujuan menjadi Software/Web Developer yang mampu membangun solusi digital yang efektif, terstruktur, dan memberikan dampak nyata bagi pengguna maupun organisasi.",
+      bio: "Saya adalah lulusan Sistem Informasi yang berfokus pada Web Development, Arsitektur Sistem, dan Pengelolaan Database. Saat ini saya bertugas sebagai Pranata Komputer di BPVP Kendari (Kementerian Ketenagakerjaan Republik Indonesia), merancang dan memelihara aplikasi web, dashboard monitoring, serta integrasi API guna mendukung efisiensi operasional dan digitalisasi proses kerja.\n\nSaya memiliki keahlian teknis dalam PHP, Laravel, TypeScript, React, Next.js, Node.js, Express, PostgreSQL, MySQL, dan Tailwind CSS. Pengalaman lintas sektor memperkuat dedikasi saya dalam ketelitian kode, keandalan sistem, dan pemecahan masalah yang berorientasi pada kemudahan pengguna.",
       skills: [
         "TypeScript",
-        "Express.js",
-        "PostgreSQL",
         "React",
         "PHP",
         "Laravel",
+        "PostgreSQL",
+        "MySQL",
+        "Node.js",
         "Tailwind CSS",
-        "mySQL",
+        "REST API",
+        "Git",
       ],
     },
     is_active: true,
@@ -121,13 +155,14 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen overflow-x-clip"
+      className="min-h-screen overflow-x-clip transition-colors duration-300"
       style={{
-        background: "var(--bg-primary, #09090B)",
-        color: "var(--color-ink, #FFFFFF)",
+        backgroundColor: "var(--bg-primary, #f2f0eb)",
+        color: "var(--color-ink, #292827)",
       }}
     >
       <Navbar />
+
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {heroSec?.is_active && (
           <Hero
@@ -153,84 +188,160 @@ export default function Home() {
           <Projects />
         </Suspense>
 
+        {/* Dark Feature Band: Deep Lagoon (#0c4243) — Tema-utama.MD Signature */}
+        <section className="py-14 sm:py-20">
+          <div
+            className="rounded-3xl p-8 sm:p-12 relative overflow-hidden text-white shadow-md"
+            style={{
+              backgroundColor: "var(--color-deep-lagoon, #0c4243)",
+            }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
+              <div className="md:col-span-8 space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-[460] bg-white/10 text-white/90 border border-white/20">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Komitmen Teknis & Pelayanan ASN</span>
+                </div>
+                <h3 className="text-2xl sm:text-4xl font-[460] tracking-[-0.025em] leading-tight text-white">
+                  Menghadirkan Solusi Digital yang Bersih, Andal, dan Berdampak Nyata.
+                </h3>
+                <p className="text-sm sm:text-base text-white/80 max-w-2xl font-normal leading-relaxed">
+                  Menggabungkan standar rekayasa perangkat lunak modern dengan akuntabilitas pelayanan publik di Balai Pelatihan Vokasi dan Produktivitas Kendari.
+                </p>
+              </div>
+              <div className="md:col-span-4 flex md:justify-end">
+                <a
+                  href="#contact-form"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-xs sm:text-sm font-[460] transition-all duration-200 cursor-pointer border border-white/40 hover:bg-white hover:text-[#0c4243] text-white shadow-sm"
+                >
+                  <span>Mulai Diskusi</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <Suspense fallback={null}>
           <ContactForm />
         </Suspense>
-
-        {/* Footer / Connect Section */}
-        <footer
-          id="contact"
-          className="py-10 sm:py-14 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs mt-16 sm:mt-24 border-t"
-          style={{
-            borderColor: "var(--border-color)",
-            color: "var(--color-muted)",
-            fontFamily: "var(--font-mono, monospace)",
-            fontSize: "11px",
-          }}
-        >
-          <div className="leading-relaxed flex items-center gap-2">
-            <span
-              className="w-2 h-2 rounded-full animate-pulse"
-              style={{ background: "var(--color-accent)" }}
-            />
-            <span>© {new Date().getFullYear()} Muh Asgar Fatwahyudi • 3°58&apos;43.8&quot;S 122°31&apos;40.9&quot;E KND</span>
-          </div>
-          <div
-            className="flex flex-wrap gap-x-5 gap-y-2"
-            style={{ color: "var(--color-muted)" }}
-          >
-            {socialsSec?.data?.github && (
-              <a
-                href={socialsSec.data.github}
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:opacity-100"
-                style={{ textDecoration: "none", color: "var(--color-muted)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-accent)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
-              >
-                GitHub
-              </a>
-            )}
-            {socialsSec?.data?.linkedin && (
-              <a
-                href={socialsSec.data.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:opacity-100"
-                style={{ textDecoration: "none", color: "var(--color-muted)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-accent)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
-              >
-                LinkedIn
-              </a>
-            )}
-            {socialsSec?.data?.email && (
-              <button
-                type="button"
-                onClick={() =>
-                  handleCopyEmail(socialsSec.data.email as string)
-                }
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  fontSize: "inherit",
-                  color: "var(--color-muted)",
-                }}
-                className="transition-colors hover:opacity-100"
-                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-accent)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
-                title="Klik untuk salin alamat email"
-              >
-                {copiedEmail ? "✓ Email Tersalin!" : "Email"}
-              </button>
-            )}
-          </div>
-        </footer>
       </main>
+
+      {/* Footer: Full-bleed Midnight Wine (#421d24) — Tema-utama.MD Signature */}
+      <footer
+        className="mt-20 border-t transition-colors duration-300"
+        style={{
+          backgroundColor: "var(--color-primary, #421d24)",
+          color: "var(--on-accent, #ffffff)",
+          borderColor: "rgba(255, 255, 255, 0.1)",
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+            {/* Kolom 1: Profil */}
+            <div className="md:col-span-5 space-y-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center font-bold text-xs text-white">
+                  AF
+                </div>
+                <span className="font-semibold text-base tracking-tight text-white">
+                  Muh Asgar Fatwahyudi
+                </span>
+              </div>
+              <p className="text-xs text-white/70 max-w-sm leading-relaxed">
+                Pranata Komputer Ahli Pertama di BPVP Kendari, Kementerian Ketenagakerjaan RI. Fokus pada Web Development, Database Architecture, dan Digital Transformation.
+              </p>
+              <div className="text-[11px] text-white/50 font-mono pt-1">
+                3°58&apos;43.8&quot;S 122°31&apos;40.9&quot;E • KENDARI, INDONESIA
+              </div>
+            </div>
+
+            {/* Kolom 2: Tautan Navigasi */}
+            <div className="md:col-span-3 space-y-3">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
+                Navigasi
+              </h4>
+              <ul className="space-y-2 text-xs text-white/70">
+                <li>
+                  <a href="#about" className="hover:text-white transition-colors">
+                    Tentang & Institusi
+                  </a>
+                </li>
+                <li>
+                  <a href="#experience" className="hover:text-white transition-colors">
+                    Pengalaman Kerja
+                  </a>
+                </li>
+                <li>
+                  <a href="#projects" className="hover:text-white transition-colors">
+                    Proyek Terpilih
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact-form" className="hover:text-white transition-colors">
+                    Kontak & Diskusi
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Kolom 3: Tautan Institusi & Jejaring */}
+            <div className="md:col-span-4 space-y-3">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
+                Jejaring & Komunikasi
+              </h4>
+              <div className="space-y-2 text-xs text-white/70">
+                <div className="flex items-center gap-2">
+                  <Building2 className="w-3.5 h-3.5 text-white/50" />
+                  <span>BPVP Kendari — Kemnaker RI</span>
+                </div>
+                {socialsSec?.data?.github && (
+                  <a
+                    href={socialsSec.data.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:text-white transition-colors"
+                  >
+                    <GithubIcon className="w-3.5 h-3.5" />
+                    <span>GitHub: Asgarnet11</span>
+                  </a>
+                )}
+                {socialsSec?.data?.linkedin && (
+                  <a
+                    href={socialsSec.data.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 hover:text-white transition-colors"
+                  >
+                    <LinkedinIcon className="w-3.5 h-3.5" />
+                    <span>LinkedIn: Muh Asgar Fatwahyudi</span>
+                  </a>
+                )}
+                {socialsSec?.data?.email && (
+                  <button
+                    type="button"
+                    onClick={() => handleCopyEmail(socialsSec.data.email as string)}
+                    className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer text-left"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>{copiedEmail ? "✓ afatwahyudi@gmail.com Tersalin!" : "afatwahyudi@gmail.com"}</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50 font-mono">
+            <div>
+              © {new Date().getFullYear()} Muh Asgar Fatwahyudi. Hak Cipta Dilindungi.
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Sistem Operasional Aktif</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
