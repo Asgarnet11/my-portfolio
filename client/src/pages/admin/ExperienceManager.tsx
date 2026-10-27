@@ -251,7 +251,7 @@ export default function ExperienceManager() {
               </label>
               <input
                 type="text"
-                placeholder="Pranata Komputer Ahli Pertama"
+                placeholder="Pranata Komputer (Magang Hub)"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 required
@@ -268,7 +268,7 @@ export default function ExperienceManager() {
               </label>
               <input
                 type="text"
-                placeholder="BPVP Kendari - Kemnaker RI"
+                placeholder="BPVP Kendari"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 required

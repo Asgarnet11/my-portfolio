@@ -49,7 +49,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
             <span className="tracking-tight">
-              {data?.statusBadge || "Pranata Komputer BPVP Kendari • Kemnaker RI"}
+              {data?.statusBadge || "Magang Hub BPVP Kendari • Prakom"}
             </span>
           </motion.div>
 
@@ -81,7 +81,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
             style={{ color: "var(--color-muted)" }}
           >
             {subtitle ||
-              "Muh Asgar Fatwahyudi — Pranata Komputer Ahli Pertama di BPVP Kendari. Berfokus pada rekayasa sistem informasi, keandalan API, tata kelola database, dan digitalisasi layanan publik."}
+              "Muh Asgar Fatwahyudi — Web Developer & peserta Magang Hub sebagai Pranata Komputer (Prakom) di BPVP Kendari. Berfokus pada rekayasa sistem informasi, keandalan API, tata kelola database, dan antarmuka web modern."}
           </motion.p>
 
           {/* Institutional Trust Pills */}
@@ -100,7 +100,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
               }}
             >
               <Building2 className="w-3.5 h-3.5" style={{ color: "var(--color-accent)" }} />
-              BPVP Kendari
+              Magang Hub BPVP Kendari
             </span>
             <span
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-normal"
@@ -122,7 +122,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
               }}
             >
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              ASN Kemnaker RI
+              Prakom (Magang Hub)
             </span>
           </motion.div>
 
@@ -212,7 +212,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
                     Muh Asgar Fatwahyudi
                   </h3>
                   <p className="text-xs mt-1" style={{ color: "var(--color-muted)" }}>
-                    Pranata Komputer BPVP Kendari
+                    Prakom • Magang Hub BPVP Kendari
                   </p>
                 </div>
               )}
@@ -243,7 +243,7 @@ export default function Hero({ title, subtitle, data }: HeroProps) {
                   BPVP Kendari
                 </div>
                 <div className="text-[10px] truncate" style={{ color: "var(--color-muted)" }}>
-                  Kemnaker Republik Indonesia
+                  Magang Hub • Prakom
                 </div>
               </div>
             </motion.div>

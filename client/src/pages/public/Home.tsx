@@ -73,7 +73,7 @@ const DEFAULT_SECTIONS: Record<string, Section> = {
     data: {
       avatarUrl:
         "https://relxttjsqsvhesreewha.supabase.co/storage/v1/object/public/portfolio-assets/projects/1789713386781-953399969.webp",
-      statusBadge: "Pranata Komputer BPVP Kendari • Kemnaker RI",
+      statusBadge: "Magang Hub BPVP Kendari • Prakom",
       ctaPrimaryLink: "#projects",
       ctaPrimaryText: "Lihat Proyek & Karya",
       ctaSecondaryLink: "#contact-form",
@@ -85,9 +85,9 @@ const DEFAULT_SECTIONS: Record<string, Section> = {
     id: "default-about",
     key: "about",
     title: "Mewujudkan Sistem Informasi yang Terstruktur & Andal",
-    subtitle: "Dedikasi rekayasa perangkat lunak untuk digitalisasi layanan vokasi.",
+    subtitle: "Dedikasi rekayasa perangkat lunak dan manajemen data sistem informasi.",
     data: {
-      bio: "Saya adalah lulusan Sistem Informasi yang berfokus pada Web Development, Arsitektur Sistem, dan Pengelolaan Database. Saat ini saya bertugas sebagai Pranata Komputer di BPVP Kendari (Kementerian Ketenagakerjaan Republik Indonesia), merancang dan memelihara aplikasi web, dashboard monitoring, serta integrasi API guna mendukung efisiensi operasional dan digitalisasi proses kerja.\n\nSaya memiliki keahlian teknis dalam PHP, Laravel, TypeScript, React, Next.js, Node.js, Express, PostgreSQL, MySQL, dan Tailwind CSS. Pengalaman lintas sektor memperkuat dedikasi saya dalam ketelitian kode, keandalan sistem, dan pemecahan masalah yang berorientasi pada kemudahan pengguna.",
+      bio: "Saya adalah lulusan Sistem Informasi yang berfokus pada Web Development, Arsitektur Sistem, dan Pengelolaan Database. Saat ini saya menjalani magang hub sebagai Pranata Komputer (Prakom) di BPVP Kendari, berpartisipasi dalam perancangan dan pemeliharaan aplikasi web, dashboard monitoring, serta integrasi API guna mendukung digitalisasi proses kerja.\n\nSaya memiliki keahlian teknis dalam PHP, Laravel, TypeScript, React, Next.js, Node.js, Express, PostgreSQL, MySQL, dan Tailwind CSS. Pengalaman ini memperkuat dedikasi saya dalam ketelitian kode, keandalan sistem, dan pemecahan masalah yang berorientasi pada kemudahan pengguna.",
       skills: [
         "TypeScript",
         "React",
@@ -200,13 +200,13 @@ export default function Home() {
               <div className="md:col-span-8 space-y-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-[460] bg-white/10 text-white/90 border border-white/20">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Komitmen Teknis & Pelayanan ASN</span>
+                  <span>Komitmen Teknis & Rekayasa Perangkat Lunak</span>
                 </div>
                 <h3 className="text-2xl sm:text-4xl font-[460] tracking-[-0.025em] leading-tight text-white">
                   Menghadirkan Solusi Digital yang Bersih, Andal, dan Berdampak Nyata.
                 </h3>
                 <p className="text-sm sm:text-base text-white/80 max-w-2xl font-normal leading-relaxed">
-                  Menggabungkan standar rekayasa perangkat lunak modern dengan akuntabilitas pelayanan publik di Balai Pelatihan Vokasi dan Produktivitas Kendari.
+                  Menggabungkan standar rekayasa perangkat lunak modern untuk menghadirkan solusi digital yang aplikatif dan mudah digunakan di lingkungan BPVP Kendari.
                 </p>
               </div>
               <div className="md:col-span-4 flex md:justify-end">
@@ -249,7 +249,7 @@ export default function Home() {
                 </span>
               </div>
               <p className="text-xs text-white/70 max-w-sm leading-relaxed">
-                Pranata Komputer Ahli Pertama di BPVP Kendari, Kementerian Ketenagakerjaan RI. Fokus pada Web Development, Database Architecture, dan Digital Transformation.
+                Web Developer & peserta Magang Hub sebagai Pranata Komputer (Prakom) di BPVP Kendari. Fokus pada Web Development, Database Architecture, dan Digital Transformation.
               </p>
               <div className="text-[11px] text-white/50 font-mono pt-1">
                 3°58&apos;43.8&quot;S 122°31&apos;40.9&quot;E • KENDARI, INDONESIA
@@ -293,7 +293,7 @@ export default function Home() {
               <div className="space-y-2 text-xs text-white/70">
                 <div className="flex items-center gap-2">
                   <Building2 className="w-3.5 h-3.5 text-white/50" />
-                  <span>BPVP Kendari — Kemnaker RI</span>
+                  <span>BPVP Kendari (Magang Hub Prakom)</span>
                 </div>
                 {socialsSec?.data?.github && (
                   <a

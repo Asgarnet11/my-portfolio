@@ -106,10 +106,10 @@ export default function About({ title, subtitle, data }: AboutProps) {
                 </div>
                 <div>
                   <div className="text-xs font-semibold" style={{ color: "var(--color-ink)" }}>
-                    BPVP Kendari • Kemnaker RI
+                    BPVP Kendari
                   </div>
                   <div className="text-xs mt-0.5 leading-relaxed" style={{ color: "var(--color-muted)" }}>
-                    Balai Pelatihan Vokasi dan Produktivitas Kendari — Ditjen Binalavotas.
+                    Magang Hub sebagai Pranata Komputer (Prakom).
                   </div>
                 </div>
               </div>
@@ -154,7 +154,7 @@ export default function About({ title, subtitle, data }: AboutProps) {
             >
               <p>
                 {data?.bio ||
-                  "Saya adalah lulusan Sistem Informasi yang berfokus pada Web Development, Arsitektur Sistem, dan Pengelolaan Database. Saat ini saya bertugas sebagai Pranata Komputer di BPVP Kendari (Kementerian Ketenagakerjaan Republik Indonesia), merancang dan memelihara aplikasi web, dashboard monitoring, serta integrasi API guna mendukung efisiensi operasional dan digitalisasi layanan pelatihan vokasi."}
+                  "Saya adalah lulusan Sistem Informasi yang berfokus pada Web Development, Arsitektur Sistem, dan Pengelolaan Database. Saat ini saya menjalani magang hub sebagai Pranata Komputer (Prakom) di BPVP Kendari, berpartisipasi dalam perancangan dan pemeliharaan aplikasi web, dashboard monitoring, serta integrasi API guna mendukung digitalisasi proses kerja."}
               </p>
             </motion.div>
 
