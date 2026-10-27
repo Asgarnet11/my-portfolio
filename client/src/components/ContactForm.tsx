@@ -14,7 +14,7 @@ export default function ContactForm() {
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
-    navigator.clipboard.writeText("asgarfatwahyudi@gmail.com");
+    navigator.clipboard.writeText("afatwahyudi@gmail.com");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -38,6 +38,12 @@ export default function ContactForm() {
     }
   };
 
+  const inputStyle = {
+    background: "var(--bg-surface-elevated)",
+    borderColor: "var(--border-color)",
+    color: "var(--color-ink)",
+  };
+
   return (
     <section
       id="contact-form"
@@ -48,11 +54,11 @@ export default function ContactForm() {
     >
       {/* Bento Container */}
       <div
-        className="rounded-[20px] p-6 sm:p-10 transition-all duration-300 relative overflow-hidden"
+        className="rounded-[20px] p-6 sm:p-10 transition-all duration-300 relative overflow-hidden border"
         style={{
-          background: "var(--color-surface, #1A1B1E)",
-          border: "1px solid var(--color-border, #27272A)",
-          boxShadow: "0 12px 32px -4px rgba(0, 0, 0, 0.7)",
+          background: "var(--bg-surface)",
+          borderColor: "var(--border-color)",
+          boxShadow: "var(--box-shadow)",
         }}
       >
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
@@ -61,53 +67,61 @@ export default function ContactForm() {
             <div
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium"
               style={{
-                background: "rgba(0, 229, 89, 0.1)",
-                border: "1px solid rgba(0, 229, 89, 0.3)",
-                color: "var(--color-primary, #00E559)",
+                background: "var(--badge-bg)",
+                border: "1px solid var(--badge-border)",
+                color: "var(--color-accent)",
               }}
             >
-              <MessageSquare className="w-3 h-3 text-[#00E559]" />
-              INQUIRY
+              <MessageSquare className="w-3 h-3" />
+              INQUIRY & COLLABORATION
             </div>
             <h2
-              className="text-2xl sm:text-3xl font-medium tracking-tight text-white"
+              className="text-2xl sm:text-3xl font-semibold tracking-tight"
               style={{
                 fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+                color: "var(--color-ink)",
               }}
             >
               Let&apos;s Connect
             </h2>
-            <p className="text-sm text-zinc-300 font-normal leading-relaxed">
-              Tertarik berdiskusi mengenai proyek kolaborasi, rekayasa infrastruktur, arsitektur WebGL/3D, atau peluang baru? Kirimkan pesan melalui form ini.
+            <p
+              className="text-sm font-normal leading-relaxed"
+              style={{ color: "var(--color-muted)" }}
+            >
+              Tertarik mendiskusikan peluang kerja sama proyek, konsultasi digitalisasi sistem, atau rekayasa aplikasi web? Kirimkan pesan melalui formulir ini.
             </p>
 
             {/* Direct Email Card */}
             <div className="pt-4 space-y-2">
-              <span className="block text-xs font-mono text-zinc-400 uppercase tracking-wider">
+              <span
+                className="block text-xs font-mono uppercase tracking-wider"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Direct Channel
               </span>
               <button
                 type="button"
                 onClick={copyEmail}
-                className="flex items-center justify-between w-full p-3 rounded-xl transition-all duration-200 cursor-pointer hover:border-zinc-700 active:scale-[0.99]"
+                className="flex items-center justify-between w-full p-3 rounded-xl transition-all duration-200 cursor-pointer border active:scale-[0.99]"
                 style={{
-                  background: "#09090B",
-                  border: "1px solid var(--color-border, #27272A)",
-                  color: "#FFFFFF",
+                  background: "var(--bg-surface-elevated)",
+                  borderColor: "var(--border-color)",
+                  color: "var(--color-ink)",
                 }}
                 title="Klik untuk menyalin alamat email"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <Mail className="w-4 h-4 text-[#38BDF8] shrink-0" />
-                  <span className="truncate text-xs sm:text-sm font-mono text-zinc-300">
-                    asgarfatwahyudi@gmail.com
+                  <Mail className="w-4 h-4 shrink-0" style={{ color: "var(--color-accent)" }} />
+                  <span className="truncate text-xs sm:text-sm font-mono font-medium">
+                    afatwahyudi@gmail.com
                   </span>
                 </div>
                 <span
-                  className="flex items-center gap-1 text-[11px] font-mono shrink-0 font-medium px-2 py-0.5 rounded-md transition-all"
+                  className="flex items-center gap-1 text-[11px] font-mono shrink-0 font-medium px-2.5 py-1 rounded-md transition-all border"
                   style={{
-                    background: copied ? "#00E559" : "rgba(255, 255, 255, 0.08)",
-                    color: copied ? "#09090B" : "#D4D4D8",
+                    background: copied ? "var(--color-accent)" : "transparent",
+                    borderColor: "var(--border-color)",
+                    color: copied ? "var(--on-accent)" : "var(--color-muted)",
                   }}
                 >
                   {copied ? (
@@ -128,118 +142,161 @@ export default function ContactForm() {
           <div className="md:col-span-7 min-w-0">
             {success ? (
               <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-6 rounded-2xl space-y-3 bg-[#00E559]/10 border border-[#00E559]/30"
+                className="p-8 rounded-2xl flex flex-col items-center justify-center text-center space-y-3 min-h-[320px] border"
+                style={{
+                  background: "var(--bg-surface-elevated)",
+                  borderColor: "var(--border-color)",
+                }}
               >
-                <div className="flex items-center gap-2 text-sm text-[#00E559] font-medium">
-                  <CheckCircle2 className="w-5 h-5 shrink-0" />
-                  Pesan Anda berhasil dikirim!
+                <div
+                  className="p-3 rounded-full"
+                  style={{
+                    background: "var(--badge-bg)",
+                    color: "var(--color-accent)",
+                  }}
+                >
+                  <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <p className="text-xs text-zinc-300 leading-relaxed font-normal">
-                  Terima kasih sudah menghubungi. Saya akan meninjau dan merespons pesan Anda secepatnya.
+                <h3
+                  className="text-lg font-semibold"
+                  style={{ color: "var(--color-ink)" }}
+                >
+                  Pesan Berhasil Terkirim!
+                </h3>
+                <p
+                  className="text-sm max-w-sm"
+                  style={{ color: "var(--color-muted)" }}
+                >
+                  Terima kasih telah menghubungi saya. Pesan Anda telah tersimpan dan akan segera saya tanggapi.
                 </p>
                 <button
+                  type="button"
                   onClick={() => setSuccess(false)}
-                  className="text-xs text-[#00E559] underline underline-offset-4 hover:opacity-80 pt-2 cursor-pointer font-medium"
+                  className="mt-4 px-5 py-2 rounded-xl text-xs font-mono font-semibold transition-all border cursor-pointer"
+                  style={{
+                    background: "var(--bg-surface)",
+                    borderColor: "var(--border-color)",
+                    color: "var(--color-ink)",
+                  }}
                 >
-                  Kirim pesan lain
+                  Kirim Pesan Lain
                 </button>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 {error && (
-                  <div className="p-3.5 rounded-xl text-xs bg-red-950/60 border border-red-800 text-red-300">
+                  <div
+                    className="p-3.5 rounded-xl text-xs border"
+                    style={{
+                      background: "var(--error-bg)",
+                      borderColor: "var(--error-text)",
+                      color: "var(--error-text)",
+                    }}
+                  >
                     {error}
                   </div>
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-mono text-zinc-400">
-                      Nama
+                    <label
+                      htmlFor="contact-name"
+                      className="block text-xs font-mono"
+                      style={{ color: "var(--color-muted)" }}
+                    >
+                      Nama Lengkap
                     </label>
                     <input
+                      id="contact-name"
                       type="text"
                       required
-                      placeholder="Nama Lengkap"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 text-white placeholder-zinc-600 focus:border-[#00E559]"
-                      style={{
-                        background: "#09090B",
-                        border: "1px solid var(--color-border, #27272A)",
-                      }}
+                      placeholder="e.g. John Doe"
+                      className="w-full px-4 py-2.5 rounded-xl text-xs sm:text-sm border focus:outline-none transition-all"
+                      style={inputStyle}
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-mono text-zinc-400">
-                      Email
+                    <label
+                      htmlFor="contact-email"
+                      className="block text-xs font-mono"
+                      style={{ color: "var(--color-muted)" }}
+                    >
+                      Alamat Email
                     </label>
                     <input
+                      id="contact-email"
                       type="email"
                       required
-                      placeholder="email@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 text-white placeholder-zinc-600 focus:border-[#00E559]"
-                      style={{
-                        background: "#09090B",
-                        border: "1px solid var(--color-border, #27272A)",
-                      }}
+                      placeholder="e.g. john@example.com"
+                      className="w-full px-4 py-2.5 rounded-xl text-xs sm:text-sm border focus:outline-none transition-all"
+                      style={inputStyle}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-mono text-zinc-400">
-                    Subjek
+                  <label
+                    htmlFor="contact-subject"
+                    className="block text-xs font-mono"
+                    style={{ color: "var(--color-muted)" }}
+                  >
+                    Subjek Diskusi
                   </label>
                   <input
+                    id="contact-subject"
                     type="text"
-                    required
-                    placeholder="Topik pembahasan atau penawaran"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 text-white placeholder-zinc-600 focus:border-[#00E559]"
-                    style={{
-                      background: "#09090B",
-                      border: "1px solid var(--color-border, #27272A)",
-                    }}
+                    placeholder="e.g. Peluang Kolaborasi / Proyek Website"
+                    className="w-full px-4 py-2.5 rounded-xl text-xs sm:text-sm border focus:outline-none transition-all"
+                    style={inputStyle}
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-mono text-zinc-400">
-                    Pesan
+                  <label
+                    htmlFor="contact-message"
+                    className="block text-xs font-mono"
+                    style={{ color: "var(--color-muted)" }}
+                  >
+                    Isi Pesan
                   </label>
                   <textarea
+                    id="contact-message"
                     required
                     rows={4}
-                    placeholder="Tuliskan pesan Anda secara detail..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 text-white placeholder-zinc-600 focus:border-[#00E559] resize-none"
-                    style={{
-                      background: "#09090B",
-                      border: "1px solid var(--color-border, #27272A)",
-                    }}
+                    placeholder="Tuliskan pesan atau detail kebutuhan Anda..."
+                    className="w-full px-4 py-2.5 rounded-xl text-xs sm:text-sm border focus:outline-none transition-all resize-y"
+                    style={inputStyle}
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 px-5 rounded-[20px] text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer disabled:opacity-50"
+                  className="w-full py-3 px-6 rounded-2xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 disabled:opacity-50 shadow-md"
                   style={{
-                    background: "var(--color-primary, #00E559)",
-                    color: "#09090B",
-                    boxShadow: "0 0 20px rgba(0, 229, 89, 0.25)",
+                    background: "var(--color-primary)",
+                    color: "var(--on-accent)",
                   }}
                 >
-                  <Send className="w-4 h-4" />
-                  <span>{loading ? "Mengirim..." : "Kirim Pesan"}</span>
+                  {loading ? (
+                    <span>Mengirimkan pesan...</span>
+                  ) : (
+                    <>
+                      <span>Kirim Pesan Sekarang</span>
+                      <Send className="w-3.5 h-3.5" />
+                    </>
+                  )}
                 </button>
               </form>
             )}

@@ -1,5 +1,5 @@
 import { motion, type Variants } from "framer-motion";
-import { Terminal, Sparkles } from "lucide-react";
+import { Terminal, Sparkles, Building, Database } from "lucide-react";
 
 interface AboutProps {
   title?: string;
@@ -38,18 +38,18 @@ export default function About({ title, subtitle, data }: AboutProps) {
     >
       {/* Bento Grid Container */}
       <div
-        className="rounded-[20px] p-6 sm:p-10 transition-all duration-300 relative overflow-hidden"
+        className="rounded-[20px] p-6 sm:p-10 transition-all duration-300 relative overflow-hidden border"
         style={{
-          background: "var(--color-surface, #1A1B1E)",
-          border: "1px solid var(--color-border, #27272A)",
-          boxShadow: "0 12px 32px -4px rgba(0, 0, 0, 0.7)",
+          background: "var(--bg-surface)",
+          borderColor: "var(--border-color)",
+          boxShadow: "var(--box-shadow)",
         }}
       >
         {/* Subtle Ambient Background Gradient */}
         <div
           className="absolute top-0 right-0 w-96 h-96 pointer-events-none opacity-20 blur-3xl -z-10"
           style={{
-            background: "radial-gradient(circle, rgba(0, 229, 89, 0.4) 0%, rgba(56, 189, 248, 0.2) 60%, transparent 80%)",
+            background: "var(--card-glow)",
           }}
         />
 
@@ -62,13 +62,13 @@ export default function About({ title, subtitle, data }: AboutProps) {
               viewport={{ once: true }}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium"
               style={{
-                background: "rgba(0, 229, 89, 0.1)",
-                border: "1px solid rgba(0, 229, 89, 0.3)",
-                color: "var(--color-primary, #00E559)",
+                background: "var(--badge-bg)",
+                border: "1px solid var(--badge-border)",
+                color: "var(--color-accent)",
               }}
             >
-              <Sparkles className="w-3 h-3 text-[#00E559]" />
-              BACKGROUND
+              <Sparkles className="w-3 h-3" />
+              BACKGROUND & PROFILE
             </motion.div>
 
             <motion.h2
@@ -76,13 +76,14 @@ export default function About({ title, subtitle, data }: AboutProps) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.35, delay: 0.05 }}
-              className="text-2xl sm:text-3xl font-medium tracking-tight text-white"
+              className="text-2xl sm:text-3xl font-semibold tracking-tight"
               style={{
                 fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+                color: "var(--color-ink)",
                 lineHeight: 1.2,
               }}
             >
-              {title || "Architecting Modern Systems"}
+              {title || "Architecting Dependable Software"}
             </motion.h2>
 
             {subtitle && (
@@ -91,44 +92,71 @@ export default function About({ title, subtitle, data }: AboutProps) {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1, duration: 0.3 }}
-                className="text-sm text-zinc-400 leading-relaxed font-normal"
+                className="text-sm leading-relaxed font-normal"
+                style={{ color: "var(--color-muted)" }}
               >
                 {subtitle}
               </motion.p>
             )}
 
-            {/* AI Workflow Quick Metrics */}
+            {/* Professional Highlights */}
             <div className="pt-2 hidden sm:grid grid-cols-2 gap-3 text-left font-mono">
-              <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
-                <span className="text-[10px] text-zinc-500 block">PRECISION</span>
-                <span className="text-xs font-semibold text-white">Production 99.9%</span>
+              <div
+                className="p-3 rounded-xl border"
+                style={{
+                  background: "var(--bg-surface-elevated)",
+                  borderColor: "var(--border-color)",
+                }}
+              >
+                <div className="flex items-center gap-1.5 text-[10px]" style={{ color: "var(--color-muted)" }}>
+                  <Building className="w-3 h-3" />
+                  INSTITUSI
+                </div>
+                <span className="text-xs font-semibold block mt-0.5" style={{ color: "var(--color-ink)" }}>
+                  BPVP Kendari
+                </span>
               </div>
-              <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
-                <span className="text-[10px] text-zinc-500 block">PARADIGM</span>
-                <span className="text-xs font-semibold text-[#00E559]">Event-Driven</span>
+              <div
+                className="p-3 rounded-xl border"
+                style={{
+                  background: "var(--bg-surface-elevated)",
+                  borderColor: "var(--border-color)",
+                }}
+              >
+                <div className="flex items-center gap-1.5 text-[10px]" style={{ color: "var(--color-muted)" }}>
+                  <Database className="w-3 h-3" />
+                  KEAHLIAN
+                </div>
+                <span className="text-xs font-semibold block mt-0.5" style={{ color: "var(--color-accent)" }}>
+                  Full-Stack / DB
+                </span>
               </div>
             </div>
           </div>
 
           {/* Kolom Kanan: Bio & Core Technologies */}
-          <div className="md:col-span-8 space-y-8 min-w-0">
+          <div className="md:col-span-8 space-y-7 min-w-0">
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4 }}
-              className="text-base text-zinc-300 leading-relaxed font-normal break-words whitespace-pre-line"
+              className="text-base leading-relaxed font-normal break-words whitespace-pre-line"
+              style={{ color: "var(--color-ink)" }}
             >
               {data?.bio ||
-                "Specialized in constructing dependable backend architectures, high-performance web applications, and immersive digital interfaces. Focused on code correctness, clean domain design, and sub-second interaction latency."}
+                "Saya adalah lulusan Sistem Informasi yang memiliki ketertarikan kuat pada Web Development, Sistem Informasi, dan Data Management. Saat ini saya bekerja sebagai Pranata Komputer di BPVP Kendari, dengan pengalaman dalam mengembangkan dan memelihara sistem informasi, membangun dashboard monitoring, mengelola database dan API, serta menyelesaikan berbagai permasalahan teknis untuk mendukung digitalisasi proses kerja."}
             </motion.p>
 
             {data?.skills && data.skills.length > 0 && (
-              <div className="space-y-4 pt-2">
+              <div className="space-y-3.5 pt-2">
                 <div className="flex items-center gap-2">
-                  <Terminal className="w-3.5 h-3.5 text-[#38BDF8]" />
-                  <span className="text-xs font-mono font-medium text-zinc-400 uppercase tracking-wider">
-                    Core Technologies & Tools
+                  <Terminal className="w-3.5 h-3.5" style={{ color: "var(--color-accent)" }} />
+                  <span
+                    className="text-xs font-mono font-medium uppercase tracking-wider"
+                    style={{ color: "var(--color-muted)" }}
+                  >
+                    Core Technologies & Skills
                   </span>
                 </div>
 
@@ -145,13 +173,12 @@ export default function About({ title, subtitle, data }: AboutProps) {
                       variants={skillItem}
                       whileHover={{
                         scale: 1.04,
-                        borderColor: "rgba(0, 229, 89, 0.6)",
-                        color: "#00E559",
                       }}
-                      className="px-3.5 py-1.5 rounded-full text-xs font-mono font-medium text-zinc-300 transition-all duration-200 cursor-default"
+                      className="px-3.5 py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-200 cursor-default border shadow-sm"
                       style={{
-                        background: "rgba(10, 10, 12, 0.6)",
-                        border: "1px solid var(--color-border, #27272A)",
+                        background: "var(--bg-surface-elevated)",
+                        borderColor: "var(--border-color)",
+                        color: "var(--color-ink)",
                       }}
                     >
                       {skill}

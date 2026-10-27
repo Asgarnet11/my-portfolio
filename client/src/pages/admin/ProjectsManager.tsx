@@ -191,26 +191,46 @@ export default function ProjectsManager() {
     }
   };
 
+  const inputStyle = {
+    backgroundColor: "var(--bg-surface-elevated)",
+    borderColor: "var(--border-color)",
+    color: "var(--color-ink)",
+  };
+
   const inputClasses =
-    "w-full px-3 py-2 text-xs sm:text-sm bg-[#FFF6EC] border-2 border-[#3A2E3D] focus:outline-none focus:shadow-[3px_3px_0_#3A2E3D] transition-shadow";
+    "w-full px-3.5 py-2 text-xs sm:text-sm rounded-xl border transition-all focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]";
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-4 border-[#3A2E3D] bg-[#C9B8FF] px-4 sm:px-6 py-4 shadow-[6px_6px_0_#3A2E3D]">
+      {/* Header Banner */}
+      <div
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl border shadow-xs"
+        style={{
+          backgroundColor: "var(--bg-surface)",
+          borderColor: "var(--border-color)",
+        }}
+      >
         <div>
-          <h1 className="text-lg sm:text-xl font-bold tracking-tight">
+          <h1
+            className="text-xl sm:text-2xl font-semibold tracking-tight"
+            style={{ color: "var(--color-ink)" }}
+          >
             Projects Manager
           </h1>
-          <p className="text-[10px] sm:text-xs mt-1 opacity-80">
+          <p className="text-xs mt-1" style={{ color: "var(--color-muted)" }}>
             Kelola daftar portofolio karya, thumbnail, tech stack, dan tautan publikasi.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => fetchProjects()}
-            className="flex items-center gap-1.5 px-3 py-2 bg-[#FFF6EC] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] text-[10px] sm:text-xs hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none transition-transform shrink-0"
-            title="Muat ulang"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs rounded-xl border transition-all cursor-pointer font-medium hover:opacity-80 shrink-0"
+            style={{
+              backgroundColor: "var(--bg-surface-elevated)",
+              borderColor: "var(--border-color)",
+              color: "var(--color-ink)",
+            }}
+            title="Muat ulang data"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
@@ -223,7 +243,11 @@ export default function ProjectsManager() {
                 setIsFormOpen(true);
               }
             }}
-            className="flex items-center gap-2 px-3.5 py-2 bg-[#FFD866] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] text-[10px] sm:text-xs hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none transition-transform shrink-0 font-bold"
+            className="flex items-center gap-2 px-4 py-2 text-xs rounded-xl transition-all cursor-pointer font-medium shadow-xs hover:opacity-95 shrink-0"
+            style={{
+              backgroundColor: "var(--color-primary)",
+              color: "var(--on-accent)",
+            }}
           >
             <Plus className="w-3.5 h-3.5" />
             <span>{isFormOpen ? "Tutup Form" : "Tambah Proyek"}</span>
@@ -233,9 +257,16 @@ export default function ProjectsManager() {
 
       {/* Toast Alert */}
       {toast && (
-        <div className="p-3 bg-[#B8E6D5] border-4 border-[#3A2E3D] text-[#3A2E3D] text-[10px] sm:text-xs shadow-[4px_4px_0_#3A2E3D] flex items-center gap-2">
-          <Check className="w-4 h-4 text-[#2C6B47]" />
-          <span>{toast}</span>
+        <div
+          className="p-4 rounded-xl border text-xs shadow-xs flex items-center gap-2.5 animate-fadeIn"
+          style={{
+            backgroundColor: "var(--bg-surface-elevated)",
+            borderColor: "var(--color-accent)",
+            color: "var(--color-ink)",
+          }}
+        >
+          <Check className="w-4 h-4 shrink-0" style={{ color: "var(--color-accent)" }} />
+          <span className="font-medium">{toast}</span>
         </div>
       )}
 
@@ -243,16 +274,31 @@ export default function ProjectsManager() {
       {isFormOpen && (
         <form
           onSubmit={handleSubmit}
-          className="p-4 sm:p-6 border-4 border-[#3A2E3D] bg-white shadow-[6px_6px_0_#3A2E3D] space-y-5"
+          className="p-5 sm:p-7 rounded-2xl border space-y-5 shadow-xs"
+          style={{
+            backgroundColor: "var(--bg-surface)",
+            borderColor: "var(--border-color)",
+          }}
         >
-          <div className="flex justify-between items-center border-b-2 border-[#3A2E3D] pb-3">
-            <h2 className="text-xs sm:text-sm uppercase tracking-wide font-bold">
+          <div
+            className="flex justify-between items-center border-b pb-3"
+            style={{ borderColor: "var(--border-color)" }}
+          >
+            <h2
+              className="text-sm font-semibold tracking-tight"
+              style={{ color: "var(--color-ink)" }}
+            >
               {editingId ? "Edit Data Proyek" : "Tambah Proyek Baru"}
             </h2>
             <button
               type="button"
               onClick={resetForm}
-              className="text-[10px] px-2 py-1 bg-[#FFB4C6] border-2 border-[#3A2E3D]"
+              className="text-xs px-3 py-1 rounded-lg border cursor-pointer transition-colors"
+              style={{
+                backgroundColor: "var(--bg-surface-elevated)",
+                borderColor: "var(--border-color)",
+                color: "var(--color-muted)",
+              }}
             >
               Batal
             </button>
@@ -260,7 +306,10 @@ export default function ProjectsManager() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Judul Proyek
               </label>
               <input
@@ -278,10 +327,14 @@ export default function ProjectsManager() {
                 }}
                 required
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Slug URL
               </label>
               <input
@@ -290,12 +343,16 @@ export default function ProjectsManager() {
                 onChange={(e) => setSlug(e.target.value)}
                 required
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+            <label
+              className="block text-xs font-mono mb-1.5"
+              style={{ color: "var(--color-muted)" }}
+            >
               Ringkasan Singkat / Summary
             </label>
             <textarea
@@ -304,12 +361,16 @@ export default function ProjectsManager() {
               required
               rows={2}
               className={inputClasses}
+              style={inputStyle}
             />
           </div>
 
           {/* Upload & Cover Image Section */}
           <div className="space-y-2">
-            <label className="block text-[10px] sm:text-xs opacity-70">
+            <label
+              className="block text-xs font-mono"
+              style={{ color: "var(--color-muted)" }}
+            >
               Cover Image / Thumbnail Proyek
             </label>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
@@ -323,31 +384,45 @@ export default function ProjectsManager() {
               />
               <label
                 htmlFor="project-cover-file"
-                className={`flex items-center gap-2 px-3 py-2 bg-[#B8E6D5] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] text-[10px] sm:text-xs cursor-pointer hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] transition-transform shrink-0 ${
-                  uploading ? "opacity-50 pointer-events-none" : ""
+                className={`flex items-center gap-2 px-3.5 py-2 text-xs rounded-xl border cursor-pointer transition-all shrink-0 font-medium ${
+                  uploading ? "opacity-50 pointer-events-none" : "hover:opacity-90"
                 }`}
+                style={{
+                  backgroundColor: "var(--badge-bg)",
+                  borderColor: "var(--badge-border)",
+                  color: "var(--color-accent)",
+                }}
               >
                 <Upload className="w-3.5 h-3.5" />
                 <span>{uploading ? "Mengunggah..." : "Upload File Gambar"}</span>
               </label>
 
-              <span className="text-[10px] sm:text-xs opacity-60">
+              <span
+                className="text-xs font-mono"
+                style={{ color: "var(--color-muted)" }}
+              >
                 atau URL:
               </span>
 
               <input
                 type="text"
-                placeholder="https://... / gambar dari internet"
+                placeholder="https://... atau paste link gambar"
                 value={coverImage}
                 onChange={(e) => setCoverImage(e.target.value)}
                 className={`flex-1 ${inputClasses}`}
+                style={inputStyle}
               />
 
               {coverImage && (
                 <button
                   type="button"
                   onClick={() => setCoverImage("")}
-                  className="p-2 bg-[#FFB4C6] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform shrink-0"
+                  className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80 shrink-0"
+                  style={{
+                    backgroundColor: "var(--bg-surface-elevated)",
+                    borderColor: "var(--border-color)",
+                    color: "var(--color-muted)",
+                  }}
                   title="Hapus gambar"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -356,7 +431,13 @@ export default function ProjectsManager() {
             </div>
 
             {coverImage && (
-              <div className="relative w-40 sm:w-48 h-24 sm:h-28 border-2 border-[#3A2E3D] bg-[#FFF6EC] overflow-hidden mt-2 shadow-[2px_2px_0_#3A2E3D]">
+              <div
+                className="relative w-44 sm:w-52 h-28 sm:h-32 rounded-xl border overflow-hidden mt-2 shadow-xs"
+                style={{
+                  borderColor: "var(--border-color)",
+                  backgroundColor: "var(--bg-surface-elevated)",
+                }}
+              >
                 <img
                   src={coverImage}
                   alt="Preview"
@@ -368,20 +449,27 @@ export default function ProjectsManager() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Tech Stack (pisahkan koma)
               </label>
               <input
                 type="text"
-                placeholder="React, Express, PostgreSQL"
+                placeholder="React, TypeScript, Laravel"
                 value={techStack}
                 onChange={(e) => setTechStack(e.target.value)}
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
-                Live Demo URL (https://...)
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
+                Live Demo URL (opsional)
               </label>
               <input
                 type="url"
@@ -389,10 +477,14 @@ export default function ProjectsManager() {
                 value={liveUrl}
                 onChange={(e) => setLiveUrl(e.target.value)}
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Repo URL (GitHub)
               </label>
               <input
@@ -401,24 +493,32 @@ export default function ProjectsManager() {
                 value={repoUrl}
                 onChange={(e) => setRepoUrl(e.target.value)}
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-2">
-            <label className="flex items-center gap-2 text-[10px] sm:text-xs cursor-pointer">
+            <label
+              className="flex items-center gap-2 text-xs font-mono cursor-pointer"
+              style={{ color: "var(--color-muted)" }}
+            >
               <input
                 type="checkbox"
                 checked={isPublished}
                 onChange={(e) => setIsPublished(e.target.checked)}
-                className="w-4 h-4 accent-[#3A2E3D]"
+                className="w-4 h-4 rounded accent-[var(--color-accent)]"
               />
               <span>Publikasikan ke Halaman Publik</span>
             </label>
             <button
               type="submit"
               disabled={uploading}
-              className="ml-auto px-5 py-2.5 text-[10px] sm:text-xs bg-[#B8E6D5] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none disabled:opacity-50 transition-transform font-bold"
+              className="ml-auto px-5 py-2.5 text-xs rounded-xl transition-all cursor-pointer font-medium shadow-xs hover:opacity-95 disabled:opacity-50"
+              style={{
+                backgroundColor: "var(--color-primary)",
+                color: "var(--on-accent)",
+              }}
             >
               {editingId ? "Perbarui Proyek" : "Simpan Proyek"}
             </button>
@@ -427,46 +527,79 @@ export default function ProjectsManager() {
       )}
 
       {/* Project List */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="space-y-4">
         {projects.map((proj) => (
           <div
             key={proj.id}
-            className="p-4 border-4 border-[#3A2E3D] bg-white shadow-[4px_4px_0_#3A2E3D] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            className="p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:border-[var(--color-accent)] shadow-xs"
+            style={{
+              backgroundColor: "var(--bg-surface)",
+              borderColor: "var(--border-color)",
+            }}
           >
             <div className="flex items-center gap-4 min-w-0">
               {proj.cover_image ? (
                 <img
                   src={proj.cover_image}
                   alt={proj.title}
-                  className="w-16 h-12 object-cover border-2 border-[#3A2E3D] bg-[#FFF6EC] shrink-0"
+                  className="w-16 h-12 object-cover rounded-xl border shrink-0"
+                  style={{
+                    borderColor: "var(--border-color)",
+                    backgroundColor: "var(--bg-surface-elevated)",
+                  }}
                 />
               ) : (
-                <div className="w-16 h-12 border-2 border-[#3A2E3D] bg-[#FFF6EC] flex items-center justify-center opacity-40 shrink-0">
-                  <ImageIcon className="w-5 h-5" />
+                <div
+                  className="w-16 h-12 rounded-xl border flex items-center justify-center shrink-0"
+                  style={{
+                    borderColor: "var(--border-color)",
+                    backgroundColor: "var(--bg-surface-elevated)",
+                    color: "var(--color-muted)",
+                  }}
+                >
+                  <ImageIcon className="w-5 h-5 opacity-60" />
                 </div>
               )}
 
               <div className="space-y-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs sm:text-sm font-bold break-words">
+                  <span
+                    className="text-xs sm:text-sm font-semibold break-words"
+                    style={{ color: "var(--color-ink)" }}
+                  >
                     {proj.title}
                   </span>
                   {!proj.is_published && (
-                    <span className="text-[9px] sm:text-[10px] px-2 py-0.5 bg-[#FFB4C6] border-2 border-[#3A2E3D]">
+                    <span
+                      className="text-[10px] font-mono px-2 py-0.5 rounded-full border"
+                      style={{
+                        backgroundColor: "var(--bg-surface-elevated)",
+                        borderColor: "var(--border-color)",
+                        color: "var(--color-muted)",
+                      }}
+                    >
                       Draft
                     </span>
                   )}
                 </div>
-                <p className="text-[10px] sm:text-xs opacity-70 max-w-xl line-clamp-1">
+                <p
+                  className="text-xs max-w-xl line-clamp-1"
+                  style={{ color: "var(--color-muted)" }}
+                >
                   {proj.summary}
                 </p>
-                <div className="flex flex-wrap gap-2 pt-0.5">
+                <div className="flex flex-wrap gap-1.5 pt-0.5">
                   {proj.tech_stack?.map((t) => (
                     <span
                       key={t}
-                      className="text-[9px] sm:text-[10px] opacity-60"
+                      className="text-[10px] font-mono px-2 py-0.5 rounded-md border"
+                      style={{
+                        backgroundColor: "var(--bg-surface-elevated)",
+                        borderColor: "var(--border-subtle)",
+                        color: "var(--color-muted)",
+                      }}
                     >
-                      #{t}
+                      {t}
                     </span>
                   ))}
                 </div>
@@ -479,7 +612,12 @@ export default function ProjectsManager() {
                   href={proj.live_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2 bg-[#B8E6D5] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+                  className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80"
+                  style={{
+                    backgroundColor: "var(--bg-surface-elevated)",
+                    borderColor: "var(--border-color)",
+                    color: "var(--color-ink)",
+                  }}
                   aria-label="Live Demo"
                   title="Buka Demo"
                 >
@@ -491,7 +629,12 @@ export default function ProjectsManager() {
                   href={proj.repo_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2 bg-[#C9B8FF] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+                  className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80"
+                  style={{
+                    backgroundColor: "var(--bg-surface-elevated)",
+                    borderColor: "var(--border-color)",
+                    color: "var(--color-ink)",
+                  }}
                   aria-label="Repository"
                   title="Buka GitHub"
                 >
@@ -500,7 +643,12 @@ export default function ProjectsManager() {
               )}
               <button
                 onClick={() => handleEdit(proj)}
-                className="p-2 bg-[#FFD866] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+                className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80"
+                style={{
+                  backgroundColor: "var(--badge-bg)",
+                  borderColor: "var(--badge-border)",
+                  color: "var(--color-accent)",
+                }}
                 aria-label="Edit"
                 title="Edit Proyek"
               >
@@ -508,7 +656,12 @@ export default function ProjectsManager() {
               </button>
               <button
                 onClick={() => handleDelete(proj.id)}
-                className="p-2 bg-[#FFB4C6] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+                className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80"
+                style={{
+                  backgroundColor: "var(--error-bg)",
+                  borderColor: "var(--border-color)",
+                  color: "var(--error-text)",
+                }}
                 aria-label="Hapus"
                 title="Hapus Proyek"
               >
@@ -519,7 +672,14 @@ export default function ProjectsManager() {
         ))}
 
         {!loading && projects.length === 0 && (
-          <div className="p-8 text-center border-4 border-dashed border-[#3A2E3D] bg-white text-[10px] sm:text-xs">
+          <div
+            className="p-8 text-center border border-dashed rounded-2xl text-xs"
+            style={{
+              borderColor: "var(--border-color)",
+              backgroundColor: "var(--bg-surface)",
+              color: "var(--color-muted)",
+            }}
+          >
             Belum ada proyek. Klik tombol &quot;Tambah Proyek&quot; di atas untuk memulai.
           </div>
         )}

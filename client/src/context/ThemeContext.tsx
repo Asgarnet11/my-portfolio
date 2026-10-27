@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "pixel" | "modern" | "terminal";
+export type Theme =
+  | "terminal"
+  | "editorial"
+  | "pixel"
+  | "neuform"
+  | "modern"
+  | "dark"
+  | "light";
 
 interface ThemeContextType {
   theme: Theme;
@@ -8,7 +15,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "pixel",
+  theme: "terminal",
   setTheme: () => {},
 });
 
@@ -16,7 +23,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    return (localStorage.getItem("app_theme") as Theme) || "pixel";
+    const saved = localStorage.getItem("app_theme") as Theme;
+    if (saved === "editorial" || saved === "modern") return "editorial";
+    return "terminal";
   });
 
   const setTheme = (t: Theme) => {
@@ -36,6 +45,5 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// This hook intentionally shares the context with ThemeProvider from this module.
 // eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => useContext(ThemeContext);

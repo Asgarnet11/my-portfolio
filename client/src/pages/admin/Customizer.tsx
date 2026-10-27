@@ -81,25 +81,38 @@ function SkillsManagerInput({
     "PostgreSQL",
     "Supabase",
     "TailwindCSS",
+    "PHP",
+    "Laravel",
+    "MySQL",
     "Docker",
     "Next.js",
-    "Prisma",
   ].filter((s) => !skills.includes(s));
 
   return (
     <div className="space-y-2">
       {/* Active Skills Badges */}
-      <div className="flex flex-wrap gap-2 p-2.5 bg-[#FFF6EC] border-2 border-[#3A2E3D] min-h-[46px] items-center">
+      <div
+        className="flex flex-wrap gap-2 p-3 rounded-xl border min-h-[48px] items-center"
+        style={{
+          background: "var(--bg-surface-elevated)",
+          borderColor: "var(--border-color)",
+        }}
+      >
         {skills.map((skill, idx) => (
           <span
             key={skill}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono bg-[#FFD873] text-[#3A2E3D] border border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D]"
+            className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border shadow-xs"
+            style={{
+              background: "var(--badge-bg)",
+              borderColor: "var(--badge-border)",
+              color: "var(--color-accent)",
+            }}
           >
             <span>{skill}</span>
             <button
               type="button"
               onClick={() => handleRemove(idx)}
-              className="text-[#3A2E3D] hover:text-red-700 font-bold ml-0.5 cursor-pointer leading-none"
+              className="hover:opacity-75 font-bold ml-0.5 cursor-pointer leading-none"
               title={`Hapus ${skill}`}
             >
               ×
@@ -113,20 +126,28 @@ function SkillsManagerInput({
           onKeyDown={handleKeyDown}
           onBlur={() => handleAdd(inputValue)}
           placeholder={skills.length === 0 ? "Ketik skill lalu tekan Enter..." : "+ Tambah skill..."}
-          className="flex-1 min-w-[140px] text-xs bg-transparent outline-none py-1 text-[#3A2E3D]"
+          className="flex-1 min-w-[140px] text-xs bg-transparent outline-none py-1"
+          style={{ color: "var(--color-ink)" }}
         />
       </div>
 
       {/* Suggested Quick Add Chips */}
       {suggestions.length > 0 && (
         <div className="flex flex-wrap items-center gap-1.5 pt-1">
-          <span className="text-[10px] opacity-60">Saran cepat:</span>
+          <span className="text-[10px] font-mono" style={{ color: "var(--color-muted)" }}>
+            Saran cepat:
+          </span>
           {suggestions.slice(0, 6).map((sugg) => (
             <button
               key={sugg}
               type="button"
               onClick={() => handleAdd(sugg)}
-              className="text-[10px] px-2 py-0.5 bg-[#FFF6EC] border border-[#3A2E3D]/50 hover:border-[#3A2E3D] hover:bg-[#FFD873] transition-colors cursor-pointer"
+              className="text-[10px] font-mono px-2 py-0.5 rounded-md border transition-colors cursor-pointer"
+              style={{
+                background: "var(--bg-surface-elevated)",
+                borderColor: "var(--border-color)",
+                color: "var(--color-muted)",
+              }}
             >
               + {sugg}
             </button>
@@ -184,19 +205,24 @@ export default function Customizer() {
     );
   };
 
-  const handleDataChange = (key: string, dataKey: string, val: unknown) => {
+  const handleDataChange = (
+    key: string,
+    field: string,
+    val: unknown,
+  ) => {
     setSections((prev) =>
-      prev.map((s) =>
-        s.key === key
-          ? {
-              ...s,
-              data: {
-                ...(s.data || {}),
-                [dataKey]: val,
-              },
-            }
-          : s,
-      ),
+      prev.map((s) => {
+        if (s.key === key) {
+          return {
+            ...s,
+            data: {
+              ...s.data,
+              [field]: val,
+            },
+          };
+        }
+        return s;
+      }),
     );
   };
 
@@ -211,11 +237,11 @@ export default function Customizer() {
         headers: { "Content-Type": "multipart/form-data" },
       });
       handleDataChange(key, "avatarUrl", res.data.url);
-      setToast("Foto berhasil diunggah! Jangan lupa klik 'Simpan Perubahan'.");
+      setToast("Foto berhasil diunggah dan dioptimasi ke WebP!");
       setTimeout(() => setToast(null), 3000);
     } catch (err: unknown) {
       const axiosErr = err as { response?: { data?: { error?: string } } };
-      alert(axiosErr.response?.data?.error || "Gagal mengunggah foto profil");
+      alert(axiosErr.response?.data?.error || "Gagal mengunggah foto");
     } finally {
       setUploadingKey(null);
     }
@@ -236,13 +262,28 @@ export default function Customizer() {
   };
 
   const inputClasses =
-    "w-full px-3 py-2 text-xs sm:text-sm bg-[#FFF6EC] border-2 border-[#3A2E3D] focus:outline-none focus:shadow-[3px_3px_0_#3A2E3D] transition-shadow";
+    "w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border focus:outline-none transition-all";
+  const inputStyle = {
+    backgroundColor: "var(--bg-surface-elevated)",
+    borderColor: "var(--border-color)",
+    color: "var(--color-ink)",
+  };
 
   if (loading && sections.length === 0) {
     return (
-      <div className="p-8 font-pixel text-xs flex items-center justify-center">
-        <div className="border-4 border-[#3A2E3D] bg-[#FFD866] px-6 py-4 shadow-[6px_6px_0_#3A2E3D]">
-          Memuat editor customizer...
+      <div className="p-8 text-xs flex items-center justify-center">
+        <div
+          className="border rounded-2xl px-6 py-4 shadow-md flex items-center gap-2.5"
+          style={{
+            backgroundColor: "var(--bg-surface)",
+            borderColor: "var(--border-color)",
+          }}
+        >
+          <div
+            className="w-2.5 h-2.5 rounded-full animate-ping"
+            style={{ background: "var(--color-accent)" }}
+          />
+          <span>Memuat editor customizer...</span>
         </div>
       </div>
     );
@@ -251,19 +292,30 @@ export default function Customizer() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-4 border-[#3A2E3D] bg-[#C9B8FF] px-4 sm:px-6 py-4 shadow-[6px_6px_0_#3A2E3D]">
+      <div
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border rounded-2xl p-5 sm:p-6 shadow-sm"
+        style={{
+          backgroundColor: "var(--bg-surface)",
+          borderColor: "var(--border-color)",
+        }}
+      >
         <div>
-          <h1 className="text-lg sm:text-xl font-bold tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight" style={{ color: "var(--color-ink)" }}>
             Site Customizer
           </h1>
-          <p className="text-[10px] sm:text-xs mt-1 opacity-80">
-            Atur teks, avatar, tombol CTA, dan konten landing page secara real-time.
+          <p className="text-xs mt-1" style={{ color: "var(--color-muted)" }}>
+            Atur headline, avatar, tombol CTA, dan konten landing page secara real-time.
           </p>
         </div>
 
         <button
           onClick={() => fetchSections()}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] sm:text-xs bg-[#FFF6EC] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none transition-transform shrink-0"
+          className="flex items-center gap-1.5 px-4 py-2 text-xs rounded-xl border transition-all cursor-pointer shrink-0 font-medium"
+          style={{
+            backgroundColor: "var(--bg-surface-elevated)",
+            borderColor: "var(--border-color)",
+            color: "var(--color-ink)",
+          }}
           title="Segarkan konten"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
@@ -273,25 +325,46 @@ export default function Customizer() {
 
       {/* Toast Alert */}
       {toast && (
-        <div className="p-3 bg-[#B8E6D5] border-4 border-[#3A2E3D] text-[#3A2E3D] text-[10px] sm:text-xs shadow-[4px_4px_0_#3A2E3D] flex items-center gap-2">
-          <Check className="w-4 h-4 text-[#2C6B47]" />
-          <span>{toast}</span>
+        <div
+          className="p-4 rounded-xl border text-xs shadow-md flex items-center gap-2.5"
+          style={{
+            backgroundColor: "var(--bg-surface-elevated)",
+            borderColor: "var(--color-accent)",
+            color: "var(--color-ink)",
+          }}
+        >
+          <Check className="w-4 h-4" style={{ color: "var(--color-accent)" }} />
+          <span className="font-medium">{toast}</span>
         </div>
       )}
 
       {/* Section Cards */}
-      <div className="space-y-5 md:space-y-6">
+      <div className="space-y-6">
         {sections.map((section) => (
           <div
             key={section.key}
-            className="p-4 sm:p-6 border-4 border-[#3A2E3D] bg-white space-y-5 shadow-[6px_6px_0_#3A2E3D]"
+            className="p-5 sm:p-7 border rounded-2xl space-y-6 shadow-sm"
+            style={{
+              backgroundColor: "var(--bg-surface)",
+              borderColor: "var(--border-color)",
+            }}
           >
-            <div className="flex flex-wrap justify-between items-center gap-3 border-b-2 border-[#3A2E3D] pb-3">
-              <span className="inline-flex items-center gap-2 text-[10px] sm:text-xs uppercase px-2.5 py-1 bg-[#FFD866] border-2 border-[#3A2E3D] font-bold shadow-[2px_2px_0_#3A2E3D]">
+            <div
+              className="flex flex-wrap justify-between items-center gap-3 border-b pb-4"
+              style={{ borderColor: "var(--border-color)" }}
+            >
+              <span
+                className="inline-flex items-center gap-2 text-xs uppercase px-3 py-1 rounded-full font-mono font-medium border"
+                style={{
+                  background: "var(--badge-bg)",
+                  borderColor: "var(--badge-border)",
+                  color: "var(--color-accent)",
+                }}
+              >
                 {getSectionIcon(section.key)}
                 <span>{section.key} SECTION</span>
               </span>
-              <label className="flex items-center gap-2 text-[10px] sm:text-xs cursor-pointer">
+              <label className="flex items-center gap-2 text-xs font-mono cursor-pointer" style={{ color: "var(--color-muted)" }}>
                 <input
                   type="checkbox"
                   checked={section.is_active}
@@ -304,16 +377,16 @@ export default function Customizer() {
                       prev.map((s) => (s.key === section.key ? updated : s)),
                     );
                   }}
-                  className="w-4 h-4 accent-[#3A2E3D]"
+                  className="w-4 h-4 rounded"
                 />
-                <span>Tampilkan di Landing Page</span>
+                <span>Aktif di Beranda Publik</span>
               </label>
             </div>
 
             {/* Title & Subtitle */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                   Judul / Headline
                 </label>
                 <input
@@ -323,11 +396,12 @@ export default function Customizer() {
                     handleFieldChange(section.key, "title", e.target.value)
                   }
                   className={inputClasses}
+                  style={inputStyle}
                 />
               </div>
-              <div>
-                <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
-                  Sub-judul / Deskripsi Pendek
+              <div className="space-y-1.5">
+                <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
+                  Sub-judul / Deskripsi Singkat
                 </label>
                 <input
                   type="text"
@@ -336,18 +410,19 @@ export default function Customizer() {
                     handleFieldChange(section.key, "subtitle", e.target.value)
                   }
                   className={inputClasses}
+                  style={inputStyle}
                 />
               </div>
             </div>
 
             {/* Dynamic Fields Berdasarkan Key */}
-            <div className="border-t-4 border-[#3A2E3D] pt-4 space-y-4">
+            <div className="border-t pt-5 space-y-5" style={{ borderColor: "var(--border-color)" }}>
               {/* 1. HERO SECTION */}
               {section.key === "hero" && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
-                      Status Badge (Badge Ketersediaan Kerja)
+                <div className="space-y-5">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
+                      Status Badge (Ketersediaan Kerja)
                     </label>
                     <input
                       type="text"
@@ -361,12 +436,13 @@ export default function Customizer() {
                         )
                       }
                       className={inputClasses}
+                      style={inputStyle}
                     />
                   </div>
 
                   {/* Foto Profil / Avatar */}
                   <div className="space-y-2">
-                    <label className="block text-[10px] sm:text-xs opacity-70">
+                    <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                       Foto Profil / Avatar
                     </label>
                     <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
@@ -383,11 +459,16 @@ export default function Customizer() {
                       />
                       <label
                         htmlFor={`avatar-upload-${section.key}`}
-                        className={`flex items-center gap-2 px-3 py-2 bg-[#B8E6D5] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] text-[10px] sm:text-xs cursor-pointer hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] transition-transform shrink-0 ${
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs cursor-pointer transition-transform font-medium shrink-0 ${
                           uploadingKey === section.key
                             ? "opacity-50 pointer-events-none"
                             : ""
                         }`}
+                        style={{
+                          background: "var(--badge-bg)",
+                          borderColor: "var(--badge-border)",
+                          color: "var(--color-accent)",
+                        }}
                       >
                         <Upload className="w-3.5 h-3.5" />
                         {uploadingKey === section.key
@@ -395,13 +476,13 @@ export default function Customizer() {
                           : "Upload Foto Baru"}
                       </label>
 
-                      <span className="text-[10px] sm:text-xs opacity-60">
-                        atau URL Gambar:
+                      <span className="text-xs" style={{ color: "var(--color-muted)" }}>
+                        atau URL:
                       </span>
 
                       <input
                         type="text"
-                        placeholder="https://... / link gambar avatar"
+                        placeholder="https://... / URL gambar avatar"
                         value={section.data?.avatarUrl || ""}
                         onChange={(e) =>
                           handleDataChange(
@@ -411,6 +492,7 @@ export default function Customizer() {
                           )
                         }
                         className={`flex-1 ${inputClasses}`}
+                        style={inputStyle}
                       />
 
                       {section.data?.avatarUrl && (
@@ -419,16 +501,24 @@ export default function Customizer() {
                           onClick={() =>
                             handleDataChange(section.key, "avatarUrl", "")
                           }
-                          className="p-2 bg-[#FFB4C6] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform shrink-0"
+                          className="p-2.5 rounded-xl border cursor-pointer hover:opacity-75 transition-opacity shrink-0"
+                          style={{
+                            background: "var(--bg-surface-elevated)",
+                            borderColor: "var(--border-color)",
+                            color: "var(--error-text)",
+                          }}
                           title="Hapus foto"
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <X className="w-4 h-4" />
                         </button>
                       )}
                     </div>
 
                     {section.data?.avatarUrl && (
-                      <div className="w-20 h-20 border-2 border-[#3A2E3D] bg-[#FFF6EC] overflow-hidden mt-2 shadow-[3px_3px_0_#3A2E3D]">
+                      <div
+                        className="w-20 h-20 rounded-xl border overflow-hidden mt-2 shadow-sm"
+                        style={{ borderColor: "var(--border-color)" }}
+                      >
                         <img
                           src={section.data.avatarUrl}
                           alt="Avatar Preview"
@@ -439,8 +529,8 @@ export default function Customizer() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                         Teks Tombol Utama (CTA 1)
                       </label>
                       <input
@@ -454,10 +544,11 @@ export default function Customizer() {
                           )
                         }
                         className={inputClasses}
+                        style={inputStyle}
                       />
                     </div>
-                    <div>
-                      <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                         Tautan Tombol Utama (Link 1)
                       </label>
                       <input
@@ -471,10 +562,11 @@ export default function Customizer() {
                           )
                         }
                         className={inputClasses}
+                        style={inputStyle}
                       />
                     </div>
-                    <div>
-                      <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                         Teks Tombol Kedua (CTA 2)
                       </label>
                       <input
@@ -488,10 +580,11 @@ export default function Customizer() {
                           )
                         }
                         className={inputClasses}
+                        style={inputStyle}
                       />
                     </div>
-                    <div>
-                      <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                         Tautan Tombol Kedua (Link 2)
                       </label>
                       <input
@@ -505,6 +598,7 @@ export default function Customizer() {
                           )
                         }
                         className={inputClasses}
+                        style={inputStyle}
                       />
                     </div>
                   </div>
@@ -514,21 +608,22 @@ export default function Customizer() {
               {/* 2. ABOUT SECTION */}
               {section.key === "about" && (
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                       Biografi Lengkap / Narasi Profil
                     </label>
                     <textarea
-                      rows={4}
+                      rows={5}
                       value={section.data?.bio || ""}
                       onChange={(e) =>
                         handleDataChange(section.key, "bio", e.target.value)
                       }
                       className={inputClasses}
+                      style={inputStyle}
                     />
                   </div>
-                  <div>
-                    <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                       Tech Stack / Skills
                     </label>
                     <SkillsManagerInput
@@ -553,8 +648,8 @@ export default function Customizer() {
               {/* 3. SOCIALS SECTION */}
               {section.key === "socials" && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                       Email Kontak
                     </label>
                     <input
@@ -565,10 +660,11 @@ export default function Customizer() {
                         handleDataChange(section.key, "email", e.target.value)
                       }
                       className={inputClasses}
+                      style={inputStyle}
                     />
                   </div>
-                  <div>
-                    <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                       URL GitHub
                     </label>
                     <input
@@ -583,10 +679,11 @@ export default function Customizer() {
                         )
                       }
                       className={inputClasses}
+                      style={inputStyle}
                     />
                   </div>
-                  <div>
-                    <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                       URL LinkedIn
                     </label>
                     <input
@@ -601,6 +698,7 @@ export default function Customizer() {
                         )
                       }
                       className={inputClasses}
+                      style={inputStyle}
                     />
                   </div>
                 </div>
@@ -608,8 +706,8 @@ export default function Customizer() {
 
               {/* 4. FALLBACK SECTION */}
               {!["hero", "about", "socials"].includes(section.key) && (
-                <div>
-                  <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-mono" style={{ color: "var(--color-muted)" }}>
                     Konten Tambahan (JSON Data)
                   </label>
                   <textarea
@@ -630,6 +728,7 @@ export default function Customizer() {
                       }
                     }}
                     className={`${inputClasses} font-mono`}
+                    style={inputStyle}
                   />
                 </div>
               )}
@@ -641,7 +740,11 @@ export default function Customizer() {
                 type="button"
                 onClick={() => handleUpdate(section.key, section)}
                 disabled={savingKey === section.key}
-                className="px-4 py-2 text-[10px] sm:text-xs bg-[#B8E6D5] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-[3px_3px_0_#3A2E3D] transition-transform font-bold"
+                className="px-5 py-2.5 rounded-xl text-xs font-semibold cursor-pointer transition-all disabled:opacity-50 shadow-md"
+                style={{
+                  background: "var(--color-primary)",
+                  color: "var(--on-accent)",
+                }}
               >
                 {savingKey === section.key
                   ? "Menyimpan..."
@@ -652,7 +755,14 @@ export default function Customizer() {
         ))}
 
         {sections.length === 0 && (
-          <div className="p-8 text-center border-4 border-dashed border-[#3A2E3D] text-[#3A2E3D] text-[10px] sm:text-xs bg-white">
+          <div
+            className="p-8 text-center rounded-2xl border text-xs"
+            style={{
+              background: "var(--bg-surface)",
+              borderColor: "var(--border-color)",
+              color: "var(--color-muted)",
+            }}
+          >
             Tidak ada data section ditemukan. Pastikan seeder database sudah dijalankan.
           </div>
         )}

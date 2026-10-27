@@ -128,26 +128,46 @@ export default function ExperienceManager() {
     }
   };
 
+  const inputStyle = {
+    backgroundColor: "var(--bg-surface-elevated)",
+    borderColor: "var(--border-color)",
+    color: "var(--color-ink)",
+  };
+
   const inputClasses =
-    "w-full px-3 py-2 text-xs sm:text-sm bg-[#FFF6EC] border-2 border-[#3A2E3D] focus:outline-none focus:shadow-[3px_3px_0_#3A2E3D] transition-shadow disabled:opacity-30";
+    "w-full px-3.5 py-2 text-xs sm:text-sm rounded-xl border transition-all focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] disabled:opacity-40";
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-4 border-[#3A2E3D] bg-[#C9B8FF] px-4 sm:px-6 py-4 shadow-[6px_6px_0_#3A2E3D]">
+      {/* Header Banner */}
+      <div
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl border shadow-xs"
+        style={{
+          backgroundColor: "var(--bg-surface)",
+          borderColor: "var(--border-color)",
+        }}
+      >
         <div>
-          <h1 className="text-lg sm:text-xl font-bold tracking-tight">
+          <h1
+            className="text-xl sm:text-2xl font-semibold tracking-tight"
+            style={{ color: "var(--color-ink)" }}
+          >
             Experience Manager
           </h1>
-          <p className="text-[10px] sm:text-xs mt-1 opacity-80">
-            Kelola jejak karier, peran profesional, perusahaan, dan kontribusi teknis.
+          <p className="text-xs mt-1" style={{ color: "var(--color-muted)" }}>
+            Kelola jejak karier, peran profesional, institusi, dan kontribusi teknis.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => fetchExperiences()}
-            className="flex items-center gap-1.5 px-3 py-2 bg-[#FFF6EC] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] text-[10px] sm:text-xs hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none transition-transform shrink-0"
-            title="Muat ulang"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs rounded-xl border transition-all cursor-pointer font-medium hover:opacity-80 shrink-0"
+            style={{
+              backgroundColor: "var(--bg-surface-elevated)",
+              borderColor: "var(--border-color)",
+              color: "var(--color-ink)",
+            }}
+            title="Muat ulang data"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
@@ -160,7 +180,11 @@ export default function ExperienceManager() {
                 setIsFormOpen(true);
               }
             }}
-            className="flex items-center gap-2 px-3.5 py-2 bg-[#FFD866] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] text-[10px] sm:text-xs hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none transition-transform shrink-0 font-bold"
+            className="flex items-center gap-2 px-4 py-2 text-xs rounded-xl transition-all cursor-pointer font-medium shadow-xs hover:opacity-95 shrink-0"
+            style={{
+              backgroundColor: "var(--color-primary)",
+              color: "var(--on-accent)",
+            }}
           >
             <Plus className="w-3.5 h-3.5" />
             <span>{isFormOpen ? "Tutup Form" : "Tambah Experience"}</span>
@@ -170,26 +194,48 @@ export default function ExperienceManager() {
 
       {/* Toast Alert */}
       {toast && (
-        <div className="p-3 bg-[#B8E6D5] border-4 border-[#3A2E3D] text-[#3A2E3D] text-[10px] sm:text-xs shadow-[4px_4px_0_#3A2E3D] flex items-center gap-2">
-          <Check className="w-4 h-4 text-[#2C6B47]" />
-          <span>{toast}</span>
+        <div
+          className="p-4 rounded-xl border text-xs shadow-xs flex items-center gap-2.5 animate-fadeIn"
+          style={{
+            backgroundColor: "var(--bg-surface-elevated)",
+            borderColor: "var(--color-accent)",
+            color: "var(--color-ink)",
+          }}
+        >
+          <Check className="w-4 h-4 shrink-0" style={{ color: "var(--color-accent)" }} />
+          <span className="font-medium">{toast}</span>
         </div>
       )}
 
-      {/* Form */}
+      {/* Form Tambah/Edit */}
       {isFormOpen && (
         <form
           onSubmit={handleSubmit}
-          className="p-4 sm:p-6 border-4 border-[#3A2E3D] bg-white shadow-[6px_6px_0_#3A2E3D] space-y-4"
+          className="p-5 sm:p-7 rounded-2xl border space-y-4 shadow-xs"
+          style={{
+            backgroundColor: "var(--bg-surface)",
+            borderColor: "var(--border-color)",
+          }}
         >
-          <div className="flex justify-between items-center border-b-2 border-[#3A2E3D] pb-3">
-            <h2 className="text-xs sm:text-sm uppercase tracking-wide font-bold">
+          <div
+            className="flex justify-between items-center border-b pb-3"
+            style={{ borderColor: "var(--border-color)" }}
+          >
+            <h2
+              className="text-sm font-semibold tracking-tight"
+              style={{ color: "var(--color-ink)" }}
+            >
               {editingId ? "Edit Data Experience" : "Tambah Experience Baru"}
             </h2>
             <button
               type="button"
               onClick={resetForm}
-              className="text-[10px] px-2 py-1 bg-[#FFB4C6] border-2 border-[#3A2E3D]"
+              className="text-xs px-3 py-1 rounded-lg border cursor-pointer transition-colors"
+              style={{
+                backgroundColor: "var(--bg-surface-elevated)",
+                borderColor: "var(--border-color)",
+                color: "var(--color-muted)",
+              }}
             >
               Batal
             </button>
@@ -197,48 +243,63 @@ export default function ExperienceManager() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Posisi / Role
               </label>
               <input
                 type="text"
-                placeholder="Full-Stack Developer"
+                placeholder="Pranata Komputer Ahli Pertama"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 required
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
-                Perusahaan / Organisasi
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
+                Institusi / Perusahaan
               </label>
               <input
                 type="text"
-                placeholder="PT Technology Indonesia"
+                placeholder="BPVP Kendari - Kemnaker RI"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 required
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Lokasi (Opsional)
               </label>
               <input
                 type="text"
-                placeholder="Jakarta, Indonesia (Remote)"
+                placeholder="Kendari, Sulawesi Tenggara"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Tanggal Mulai
               </label>
               <input
@@ -247,10 +308,14 @@ export default function ExperienceManager() {
                 onChange={(e) => setStartDate(e.target.value)}
                 required
                 className={inputClasses}
+                style={inputStyle}
               />
             </div>
             <div>
-              <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+              <label
+                className="block text-xs font-mono mb-1.5"
+                style={{ color: "var(--color-muted)" }}
+              >
                 Tanggal Selesai
               </label>
               <input
@@ -259,46 +324,61 @@ export default function ExperienceManager() {
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 className={inputClasses}
+                style={inputStyle}
               />
-              <label className="flex items-center gap-1.5 text-[10px] mt-2 cursor-pointer opacity-80">
+              <label
+                className="flex items-center gap-2 text-xs font-mono mt-2 cursor-pointer"
+                style={{ color: "var(--color-muted)" }}
+              >
                 <input
                   type="checkbox"
                   checked={isCurrent}
                   onChange={(e) => setIsCurrent(e.target.checked)}
-                  className="w-3.5 h-3.5 accent-[#3A2E3D]"
+                  className="w-4 h-4 rounded accent-[var(--color-accent)]"
                 />
-                <span>Masih bekerja di sini (Present)</span>
+                <span>Masih aktif / bertugas (Present)</span>
               </label>
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] sm:text-xs mb-1 opacity-70">
+            <label
+              className="block text-xs font-mono mb-1.5"
+              style={{ color: "var(--color-muted)" }}
+            >
               Deskripsi Pekerjaan / Kontribusi Teknis
             </label>
             <textarea
               rows={4}
-              placeholder="Rancang sistem backend, optimasi database, implementasi UI..."
+              placeholder="Rancang dan kembangkan sistem aplikasi, digitalisasi layanan publik, pengelolaan infrastruktur data..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
               className={inputClasses}
+              style={inputStyle}
             />
           </div>
 
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-2">
-            <label className="flex items-center gap-2 text-[10px] sm:text-xs cursor-pointer">
+            <label
+              className="flex items-center gap-2 text-xs font-mono cursor-pointer"
+              style={{ color: "var(--color-muted)" }}
+            >
               <input
                 type="checkbox"
                 checked={isPublished}
                 onChange={(e) => setIsPublished(e.target.checked)}
-                className="w-4 h-4 accent-[#3A2E3D]"
+                className="w-4 h-4 rounded accent-[var(--color-accent)]"
               />
               <span>Tampilkan di Landing Page</span>
             </label>
             <button
               type="submit"
-              className="ml-auto px-5 py-2.5 text-[10px] sm:text-xs bg-[#B8E6D5] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none transition-transform font-bold"
+              className="ml-auto px-5 py-2.5 text-xs rounded-xl transition-all cursor-pointer font-medium shadow-xs hover:opacity-95"
+              style={{
+                backgroundColor: "var(--color-primary)",
+                color: "var(--on-accent)",
+              }}
             >
               {editingId ? "Perbarui Experience" : "Simpan Experience"}
             </button>
@@ -306,37 +386,69 @@ export default function ExperienceManager() {
         </form>
       )}
 
-      {/* List */}
+      {/* Experience List */}
       <div className="space-y-4">
         {experiences.map((exp) => (
           <div
             key={exp.id}
-            className="p-4 border-4 border-[#3A2E3D] bg-white shadow-[4px_4px_0_#3A2E3D] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+            className="p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:border-[var(--color-accent)] shadow-xs"
+            style={{
+              backgroundColor: "var(--bg-surface)",
+              borderColor: "var(--border-color)",
+            }}
           >
             <div className="space-y-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs sm:text-sm font-bold break-words">
+                <span
+                  className="text-xs sm:text-sm font-semibold break-words"
+                  style={{ color: "var(--color-ink)" }}
+                >
                   {exp.role}
                 </span>
-                <span className="text-[10px] sm:text-xs opacity-70">
+                <span
+                  className="text-xs font-medium"
+                  style={{ color: "var(--color-accent)" }}
+                >
                   @ {exp.company}
                 </span>
                 {!exp.is_published && (
-                  <span className="text-[9px] sm:text-[10px] px-2 py-0.5 bg-[#FFB4C6] border-2 border-[#3A2E3D]">
+                  <span
+                    className="text-[10px] font-mono px-2 py-0.5 rounded-full border"
+                    style={{
+                      backgroundColor: "var(--bg-surface-elevated)",
+                      borderColor: "var(--border-color)",
+                      color: "var(--color-muted)",
+                    }}
+                  >
                     Draft
                   </span>
                 )}
               </div>
-              <div className="text-[10px] sm:text-xs opacity-60">
+              <div
+                className="text-xs font-mono"
+                style={{ color: "var(--color-muted)" }}
+              >
                 {exp.start_date?.split("T")[0]} —{" "}
                 {exp.end_date ? exp.end_date.split("T")[0] : "Present"}
                 {exp.location && ` · ${exp.location}`}
               </div>
+              <p
+                className="text-xs pt-1 line-clamp-2"
+                style={{ color: "var(--color-muted)" }}
+              >
+                {exp.description}
+              </p>
             </div>
+
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => handleEdit(exp)}
-                className="p-2 bg-[#FFD866] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+                className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80"
+                style={{
+                  backgroundColor: "var(--badge-bg)",
+                  borderColor: "var(--badge-border)",
+                  color: "var(--color-accent)",
+                }}
                 aria-label="Edit"
                 title="Edit Experience"
               >
@@ -344,7 +456,12 @@ export default function ExperienceManager() {
               </button>
               <button
                 onClick={() => handleDelete(exp.id)}
-                className="p-2 bg-[#FFB4C6] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+                className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80"
+                style={{
+                  backgroundColor: "var(--error-bg)",
+                  borderColor: "var(--border-color)",
+                  color: "var(--error-text)",
+                }}
                 aria-label="Hapus"
                 title="Hapus Experience"
               >
@@ -355,7 +472,14 @@ export default function ExperienceManager() {
         ))}
 
         {!loading && experiences.length === 0 && (
-          <div className="p-8 text-center border-4 border-dashed border-[#3A2E3D] bg-white text-[10px] sm:text-xs">
+          <div
+            className="p-8 text-center border border-dashed rounded-2xl text-xs"
+            style={{
+              borderColor: "var(--border-color)",
+              backgroundColor: "var(--bg-surface)",
+              color: "var(--color-muted)",
+            }}
+          >
             Belum ada riwayat pengalaman. Klik &quot;Tambah Experience&quot; untuk menambahkan.
           </div>
         )}

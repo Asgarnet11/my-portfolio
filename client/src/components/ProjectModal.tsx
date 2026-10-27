@@ -59,7 +59,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/75 backdrop-blur-sm"
           />
 
           {/* Modal Container */}
@@ -68,32 +68,36 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8 space-y-6 rounded-[20px]"
+            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8 space-y-6 rounded-[20px] border"
             style={{
-              background: "var(--color-surface, #1A1B1E)",
-              border: "1px solid var(--color-border, #27272A)",
-              boxShadow: "0 24px 48px -8px rgba(0, 0, 0, 0.8)",
+              background: "var(--bg-surface)",
+              borderColor: "var(--border-color)",
+              boxShadow: "var(--box-shadow)",
               fontFamily: "var(--font-body, 'Inter', sans-serif)",
             }}
           >
             {/* Header with Title and Close Button */}
-            <div className="flex items-start justify-between gap-4 border-b border-zinc-800 pb-4">
+            <div
+              className="flex items-start justify-between gap-4 border-b pb-4"
+              style={{ borderColor: "var(--border-color)" }}
+            >
               <div className="space-y-1.5">
                 <div
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-medium"
                   style={{
-                    background: "rgba(0, 229, 89, 0.1)",
-                    border: "1px solid rgba(0, 229, 89, 0.3)",
-                    color: "var(--color-primary, #00E559)",
+                    background: "var(--badge-bg)",
+                    border: "1px solid var(--badge-border)",
+                    color: "var(--color-accent)",
                   }}
                 >
-                  <Sparkles className="w-3 h-3 text-[#00E559]" />
+                  <Sparkles className="w-3 h-3" />
                   TECHNICAL CASE STUDY
                 </div>
                 <h2
-                  className="text-xl sm:text-2xl font-medium tracking-tight text-white pt-1"
+                  className="text-xl sm:text-2xl font-semibold tracking-tight pt-1"
                   style={{
                     fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+                    color: "var(--color-ink)",
                   }}
                 >
                   {project.title}
@@ -103,15 +107,26 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <button
                 onClick={onClose}
                 aria-label="Tutup jendela studi kasus"
-                className="p-2 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+                className="p-2 rounded-full transition-colors cursor-pointer border"
+                style={{
+                  background: "var(--bg-surface-elevated)",
+                  borderColor: "var(--border-color)",
+                  color: "var(--color-muted)",
+                }}
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Cover Image */}
             {project.cover_image && (
-              <div className="w-full h-52 sm:h-64 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800">
+              <div
+                className="w-full h-52 sm:h-64 rounded-2xl overflow-hidden border"
+                style={{
+                  background: "var(--bg-surface-elevated)",
+                  borderColor: "var(--border-color)",
+                }}
+              >
                 <img
                   src={project.cover_image}
                   alt={`Screenshot ${project.title}`}
@@ -127,11 +142,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   href={project.live_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 shadow-md"
                   style={{
-                    background: "var(--color-primary, #00E559)",
-                    color: "#09090B",
-                    boxShadow: "0 0 16px rgba(0, 229, 89, 0.3)",
+                    background: "var(--color-primary)",
+                    color: "var(--on-accent)",
                   }}
                 >
                   <span>Buka Live Demo</span>
@@ -143,10 +157,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   href={project.repo_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium text-white transition-all duration-200"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium transition-all duration-200 border"
                   style={{
-                    background: "#09090B",
-                    border: "1px solid var(--color-border, #27272A)",
+                    background: "var(--bg-surface-elevated)",
+                    borderColor: "var(--border-color)",
+                    color: "var(--color-ink)",
                   }}
                 >
                   <GithubIcon className="w-3.5 h-3.5" />
@@ -157,41 +172,65 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
             {/* Overview / Problem Solved */}
             <div className="space-y-2">
-              <h3 className="text-xs font-mono font-medium uppercase text-zinc-400 flex items-center gap-2">
-                <BookOpen className="w-3.5 h-3.5 text-[#38BDF8]" />
+              <h3
+                className="text-xs font-mono font-medium uppercase flex items-center gap-2"
+                style={{ color: "var(--color-muted)" }}
+              >
+                <BookOpen className="w-3.5 h-3.5" style={{ color: "var(--color-accent)" }} />
                 <span>Ringkasan & Tujuan Proyek</span>
               </h3>
-              <p className="text-sm text-zinc-300 leading-relaxed p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 font-normal">
+              <p
+                className="text-sm leading-relaxed p-4 rounded-xl border font-normal"
+                style={{
+                  background: "var(--bg-surface-elevated)",
+                  borderColor: "var(--border-color)",
+                  color: "var(--color-ink)",
+                }}
+              >
                 {project.summary}
               </p>
             </div>
 
             {/* Technical Architecture & Case Study */}
             <div className="space-y-2">
-              <h3 className="text-xs font-mono font-medium uppercase text-zinc-400 flex items-center gap-2">
-                <Layers className="w-3.5 h-3.5 text-[#00E559]" />
+              <h3
+                className="text-xs font-mono font-medium uppercase flex items-center gap-2"
+                style={{ color: "var(--color-muted)" }}
+              >
+                <Layers className="w-3.5 h-3.5" style={{ color: "var(--color-accent)" }} />
                 <span>Keputusan Arsitektur & Rekayasa</span>
               </h3>
-              <div className="text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 font-normal">
+              <div
+                className="text-sm leading-relaxed whitespace-pre-wrap p-4 rounded-xl border font-normal"
+                style={{
+                  background: "var(--bg-surface-elevated)",
+                  borderColor: "var(--border-color)",
+                  color: "var(--color-ink)",
+                }}
+              >
                 {project.case_study ||
-                  "Proyek ini dirancang dengan fokus pada skalabilitas backend, isolasi komponen, serta pengalaman interaksi real-time tanpa latensi. Mengadopsi prinsip clean domain architecture, indexing database terstruktur, dan pemrosesan asinkron yang andal."}
+                  "Proyek ini dirancang dengan fokus pada skalabilitas backend, isolasi komponen, serta antarmuka yang cepat dan responsif. Mengadopsi prinsip clean architecture, indexing database terstruktur, dan tata kelola kode yang teruji."}
               </div>
             </div>
 
             {/* Tech Stack Pills */}
             <div className="space-y-2.5">
-              <h3 className="text-xs font-mono font-medium uppercase text-zinc-400 flex items-center gap-2">
-                <Code2 className="w-3.5 h-3.5 text-[#38BDF8]" />
+              <h3
+                className="text-xs font-mono font-medium uppercase flex items-center gap-2"
+                style={{ color: "var(--color-muted)" }}
+              >
+                <Code2 className="w-3.5 h-3.5" style={{ color: "var(--color-accent)" }} />
                 <span>Teknologi yang Digunakan</span>
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.tech_stack?.map((tech) => (
                   <span
                     key={tech}
-                    className="text-xs font-mono px-3 py-1 rounded-full text-zinc-300"
+                    className="text-xs font-mono px-3 py-1 rounded-full border"
                     style={{
-                      background: "#09090B",
-                      border: "1px solid var(--color-border, #27272A)",
+                      background: "var(--bg-surface-elevated)",
+                      borderColor: "var(--border-color)",
+                      color: "var(--color-ink)",
                     }}
                   >
                     #{tech}

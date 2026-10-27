@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
 import {
@@ -11,7 +11,7 @@ import {
   Globe,
   Menu,
   X,
-  UserCheck,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -49,63 +49,105 @@ export default function AdminLayout({
     { label: "Projects", to: "/admin/projects", icon: FolderKanban },
     { label: "Experience", to: "/admin/experience", icon: Briefcase },
     {
-      label: "Inbox",
+      label: "Inbox Messages",
       to: "/admin/messages",
       icon: Mail,
       badge: unreadCount > 0 ? unreadCount : undefined,
     },
   ];
 
-  const sidebarClasses = [
-    "fixed md:sticky top-0 left-0 h-screen w-64 shrink-0 bg-white border-r-4 border-[#3A2E3D] z-50 transform transition-transform duration-200 ease-out flex flex-col",
-    sidebarOpen ? "translate-x-0" : "-translate-x-full",
-    "md:translate-x-0",
-  ].join(" ");
-
   return (
-    <div className="min-h-screen bg-[#FFF6EC] text-[#3A2E3D] font-pixel flex">
+    <div
+      className="min-h-screen flex"
+      style={{
+        backgroundColor: "var(--bg-primary)",
+        color: "var(--color-ink)",
+        fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+      }}
+    >
+      {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-xs"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar Navigation */}
-      <aside className={sidebarClasses}>
-        <div className="h-16 flex items-center justify-between px-5 border-b-4 border-[#3A2E3D] bg-[#C9B8FF] shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-[#FFD866] border-2 border-[#3A2E3D]" />
-            <span className="text-xs uppercase tracking-widest font-bold">
-              Admin<span className="opacity-70">.Panel</span>
-            </span>
+      <aside
+        className={`fixed md:sticky top-0 left-0 h-screen w-64 shrink-0 border-r z-50 transform transition-transform duration-200 ease-out flex flex-col ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+        style={{
+          backgroundColor: "var(--bg-surface)",
+          borderColor: "var(--border-color)",
+        }}
+      >
+        {/* Header */}
+        <div
+          className="h-16 flex items-center justify-between px-5 border-b shrink-0"
+          style={{ borderColor: "var(--border-color)" }}
+        >
+          <div className="flex items-center gap-2.5">
+            <div
+              className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs"
+              style={{
+                background: "var(--badge-bg)",
+                border: "1px solid var(--badge-border)",
+                color: "var(--color-accent)",
+              }}
+            >
+              AF
+            </div>
+            <div className="leading-tight">
+              <span className="text-xs font-semibold block tracking-tight">
+                ADMIN CONTROL
+              </span>
+              <span className="text-[10px] font-mono" style={{ color: "var(--color-muted)" }}>
+                PORTFOLIO v2.0
+              </span>
+            </div>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden hover:opacity-70 p-1"
+            className="md:hidden p-1.5 rounded-lg hover:opacity-70 cursor-pointer"
             aria-label="Tutup menu"
+            style={{ color: "var(--color-muted)" }}
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* User Card */}
-        <div className="px-4 py-3 bg-[#FFF6EC] border-b-2 border-[#3A2E3D] flex items-center gap-2.5">
-          <div className="p-1.5 bg-[#FFD866] border-2 border-[#3A2E3D]">
-            <UserCheck className="w-3.5 h-3.5" />
+        <div
+          className="px-4 py-3.5 border-b flex items-center gap-2.5"
+          style={{
+            borderColor: "var(--border-color)",
+            backgroundColor: "var(--bg-surface-elevated)",
+          }}
+        >
+          <div
+            className="p-1.5 rounded-lg border"
+            style={{
+              background: "var(--badge-bg)",
+              borderColor: "var(--badge-border)",
+              color: "var(--color-accent)",
+            }}
+          >
+            <ShieldCheck className="w-4 h-4" />
           </div>
           <div className="min-w-0">
-            <div className="text-[10px] font-bold truncate">
+            <div className="text-xs font-semibold truncate" style={{ color: "var(--color-ink)" }}>
               {user?.name || "Administrator"}
             </div>
-            <div className="text-[8px] opacity-60 truncate">
-              {user?.email || "admin@portfolio"}
+            <div className="text-[10px] font-mono truncate" style={{ color: "var(--color-muted)" }}>
+              {user?.email || "afatwahyudi@gmail.com"}
             </div>
           </div>
         </div>
 
         {/* Nav Links */}
-        <nav className="flex-1 px-3 py-4 flex flex-col gap-2 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 flex flex-col gap-1.5 overflow-y-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -114,19 +156,28 @@ export default function AdminLayout({
                 to={item.to}
                 onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center justify-between px-3 py-2.5 text-[10px] sm:text-xs border-2 transition-transform ${
-                    isActive
-                      ? "bg-[#FFD866] border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] translate-x-1"
-                      : "border-transparent hover:border-[#3A2E3D] hover:bg-[#FFF6EC]"
+                  `flex items-center justify-between px-3.5 py-2.5 text-xs rounded-xl font-medium transition-all ${
+                    isActive ? "font-semibold shadow-xs" : "hover:opacity-90"
                   }`
                 }
+                style={({ isActive }) => ({
+                  backgroundColor: isActive ? "var(--bg-surface-elevated)" : "transparent",
+                  color: isActive ? "var(--color-accent)" : "var(--color-muted)",
+                  border: isActive ? "1px solid var(--border-color)" : "1px solid transparent",
+                })}
               >
                 <div className="flex items-center gap-2.5">
-                  <Icon className="w-3.5 h-3.5" />
+                  <Icon className="w-4 h-4" />
                   <span>{item.label}</span>
                 </div>
                 {item.badge !== undefined && (
-                  <span className="px-1.5 py-0.5 text-[8px] bg-[#FFB4C6] border border-[#3A2E3D] font-bold animate-pulse">
+                  <span
+                    className="px-2 py-0.5 text-[10px] font-mono rounded-full font-bold"
+                    style={{
+                      backgroundColor: "var(--color-primary)",
+                      color: "var(--on-accent)",
+                    }}
+                  >
                     {item.badge}
                   </span>
                 )}
@@ -136,55 +187,76 @@ export default function AdminLayout({
         </nav>
 
         {/* Bottom Actions */}
-        <div className="px-3 py-4 border-t-4 border-[#3A2E3D] flex flex-col gap-2 shrink-0 bg-white">
-          <a
-            href="/"
+        <div
+          className="p-3.5 border-t flex flex-col gap-2 shrink-0"
+          style={{ borderColor: "var(--border-color)" }}
+        >
+          <Link
+            to="/"
             target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2.5 text-[10px] sm:text-xs px-3 py-2 border-2 border-[#3A2E3D] bg-[#B8E6D5] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs transition-colors border"
+            style={{
+              backgroundColor: "var(--bg-surface-elevated)",
+              borderColor: "var(--border-color)",
+              color: "var(--color-muted)",
+            }}
           >
             <Globe className="w-3.5 h-3.5" />
-            <span>Lihat Website</span>
-          </a>
+            <span>Kunjungi Situs Publik</span>
+          </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2.5 text-[10px] sm:text-xs px-3 py-2 border-2 border-[#3A2E3D] bg-[#FFB4C6] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs transition-colors border cursor-pointer"
+            style={{
+              backgroundColor: "var(--bg-surface-elevated)",
+              borderColor: "var(--border-color)",
+              color: "var(--error-text)",
+            }}
           >
             <LogOut className="w-3.5 h-3.5" />
-            <span>Keluar Sesi</span>
+            <span>Keluar (Logout)</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile Header Bar */}
-        <header className="md:hidden border-b-4 border-[#3A2E3D] bg-white sticky top-0 z-30 h-14 flex items-center justify-between px-4">
-          <div className="flex items-center">
+        <header
+          className="h-14 border-b flex items-center justify-between px-4 md:hidden sticky top-0 z-30"
+          style={{
+            backgroundColor: "var(--bg-surface)",
+            borderColor: "var(--border-color)",
+          }}
+        >
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="hover:opacity-70 p-1 mr-2"
-              aria-label="Buka menu"
+              className="p-1.5 rounded-lg border cursor-pointer"
+              style={{
+                borderColor: "var(--border-color)",
+                color: "var(--color-ink)",
+              }}
+              aria-label="Buka menu navigasi"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4" />
             </button>
-            <span className="text-xs uppercase tracking-widest font-bold">
-              Admin<span className="opacity-60">.Panel</span>
-            </span>
+            <span className="text-xs font-semibold">ADMIN PANEL</span>
           </div>
-          <a
-            href="/"
-            target="_blank"
-            rel="noreferrer"
-            className="p-1.5 bg-[#B8E6D5] border-2 border-[#3A2E3D]"
-            title="Lihat Website"
+          <Link
+            to="/"
+            className="text-[11px] font-mono px-2.5 py-1 rounded-full border"
+            style={{
+              borderColor: "var(--border-color)",
+              color: "var(--color-muted)",
+            }}
           >
-            <Globe className="w-4 h-4" />
-          </a>
+            Lihat Web
+          </Link>
         </header>
 
-        {/* Page Inner Container */}
-        <main className="flex-1 w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8">
+        {/* Content Body */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl w-full mx-auto">
           {children}
         </main>
       </div>

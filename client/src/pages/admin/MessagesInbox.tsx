@@ -86,26 +86,53 @@ export default function MessagesInbox() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-4 border-[#3A2E3D] bg-[#C9B8FF] px-4 sm:px-6 py-4 shadow-[6px_6px_0_#3A2E3D]">
+      <div
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl border shadow-xs"
+        style={{
+          backgroundColor: "var(--bg-surface)",
+          borderColor: "var(--border-color)",
+        }}
+      >
         <div>
-          <h1 className="text-lg sm:text-xl font-bold tracking-tight">
+          <h1
+            className="text-xl sm:text-2xl font-semibold tracking-tight"
+            style={{ color: "var(--color-ink)" }}
+          >
             Messages Inbox
           </h1>
-          <p className="text-[10px] sm:text-xs mt-1 opacity-80">
+          <p className="text-xs mt-1" style={{ color: "var(--color-muted)" }}>
             Daftar pesan masuk dari formulir kontak publik landing page.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => fetchMessages()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] sm:text-xs bg-[#FFF6EC] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-[2px_2px_0_#3A2E3D] active:translate-y-[3px] active:shadow-none transition-transform"
-            title="Muat ulang"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs rounded-xl border transition-all cursor-pointer font-medium hover:opacity-80 shrink-0"
+            style={{
+              backgroundColor: "var(--bg-surface-elevated)",
+              borderColor: "var(--border-color)",
+              color: "var(--color-ink)",
+            }}
+            title="Muat ulang pesan"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
           </button>
-          <span className="text-[10px] sm:text-xs px-2.5 py-1.5 bg-[#FFD866] border-2 border-[#3A2E3D] shadow-[3px_3px_0_#3A2E3D] font-bold">
+          <span
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium border shrink-0"
+            style={{
+              backgroundColor: unreadCount > 0 ? "var(--badge-bg)" : "var(--bg-surface-elevated)",
+              borderColor: unreadCount > 0 ? "var(--badge-border)" : "var(--border-color)",
+              color: unreadCount > 0 ? "var(--color-accent)" : "var(--color-muted)",
+            }}
+          >
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{
+                backgroundColor: unreadCount > 0 ? "var(--badge-dot)" : "var(--color-muted)",
+              }}
+            />
             {unreadCount} Baru
           </span>
         </div>
@@ -113,9 +140,16 @@ export default function MessagesInbox() {
 
       {/* Toast Alert */}
       {toast && (
-        <div className="p-3 bg-[#B8E6D5] border-4 border-[#3A2E3D] text-[#3A2E3D] text-[10px] sm:text-xs shadow-[4px_4px_0_#3A2E3D] flex items-center gap-2">
-          <Check className="w-4 h-4 text-[#2C6B47]" />
-          <span>{toast}</span>
+        <div
+          className="p-4 rounded-xl border text-xs shadow-xs flex items-center gap-2.5 animate-fadeIn"
+          style={{
+            backgroundColor: "var(--bg-surface-elevated)",
+            borderColor: "var(--color-accent)",
+            color: "var(--color-ink)",
+          }}
+        >
+          <Check className="w-4 h-4 shrink-0" style={{ color: "var(--color-accent)" }} />
+          <span className="font-medium">{toast}</span>
         </div>
       )}
 
@@ -123,31 +157,34 @@ export default function MessagesInbox() {
       <div className="flex flex-wrap items-center gap-2">
         <button
           onClick={() => setFilter("all")}
-          className={`px-3 py-1.5 text-[10px] sm:text-xs border-2 border-[#3A2E3D] transition-transform ${
-            filter === "all"
-              ? "bg-[#FFD866] shadow-[3px_3px_0_#3A2E3D]"
-              : "bg-white hover:bg-[#FFF6EC]"
-          }`}
+          className="px-3.5 py-1.5 text-xs rounded-xl border transition-all cursor-pointer font-medium"
+          style={{
+            backgroundColor: filter === "all" ? "var(--color-primary)" : "var(--bg-surface)",
+            borderColor: filter === "all" ? "var(--color-primary)" : "var(--border-color)",
+            color: filter === "all" ? "var(--on-accent)" : "var(--color-muted)",
+          }}
         >
           Semua ({messages.length})
         </button>
         <button
           onClick={() => setFilter("unread")}
-          className={`px-3 py-1.5 text-[10px] sm:text-xs border-2 border-[#3A2E3D] transition-transform ${
-            filter === "unread"
-              ? "bg-[#FFB4C6] shadow-[3px_3px_0_#3A2E3D]"
-              : "bg-white hover:bg-[#FFF6EC]"
-          }`}
+          className="px-3.5 py-1.5 text-xs rounded-xl border transition-all cursor-pointer font-medium"
+          style={{
+            backgroundColor: filter === "unread" ? "var(--color-primary)" : "var(--bg-surface)",
+            borderColor: filter === "unread" ? "var(--color-primary)" : "var(--border-color)",
+            color: filter === "unread" ? "var(--on-accent)" : "var(--color-muted)",
+          }}
         >
           Belum Dibaca ({unreadCount})
         </button>
         <button
           onClick={() => setFilter("read")}
-          className={`px-3 py-1.5 text-[10px] sm:text-xs border-2 border-[#3A2E3D] transition-transform ${
-            filter === "read"
-              ? "bg-[#B8E6D5] shadow-[3px_3px_0_#3A2E3D]"
-              : "bg-white hover:bg-[#FFF6EC]"
-          }`}
+          className="px-3.5 py-1.5 text-xs rounded-xl border transition-all cursor-pointer font-medium"
+          style={{
+            backgroundColor: filter === "read" ? "var(--color-primary)" : "var(--bg-surface)",
+            borderColor: filter === "read" ? "var(--color-primary)" : "var(--border-color)",
+            color: filter === "read" ? "var(--on-accent)" : "var(--color-muted)",
+          }}
         >
           Sudah Dibaca ({messages.length - unreadCount})
         </button>
@@ -155,7 +192,14 @@ export default function MessagesInbox() {
 
       {/* Messages List */}
       {loading && messages.length === 0 ? (
-        <div className="p-8 text-center border-4 border-[#3A2E3D] bg-white text-[10px] sm:text-xs shadow-[4px_4px_0_#3A2E3D]">
+        <div
+          className="p-8 text-center rounded-2xl border text-xs"
+          style={{
+            borderColor: "var(--border-color)",
+            backgroundColor: "var(--bg-surface)",
+            color: "var(--color-muted)",
+          }}
+        >
           Memuat pesan masuk...
         </div>
       ) : (
@@ -163,35 +207,51 @@ export default function MessagesInbox() {
           {filteredMessages.map((msg) => (
             <div
               key={msg.id}
-              className={`p-4 sm:p-5 border-4 border-[#3A2E3D] bg-white transition-shadow ${
-                msg.is_read
-                  ? "shadow-[3px_3px_0_#3A2E3D] opacity-80"
-                  : "shadow-[6px_6px_0_#3A2E3D] ring-2 ring-[#FFD866]"
-              }`}
+              className="p-5 sm:p-6 rounded-2xl border transition-all shadow-xs"
+              style={{
+                backgroundColor: "var(--bg-surface)",
+                borderColor: msg.is_read ? "var(--border-color)" : "var(--badge-border)",
+                boxShadow: msg.is_read ? "none" : "0 0 0 1px var(--badge-border)",
+              }}
             >
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b-2 border-[#3A2E3D] pb-3">
+              <div
+                className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b pb-3.5"
+                style={{ borderColor: "var(--border-color)" }}
+              >
                 <div className="space-y-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs sm:text-sm font-bold break-words">
+                    <span
+                      className="text-xs sm:text-sm font-semibold break-words"
+                      style={{ color: "var(--color-ink)" }}
+                    >
                       {msg.name}
                     </span>
                     <a
                       href={`mailto:${msg.email}`}
-                      className="text-[10px] sm:text-xs underline opacity-80 hover:opacity-100"
+                      className="text-xs font-mono transition-opacity opacity-75 hover:opacity-100"
+                      style={{ color: "var(--color-accent)" }}
                     >
                       &lt;{msg.email}&gt;
                     </a>
                     <span
-                      className={`text-[9px] px-2 py-0.5 border-2 border-[#3A2E3D] font-bold ${
-                        msg.is_read
-                          ? "bg-[#FFF6EC] opacity-70"
-                          : "bg-[#FFB4C6] animate-pulse"
-                      }`}
+                      className="text-[10px] font-mono px-2 py-0.5 rounded-full border font-medium"
+                      style={{
+                        backgroundColor: msg.is_read
+                          ? "var(--bg-surface-elevated)"
+                          : "var(--badge-bg)",
+                        borderColor: msg.is_read
+                          ? "var(--border-color)"
+                          : "var(--badge-border)",
+                        color: msg.is_read ? "var(--color-muted)" : "var(--color-accent)",
+                      }}
                     >
                       {msg.is_read ? "SUDAH DIBACA" : "PESAN BARU"}
                     </span>
                   </div>
-                  <div className="text-[9px] sm:text-[10px] opacity-60">
+                  <div
+                    className="text-xs font-mono"
+                    style={{ color: "var(--color-muted)" }}
+                  >
                     {new Date(msg.created_at).toLocaleString("id-ID", {
                       dateStyle: "full",
                       timeStyle: "short",
@@ -203,29 +263,49 @@ export default function MessagesInbox() {
                   <button
                     onClick={() => toggleReadStatus(msg.id, msg.is_read)}
                     title={msg.is_read ? "Tandai belum dibaca" : "Tandai sudah dibaca"}
-                    className="p-2 bg-[#FFF6EC] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+                    className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80"
+                    style={{
+                      backgroundColor: "var(--bg-surface-elevated)",
+                      borderColor: "var(--border-color)",
+                      color: "var(--color-ink)",
+                    }}
                   >
                     {msg.is_read ? (
-                      <MailOpen className="w-3.5 h-3.5 text-[#3A2E3D]" />
+                      <MailOpen className="w-3.5 h-3.5" />
                     ) : (
-                      <Mail className="w-3.5 h-3.5 text-[#2C6B47]" />
+                      <Mail className="w-3.5 h-3.5" style={{ color: "var(--color-accent)" }} />
                     )}
                   </button>
                   <button
                     onClick={() => handleDelete(msg.id)}
                     title="Hapus pesan"
-                    className="p-2 bg-[#FFB4C6] border-2 border-[#3A2E3D] shadow-[2px_2px_0_#3A2E3D] hover:translate-y-[1px] hover:shadow-none transition-transform"
+                    className="p-2 rounded-xl border transition-all cursor-pointer hover:opacity-80"
+                    style={{
+                      backgroundColor: "var(--error-bg)",
+                      borderColor: "var(--border-color)",
+                      color: "var(--error-text)",
+                    }}
                   >
-                    <Trash2 className="w-3.5 h-3.5 text-[#3A2E3D]" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
-              <div className="pt-3 space-y-2">
-                <div className="text-[11px] sm:text-xs font-bold text-[#74489D]">
+              <div className="pt-3.5 space-y-2">
+                <div
+                  className="text-xs font-semibold"
+                  style={{ color: "var(--color-accent)" }}
+                >
                   Subjek: {msg.subject}
                 </div>
-                <p className="text-xs sm:text-sm font-normal leading-relaxed whitespace-pre-wrap break-words text-[#4A3B52] bg-[#FFF6EC] p-3 border-2 border-[#3A2E3D]">
+                <p
+                  className="text-xs sm:text-sm font-normal leading-relaxed whitespace-pre-wrap break-words p-4 rounded-xl border"
+                  style={{
+                    backgroundColor: "var(--bg-surface-elevated)",
+                    borderColor: "var(--border-subtle)",
+                    color: "var(--color-ink)",
+                  }}
+                >
                   {msg.message}
                 </p>
               </div>
@@ -233,7 +313,14 @@ export default function MessagesInbox() {
           ))}
 
           {filteredMessages.length === 0 && (
-            <div className="p-8 text-center border-4 border-dashed border-[#3A2E3D] bg-white text-[10px] sm:text-xs">
+            <div
+              className="p-8 text-center border border-dashed rounded-2xl text-xs"
+              style={{
+                borderColor: "var(--border-color)",
+                backgroundColor: "var(--bg-surface)",
+                color: "var(--color-muted)",
+              }}
+            >
               Tidak ada pesan masuk pada kategori ini.
             </div>
           )}

@@ -6,185 +6,144 @@ html {
 }
 
 /* -------------------------------------------------------------
-   AI WORKFLOW INTERFACE (DESIGN.md Reference Standard)
-   Neuform Featured Theme
+   THEME 1 (DARK): DOPE.SECURITY (Modern-Design.MD Reference)
+   Midnight terminal with violet beacons & hairline borders
    ------------------------------------------------------------- */
 :root,
+[data-theme="terminal"],
+[data-theme="dark"],
 [data-theme="neuform"],
 [data-theme="pixel"] {
   --font-heading: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* Palette Tokens from DESIGN.md */
-  --color-primary: #00E559;
-  --color-secondary: #09090B;
-  --color-accent: #38BDF8;
-  --color-surface: #1A1B1E;
-  --color-border: #27272A;
+  /* Color Tokens (Modern-Design.MD) */
+  --color-near-black: #090909;
+  --color-almost-white: #f7f9fa;
+  --color-soft-white: #f0f0f0;
+  --color-steel: #828384;
+  --color-graphite: #474747;
+  --color-iron: #423738;
+  --color-ash: #6b6b6b;
+  --color-signal-violet: #af50ff;
+  --color-lavender-mist: #e1bdff;
 
-  /* Backgrounds */
-  --bg-primary: #09090B;          /* Deep Obsidian Canvas */
-  --bg-surface: #1A1B1E;          /* Card / Panel Surface */
-  --bg-surface-elevated: #23242A; /* Elevated Surface */
-  --bg-secondary: #00E559;        /* Primary CTA Fill: Electric Neon Green */
-  --bg-accent: #1A1B1E;           /* Secondary Action Fill */
-  --card-frame-bg: #1A1B1E;
-
-  /* Typography Colors */
-  --color-ink: #FFFFFF;           /* Text Primary */
-  --color-muted: #A1A1AA;         /* Text Secondary */
-  --accent-color: #38BDF8;        /* Sky Blue Accent */
-  --on-accent: #09090B;           /* Dark ink text on top of Neon Green */
+  /* Semantic UI Tokens */
+  --bg-primary: #090909;             /* Void Canvas */
+  --bg-surface: #121215;             /* Flat card surface */
+  --bg-surface-elevated: #1a1a20;    /* Elevated surface */
+  --bg-nav: rgba(26, 26, 36, 0.8);
+  --color-ink: #f7f9fa;              /* Paper-white text on dark */
+  --color-muted: #828384;            /* Steel muted text */
+  --color-primary: #af50ff;          /* Signal Violet */
+  --color-accent: #af50ff;           /* Signal Violet Glow & Accent */
+  --color-secondary: #e1bdff;        /* Lavender Mist */
+  --on-accent: #090909;              /* Dark text on violet */
 
   /* Borders & Shadows */
-  --border-color: #27272A;
+  --border-color: rgba(247, 249, 250, 0.12);
+  --border-subtle: rgba(247, 249, 250, 0.08);
   --border-width: 1px;
-  --border-width-lg: 1px;
-  --border-radius: 20px;          /* Card radius: 20px */
-  --control-radius: 20px;         /* Control radius: 20px */
-  --node-radius: 9999px;          /* Pill radius: 9999px */
-  --box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6), 0 0 0 1px #27272A;
-  --box-shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.8), 0 0 0 1px #27272A;
-  --box-shadow-hover: 0 16px 36px -4px rgba(0, 229, 89, 0.18), 0 0 0 1px #00E559;
+  --border-radius: 19.2px;           /* Modern-Design Card radius */
+  --control-radius: 8px;             /* Modern-Design Button radius */
+  --pill-radius: 1584px;             /* Modern-Design Pill radius */
+  --box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(247, 249, 250, 0.08);
+  --box-shadow-hover: 0 16px 40px -4px rgba(175, 80, 255, 0.22), 0 0 0 1px rgba(175, 80, 255, 0.4);
 
-  /* Badges & Status */
-  --badge-bg: rgba(0, 229, 89, 0.1);
-  --badge-border: rgba(0, 229, 89, 0.3);
-  --badge-dot: #00E559;
+  /* Badges & Telemetry */
+  --badge-bg: rgba(175, 80, 255, 0.1);
+  --badge-border: rgba(175, 80, 255, 0.28);
+  --badge-dot: #af50ff;
+  --badge-text: #e1bdff;
+  --card-glow: radial-gradient(circle, rgba(175, 80, 255, 0.18) 0%, rgba(225, 189, 255, 0.06) 50%, transparent 75%);
+
   --error-bg: #2d1217;
   --error-text: #ff4b68;
-
-  /* Cards Accent Palette */
-  --card-accent-1: #1A1B1E;
-  --card-accent-2: #1A1B1E;
-  --card-accent-3: #1A1B1E;
-  --card-accent-4: #1A1B1E;
-
-  /* Rendering */
-  --img-rendering: auto;
 }
 
 /* -------------------------------------------------------------
-   TEMA 2: MODERN CLEAN
+   THEME 2 (LIGHT): SUPERHUMAN (Tema-utama.MD Reference)
+   Golden hour editorial dashboard with warm parchment & wine
    ------------------------------------------------------------- */
+[data-theme="editorial"],
+[data-theme="light"],
 [data-theme="modern"] {
-  --font-heading:
-    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-body:
-    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
-  /* Backgrounds */
-  --bg-primary: #ffffff;
-  --bg-secondary: #2563eb;
-  --bg-accent: #eff6ff;
-  --card-frame-bg: #f1f5f9;
+  /* Color Tokens (Tema-utama.MD) */
+  --color-midnight-wine: #421d24;
+  --color-royal-violet: #714cb6;
+  --color-lilac-mist: #d4c7ff;
+  --color-deep-lagoon: #0c4243;
+  --color-warm-parchment: #f2f0eb;
+  --color-soft-mist: #e3e3e2;
+  --color-ink-charcoal: #292827;
+  --color-stone-gray: #666666;
+  --color-paper-white: #ffffff;
 
-  /* Typography Colors */
-  --color-ink: #0f172a;
-  --color-muted: #475569;
-  --accent-color: #2563eb;
-
-  /* --bg-secondary here is a saturated blue — dark ink text on it
-     fails contrast, so text on top of it needs to be light. */
-  --on-accent: #ffffff;
+  /* Semantic UI Tokens */
+  --bg-primary: #f2f0eb;             /* Warm Parchment base canvas */
+  --bg-surface: #ffffff;             /* Paper White card surface */
+  --bg-surface-elevated: #faf8f5;    /* Elevated card surface */
+  --bg-nav: rgba(242, 240, 235, 0.88);
+  --color-ink: #292827;              /* Ink Charcoal primary text */
+  --color-muted: #666666;            /* Stone Gray secondary text */
+  --color-primary: #421d24;          /* Midnight Wine primary CTA */
+  --color-accent: #714cb6;           /* Royal Violet links & tags */
+  --color-secondary: #d4c7ff;        /* Lilac Mist */
+  --on-accent: #ffffff;              /* Crisp white on wine/violet */
 
   /* Borders & Shadows */
+  --border-color: #e3e3e2;           /* Soft Mist hairline border */
+  --border-subtle: rgba(41, 40, 39, 0.06);
   --border-width: 1px;
-  --border-width-lg: 1px;
-  --border-radius: 12px;
-  --node-radius: 9999px;
-  --box-shadow:
-    0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  --box-shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-  --box-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --border-radius: 16px;             /* Tema-utama Card radius */
+  --control-radius: 16px;            /* Tema-utama Button radius */
+  --pill-radius: 999px;              /* Tema-utama Pill radius */
+  --box-shadow: 0 4px 20px -2px rgba(41, 40, 39, 0.05), 0 0 0 1px #e3e3e2;
+  --box-shadow-hover: 0 12px 30px -4px rgba(113, 76, 182, 0.16), 0 0 0 1px #714cb6;
 
-  /* Badges & Status */
-  --badge-bg: #dcfce7;
-  --badge-dot: #16a34a;
+  /* Badges & Telemetry */
+  --badge-bg: rgba(113, 76, 182, 0.08);
+  --badge-border: rgba(113, 76, 182, 0.22);
+  --badge-dot: #714cb6;
+  --badge-text: #714cb6;
+  --card-glow: radial-gradient(circle, rgba(212, 199, 255, 0.4) 0%, rgba(113, 76, 182, 0.08) 50%, transparent 75%);
+
   --error-bg: #fee2e2;
   --error-text: #b91c1c;
-
-  /* Cards Accent Palette */
-  --card-accent-1: #e2e8f0;
-  --card-accent-2: #dbeafe;
-  --card-accent-3: #f3e8ff;
-  --card-accent-4: #fef3c7;
-
-  /* Rendering */
-  --img-rendering: auto;
 }
 
-/* -------------------------------------------------------------
-   TEMA 3: DARK TERMINAL
-   ------------------------------------------------------------- */
-[data-theme="terminal"] {
-  --font-heading: "JetBrains Mono", monospace;
-  --font-body: "JetBrains Mono", monospace;
-
-  /* Backgrounds */
-  --bg-primary: #0a0e14;
-  --bg-secondary: #00ff66;
-  --bg-accent: #13231b;
-  --card-frame-bg: #111923;
-
-  /* Typography Colors */
-  --color-ink: #00ff66;
-  --color-muted: #629677;
-  --accent-color: #00e5ff;
-
-  /* --color-ink and --bg-secondary are BOTH neon green here — that's
-     the bug from the screenshot. Text on the accent button must use
-     the dark background color instead, not --color-ink. */
-  --on-accent: #0a0e14;
-
-  /* Borders & Shadows */
-  --border-width: 1px;
-  --border-width-lg: 2px;
-  --border-radius: 2px;
-  --node-radius: 2px;
-  --box-shadow: 0 0 8px rgba(0, 255, 102, 0.25);
-  --box-shadow-lg: 0 0 16px rgba(0, 255, 102, 0.35);
-  --box-shadow-hover: 0 0 24px rgba(0, 255, 102, 0.5);
-
-  /* Badges & Status */
-  --badge-bg: #092615;
-  --badge-dot: #00ff66;
-  --error-bg: #2d1217;
-  --error-text: #ff4b68;
-
-  /* Cards Accent Palette */
-  --card-accent-1: #11261a;
-  --card-accent-2: #0e2b26;
-  --card-accent-3: #1a1b35;
-  --card-accent-4: #2b2710;
-
-  /* Rendering */
-  --img-rendering: auto;
-}
-
-/* Transisi halus saat pergantian tema. button & a ditambahkan karena
-   banyak elemen interaktif (nav link, theme switcher, CTA) bukan
-   direct child dari tag di bawah, dan box-shadow ikut dimasukkan
-   supaya efek "chunky shadow" pixel juga ikut transisi halus. */
+/* Smooth transitions for theme switching */
 body,
 main,
 section,
 nav,
 header,
 footer,
+div,
 button,
-a {
+a,
+input,
+textarea {
   transition:
     background-color 0.25s ease,
     border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    color 0.25s ease;
+    color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-/* Sembunyikan scrollbar pada nav yang overflow-x-auto (Navbar.tsx)
-   tanpa menghilangkan fungsinya. */
+/* Stamped Section Monospace Voice (Modern-Design.MD signature) */
+.section-stamp {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* Custom Scrollbars */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -192,18 +151,17 @@ a {
   scrollbar-width: none;
 }
 
-/* GPU-accelerated idle bobbing animation without JavaScript forced reflow */
-@keyframes hero-bobbing {
-  0%,
-  100% {
+/* Subtle Idle Floating Animation */
+@keyframes ambient-float {
+  0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 }
 
-.animate-hero-bob {
-  animation: hero-bobbing 2.5s ease-in-out infinite;
+.animate-float {
+  animation: ambient-float 5s ease-in-out infinite;
   will-change: transform;
 }

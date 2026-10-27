@@ -17,22 +17,23 @@ const AdminLoadingFallback = () => (
   <div
     className="min-h-[50vh] flex items-center justify-center text-xs p-6"
     style={{
-      backgroundColor: "var(--bg-primary, #FFF6EC)",
-      color: "var(--color-ink, #3A2E3D)",
-      fontFamily: "var(--font-heading, monospace)",
+      backgroundColor: "var(--bg-primary)",
+      color: "var(--color-ink)",
+      fontFamily: "var(--font-heading, 'Inter', sans-serif)",
     }}
   >
     <div
-      className="px-6 py-4 flex items-center gap-3"
+      className="px-6 py-4 flex items-center gap-3 rounded-2xl border shadow-lg"
       style={{
-        border: "var(--border-width, 3px) solid var(--color-ink, #3A2E3D)",
-        backgroundColor: "var(--bg-secondary, #FFD866)",
-        boxShadow: "var(--box-shadow, 4px 4px 0 var(--color-ink, #3A2E3D))",
-        borderRadius: "var(--border-radius, 0px)",
+        borderColor: "var(--border-color)",
+        backgroundColor: "var(--bg-surface)",
       }}
     >
-      <div className="w-2.5 h-2.5 bg-[#3A2E3D] animate-ping" />
-      <span>Memuat modul admin...</span>
+      <div
+        className="w-2.5 h-2.5 rounded-full animate-ping"
+        style={{ background: "var(--color-accent)" }}
+      />
+      <span className="font-medium">Memuat modul admin...</span>
     </div>
   </div>
 );
@@ -45,22 +46,23 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
       <div
         className="min-h-screen flex items-center justify-center text-xs"
         style={{
-          backgroundColor: "var(--bg-primary, #FFF6EC)",
-          color: "var(--color-ink, #3A2E3D)",
-          fontFamily: "var(--font-heading, monospace)",
+          backgroundColor: "var(--bg-primary)",
+          color: "var(--color-ink)",
+          fontFamily: "var(--font-heading, 'Inter', sans-serif)",
         }}
       >
         <div
-          className="px-6 py-4 flex items-center gap-3"
+          className="px-6 py-4 flex items-center gap-3 rounded-2xl border shadow-lg"
           style={{
-            border: "var(--border-width, 4px) solid var(--color-ink, #3A2E3D)",
-            backgroundColor: "var(--bg-secondary, #FFD866)",
-            boxShadow: "var(--box-shadow, 6px 6px 0 var(--color-ink, #3A2E3D))",
-            borderRadius: "var(--border-radius, 0px)",
+            borderColor: "var(--border-color)",
+            backgroundColor: "var(--bg-surface)",
           }}
         >
-          <div className="w-2 h-2 bg-[#3A2E3D] animate-pulse" />
-          <span>Memeriksa sesi admin...</span>
+          <div
+            className="w-2.5 h-2.5 rounded-full animate-pulse"
+            style={{ background: "var(--color-accent)" }}
+          />
+          <span className="font-medium">Memeriksa sesi autentikasi...</span>
         </div>
       </div>
     );

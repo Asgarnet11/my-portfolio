@@ -1,13 +1,12 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { Search, Layers } from "lucide-react";
+import { Search, Layers, Moon, Sun } from "lucide-react";
 
 const CommandPalette = lazy(() => import("./CommandPalette"));
 
 const THEMES = [
-  { id: "neuform", label: "NEUFORM" },
-  { id: "modern", label: "MODERN" },
-  { id: "terminal", label: "TERMINAL" },
+  { id: "terminal", label: "MIDNIGHT", icon: Moon },
+  { id: "editorial", label: "EDITORIAL", icon: Sun },
 ] as const;
 
 const LINKS = [
@@ -76,6 +75,8 @@ export default function Navbar() {
     }
   };
 
+  const isTerminal = theme !== "editorial" && theme !== "modern" && theme !== "light";
+
   return (
     <div style={{ fontFamily: "var(--font-heading, 'Inter', sans-serif)" }}>
       <header
@@ -90,14 +91,14 @@ export default function Navbar() {
         className="w-full px-4 sm:px-6 pt-4 pb-2"
       >
         <div
-          className="max-w-6xl mx-auto rounded-full backdrop-blur-xl border transition-all duration-300 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 shadow-2xl"
+          className="max-w-6xl mx-auto rounded-full backdrop-blur-xl border transition-all duration-300 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3"
           style={{
-            background: "rgba(26, 27, 30, 0.75)",
-            borderColor: "var(--color-border, #27272A)",
-            boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.45)",
+            background: "var(--bg-nav, rgba(26, 26, 36, 0.8))",
+            borderColor: "var(--border-color, rgba(247, 249, 250, 0.12))",
+            boxShadow: "var(--box-shadow)",
           }}
         >
-          {/* Logo & Status Badge */}
+          {/* Logo & Telemetry */}
           <div className="flex items-center gap-3 shrink-0">
             <a
               href="#"
@@ -108,44 +109,48 @@ export default function Navbar() {
               <div
                 className="w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105"
                 style={{
-                  background: "linear-gradient(135deg, rgba(0,229,89,0.2) 0%, rgba(56,189,248,0.2) 100%)",
-                  border: "1px solid rgba(0, 229, 89, 0.4)",
-                  color: "var(--color-primary, #00E559)",
+                  background: "var(--badge-bg)",
+                  border: "1px solid var(--badge-border)",
+                  color: "var(--color-accent)",
                 }}
               >
                 <Layers className="w-4 h-4" />
               </div>
-              <span className="font-semibold text-sm sm:text-base text-white tracking-tight flex items-center gap-1.5">
+              <span
+                className="font-semibold text-sm sm:text-base tracking-tight flex items-center gap-1.5"
+                style={{ color: "var(--color-ink)" }}
+              >
                 ASGAR
                 <span
-                  className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full"
+                  className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-full uppercase tracking-wider"
                   style={{
-                    background: "rgba(0, 229, 89, 0.12)",
-                    color: "var(--color-primary, #00E559)",
-                    border: "1px solid rgba(0, 229, 89, 0.25)",
+                    background: "var(--badge-bg)",
+                    color: "var(--color-accent)",
+                    border: "1px solid var(--badge-border)",
                   }}
                 >
-                  AI.v4
+                  ENGINEER
                 </span>
               </span>
             </a>
 
             {/* Live Telemetry / Time Indicator */}
             <div
-              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px]"
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono"
               style={{
-                fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-                background: "rgba(39, 39, 42, 0.6)",
-                border: "1px solid #27272A",
-                color: "#A1A1AA",
+                background: "var(--bg-surface)",
+                border: "1px solid var(--border-color)",
+                color: "var(--color-muted)",
               }}
-              title="Waktu Lokal Makassar (WITA, UTC+8)"
+              title="Waktu Lokal Makassar / Kendari (WITA, UTC+8)"
             >
               <span
                 className="w-1.5 h-1.5 rounded-full animate-ping shrink-0"
-                style={{ background: "var(--color-primary, #00E559)" }}
+                style={{ background: "var(--color-accent)" }}
               />
-              <span className="text-white font-medium">MKS {localTime ? `• ${localTime}` : ""}</span>
+              <span style={{ color: "var(--color-ink)" }} className="font-medium">
+                WITA {localTime ? `• ${localTime}` : ""}
+              </span>
             </div>
           </div>
 
@@ -159,7 +164,18 @@ export default function Navbar() {
                 key={label}
                 href={href}
                 onClick={(e) => handleNavClick(e, href)}
-                className="px-3.5 py-1.5 text-xs rounded-full font-medium transition-all duration-200 text-zinc-300 hover:text-white hover:bg-white/5 active:scale-95 cursor-pointer"
+                className="px-3.5 py-1.5 text-xs rounded-full font-medium transition-all duration-200 cursor-pointer"
+                style={{
+                  color: "var(--color-muted)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--color-ink)";
+                  e.currentTarget.style.background = "var(--border-subtle)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--color-muted)";
+                  e.currentTarget.style.background = "transparent";
+                }}
               >
                 {label}
               </a>
@@ -174,51 +190,55 @@ export default function Navbar() {
               onClick={() => setPaletteOpen(true)}
               aria-label="Buka Command Palette (Ctrl+K)"
               title="Buka Menu Aksi Cepat (Cmd+K / Ctrl+K)"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs transition-all duration-200 cursor-pointer hover:border-zinc-600 active:scale-95"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs transition-all duration-200 cursor-pointer active:scale-95"
               style={{
                 fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-                background: "rgba(26, 27, 30, 0.9)",
-                border: "1px solid var(--color-border, #27272A)",
-                color: "var(--color-muted, #A1A1AA)",
+                background: "var(--bg-surface)",
+                border: "1px solid var(--border-color)",
+                color: "var(--color-muted)",
               }}
             >
-              <Search className="w-3.5 h-3.5 text-zinc-400" />
+              <Search className="w-3.5 h-3.5" />
               <span className="hidden sm:inline text-[11px]">Command</span>
               <kbd
-                className="text-[10px] px-1.5 py-0.2 rounded"
+                className="text-[10px] px-1.5 py-0.2 rounded font-mono"
                 style={{
-                  background: "rgba(255, 255, 255, 0.08)",
-                  border: "1px solid rgba(255, 255, 255, 0.12)",
-                  color: "#FFFFFF",
+                  background: "var(--border-subtle)",
+                  border: "1px solid var(--border-color)",
+                  color: "var(--color-ink)",
                 }}
               >
                 ⌘K
               </kbd>
             </button>
 
-            {/* Theme Switcher Toggle */}
+            {/* Theme Switcher Toggle (Tema-utama / Modern-Design) */}
             <div
               className="flex items-center p-1 rounded-full gap-0.5"
               style={{
-                background: "rgba(15, 15, 18, 0.9)",
-                border: "1px solid var(--color-border, #27272A)",
+                background: "var(--bg-surface)",
+                border: "1px solid var(--border-color)",
               }}
             >
               {THEMES.map((t) => {
-                const isActive = theme === t.id || (theme === "pixel" && t.id === "neuform");
+                const isActive = t.id === "terminal" ? isTerminal : !isTerminal;
+                const IconComponent = t.icon;
                 return (
                   <button
                     key={t.id}
-                    onClick={() => setTheme(t.id === "neuform" ? "pixel" : t.id)}
+                    onClick={() => setTheme(t.id)}
                     aria-label={`Ganti ke tema ${t.label}`}
-                    className={`px-2.5 py-1 rounded-full text-[10px] font-mono transition-all duration-200 cursor-pointer ${
-                      isActive
-                        ? "bg-[#00E559] text-black font-semibold shadow-sm"
-                        : "text-zinc-400 hover:text-white"
+                    title={`Mode ${t.label}`}
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono transition-all duration-200 cursor-pointer ${
+                      isActive ? "font-semibold shadow-sm" : "hover:opacity-80"
                     }`}
+                    style={{
+                      background: isActive ? "var(--color-accent)" : "transparent",
+                      color: isActive ? "var(--on-accent)" : "var(--color-muted)",
+                    }}
                   >
+                    <IconComponent className="w-3 h-3" />
                     <span className="hidden sm:inline">{t.label}</span>
-                    <span className="sm:hidden">{t.label[0]}</span>
                   </button>
                 );
               })}

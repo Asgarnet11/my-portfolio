@@ -160,29 +160,34 @@ export default function Home() {
         {/* Footer / Connect Section */}
         <footer
           id="contact"
-          className="py-10 sm:py-14 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs mt-16 sm:mt-24"
+          className="py-10 sm:py-14 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs mt-16 sm:mt-24 border-t"
           style={{
-            borderTop: "1px solid var(--border-color, #27272A)",
-            color: "var(--color-muted, #A1A1AA)",
+            borderColor: "var(--border-color)",
+            color: "var(--color-muted)",
             fontFamily: "var(--font-mono, monospace)",
             fontSize: "11px",
           }}
         >
           <div className="leading-relaxed flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#00E559] animate-pulse" />
-            <span>© {new Date().getFullYear()} — Built with AI Workflow Interface.</span>
+            <span
+              className="w-2 h-2 rounded-full animate-pulse"
+              style={{ background: "var(--color-accent)" }}
+            />
+            <span>© {new Date().getFullYear()} Muh Asgar Fatwahyudi • 3°58&apos;43.8&quot;S 122°31&apos;40.9&quot;E KND</span>
           </div>
           <div
             className="flex flex-wrap gap-x-5 gap-y-2"
-            style={{ color: "var(--color-muted, #A1A1AA)" }}
+            style={{ color: "var(--color-muted)" }}
           >
             {socialsSec?.data?.github && (
               <a
                 href={socialsSec.data.github}
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-[#00E559] transition-colors"
-                style={{ textDecoration: "none" }}
+                className="transition-colors hover:opacity-100"
+                style={{ textDecoration: "none", color: "var(--color-muted)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-accent)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
               >
                 GitHub
               </a>
@@ -192,8 +197,10 @@ export default function Home() {
                 href={socialsSec.data.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-[#00E559] transition-colors"
-                style={{ textDecoration: "none" }}
+                className="transition-colors hover:opacity-100"
+                style={{ textDecoration: "none", color: "var(--color-muted)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-accent)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
               >
                 LinkedIn
               </a>
@@ -211,8 +218,11 @@ export default function Home() {
                   cursor: "pointer",
                   fontFamily: "inherit",
                   fontSize: "inherit",
+                  color: "var(--color-muted)",
                 }}
-                className="hover:text-[#00E559] transition-colors"
+                className="transition-colors hover:opacity-100"
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-accent)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
                 title="Klik untuk salin alamat email"
               >
                 {copiedEmail ? "✓ Email Tersalin!" : "Email"}
